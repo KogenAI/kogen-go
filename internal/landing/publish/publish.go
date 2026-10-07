@@ -175,13 +175,31 @@ func Publish(ctx context.Context, request Request) (Result, error) {
 			}
 			return p.finishLanded(ctx, checkedOut)
 		}
+		observed, readErr := p.refs.ReadRef(ctx, p.baseRef)
+		if readErr != nil {
+			return Result{}, errors.Join(
+				fmt.Errorf("landing publish: inspect base after uncertain compare-and-swap: %w", readErr),
+				casErr,
+			)
+		}
+		if observed.Exists && observed.Target == p.request.Candidate.Commit {
+			if err := p.reached(BaseCASSucceeded); err != nil {
+				return Result{}, err
+			}
+			return p.finishLanded(ctx, checkedOut)
+		}
+		if !observed.Exists || observed.Target != p.request.Candidate.Parent {
+			// A competing writer moved the branch between CAS and the read.
+			casErr = gitio.ErrRefConflict
+		}
 
 		transient, reason := p.isTransientCASFailure(ctx, casErr)
 		if !transient {
+			cleanupErr := p.deleteIncoming(ctx)
 			if casErr != nil {
-				return Result{}, fmt.Errorf("landing publish: update base ref: %w", casErr)
+				return Result{}, errors.Join(fmt.Errorf("landing publish: update base ref: %w", casErr), cleanupErr)
 			}
-			return Result{}, errors.New("landing publish: base compare-and-swap returned no update")
+			return Result{}, errors.Join(errors.New("landing publish: base compare-and-swap returned no update"), cleanupErr)
 		}
 		if err := p.deleteIncoming(ctx); err != nil {
 			return Result{}, fmt.Errorf("landing publish: clear incoming ref after lost base CAS: %w", err)
@@ -249,6 +267,13 @@ func (p *publisher) validate(ctx context.Context) error {
 	}
 	if err := p.request.Snapshot.Validate(); err != nil {
 		return fmt.Errorf("%w: invalid run snapshot: %v", ErrInvalidRequest, err)
+	}
+	base, err := p.refs.ReadRef(ctx, p.baseRef)
+	if err != nil {
+		return fmt.Errorf("landing publish: validate target branch ref: %w", err)
+	}
+	if !base.Exists {
+		return fmt.Errorf("%w: target branch ref %q does not exist", ErrInvalidRequest, p.baseRef)
 	}
 	candidate := p.request.Candidate
 	for label, id := range map[string]contract.ObjectID{
@@ -342,7 +367,7 @@ func (p *publisher) createIncoming(ctx context.Context) error {
 		Name: p.inRef, Next: p.request.Candidate.Commit,
 	})
 	if err != nil {
-		if errors.Is(err, gitio.ErrRefConflict) || !result.Updated {
+		if errors.Is(err, gitio.ErrRefConflict) {
 			return fmt.Errorf("%w: %s", ErrIncomingExists, p.inRef)
 		}
 		return fmt.Errorf("landing publish: create incoming ref: %w", err)

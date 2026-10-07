@@ -150,6 +150,26 @@ func TestPublishRetriesHeldBaseLockAfterDurableEvent(t *testing.T) {
 	}
 }
 
+func TestPublishDoesNotReplaceAnExistingIncomingRef(t *testing.T) {
+	fixture := testkit.NewGitFixture(t)
+	base := strings.TrimSpace(string(fixture.Run(t, "rev-parse", "refs/heads/main")))
+	candidate := makeCandidate(t, fixture, base, "must not replace incoming\n")
+	store, snapshot, closeRoot := newRun(t, fixture, base)
+	defer closeRoot()
+	const incoming = "refs/kogen/incoming/0123456789abcdef0123456789abcdef"
+	fixture.Run(t, "update-ref", incoming, base)
+	_, err := Publish(context.Background(), requestFor(fixture, store, snapshot, candidate, nil, nil))
+	if !errors.Is(err, ErrIncomingExists) {
+		t.Fatalf("Publish() error = %v, want ErrIncomingExists", err)
+	}
+	if got := strings.TrimSpace(string(fixture.Run(t, "rev-parse", incoming))); got != base {
+		t.Fatalf("incoming ref = %s, want existing target %s", got, base)
+	}
+	if got := strings.TrimSpace(string(fixture.Run(t, "rev-parse", "refs/heads/main"))); got != base {
+		t.Fatalf("base ref = %s, want unchanged %s", got, base)
+	}
+}
+
 func TestPublishPreservesDirtyCheckoutAndReturnsWarning(t *testing.T) {
 	fixture := testkit.NewGitFixture(t)
 	base := strings.TrimSpace(string(fixture.Run(t, "rev-parse", "refs/heads/main")))
