@@ -2,7 +2,7 @@
 
 ## Revisions and environment
 
-- Worker branch: `kgo/70-adversarial-effect-matrix`; source base at the start of this task: `e0abcc14aa12d168db79ba5775323108274f11f7`. The package adds tests and safety documentation only; the CLI production source and private adapter were not changed.
+- Worker implementation commit: `13a9afe7f9abbf3ac82d712ecc12ec84020f695a` on `kgo/70-adversarial-effect-matrix`; source base at the start of this task: `e0abcc14aa12d168db79ba5775323108274f11f7`. The package adds tests and safety documentation only; the CLI production source and private adapter were not changed.
 - CLI/adapter used by the oracle: `kogen` built from the same Go checkout at source base `e0abcc14aa12d168db79ba5775323108274f11f7`. No separate production adapter is wired. Its current bootstrap command route returned `kogen: implementation bootstrap; command routes are not wired`.
 - Target spec: `kogen-spec` v1.3-draft, `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`. Read `CHANGES-v1.3.md` §3; `spec/02-formats.md` §§2.5.3 and 2.8; `spec/03-build.md` §3.10; and `spec/05-sandbox-custody.md` §§5.1, 5.4 and 5.5.
 - Rust reference: `kogen-rs` `a402540b39cedc7f788472297add7ae2f8a6631a`. Read `crates/kogen-core/src/safe_fs.rs`, `crates/kogen-core/src/recovery/project/tests.rs`, and `crates/kogen-core/src/git/landing/tests/effects/crash_recovery.rs` for rooted writes and real-I/O recovery boundaries.
