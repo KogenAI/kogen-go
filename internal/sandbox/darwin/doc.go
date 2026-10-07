@@ -1,2 +1,3 @@
-// Package darwin is reserved for the Kogen sandbox/darwin implementation.
+// Package darwin builds and probes private macOS Seatbelt policies for
+// supervised project children.
 package darwin
