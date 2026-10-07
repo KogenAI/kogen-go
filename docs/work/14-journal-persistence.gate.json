@@ -1,0 +1,21 @@
+{
+  "package": "14-journal-persistence",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/journal",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/14-journal-persistence\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-05-missing-usage,v1.2-06-crash-after-base-cas,v1.2-130-state-11,v1.2-131-state-12' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\"",
+    "git diff --cached --check",
+    "git commit -m \"Implement durable journal persistence\""
+  ],
+  "gaps": [
+    "I3 approval-to-status production integration is unwired; the frozen v1.2 run failed at approval for all four cases and is retained at /Users/almirsarajcic/cx/kgo/evidence/14-journal-persistence/results.jsonl.",
+    "Shared frozen v1.3 schema replacements and D-REC-03–06 fixture IDs are unavailable; no draft behavior claim is made.",
+    "R(slice) was not run because the coherent migrated v1.3 Quint cohort is unavailable; no replay seeds or observations are claimed.",
+    "Real recovery orchestration and filesystem/Git preservation, publication-record crash recovery, cleanup retry, Linux runtime, optional runtime, and live comparison evidence remain external closure gates."
+  ],
+  "conflicts": [
+    "v1.2-130-state-11 requires run_json.match.$exact=true with the old key set through started_ms; v1.3-draft spec/02-formats.md §2.8 additionally requires recovery and cleanup_pending, so the exact object cannot satisfy both. The oracle run did not reach this assertion.",
+    "v1.2-131-state-12 expects default land_policy=green-or-advisory; v1.3-draft CHANGES-v1.3.md §1 and spec/02-formats.md §2.3 make green the default. The oracle run did not reach this assertion."
+  ]
+}
