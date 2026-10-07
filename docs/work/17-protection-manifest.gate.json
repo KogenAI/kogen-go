@@ -1,0 +1,17 @@
+{
+  "package": "17-protection-manifest",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 ./internal/protection",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build; SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/17-protection-manifest\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-14,approval-15,approval-16,v1.2-127-build-10,v1.2-44-build-09,v1.2-55-build-21' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"; result: /Users/almirsarajcic/cx/kgo/evidence/17-protection-manifest/results.jsonl"
+  ],
+  "gaps": [
+    "I1 approval-route integration must persist manifest hashes and map stale checkout paths to the specified exit and diagnostic.",
+    "I3 Build integration must install/remove acceptance copies, restore after tool batches, emit restoration feedback, guard before checks and commit, and enforce the fourth-restore rung limit.",
+    "All six frozen v1.2 cases failed before protected behavior because CLI routes are unwired; no behavior acceptance is claimed.",
+    "Shared coherent migrated v1.3 cases and R(slice) are unavailable; R(slice) still needs the spec trace and 500x25 traces for seeds 17, 23, and 41 against a same-revision private binary.",
+    "Linux, optional runtime, live comparison, and planned D-* closure evidence remain unavailable."
+  ],
+  "conflicts": []
+}
