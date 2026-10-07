@@ -1,0 +1,18 @@
+{
+  "package": "41-single-rung-controller",
+  "accepted_gate": "component",
+  "commands": [
+    "gofmt -w internal/build/single/*.go",
+    "go test ./internal/build/single",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/41-single-rung-controller\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-39,build-40,build-41,build-42,state-10,v1.2-130-state-11,v1.2-131-state-12,v1.2-37-build-02,v1.2-38-build-03,v1.2-43-build-08,v1.2-44-build-09,v1.2-67-build-43' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I3 production integration is unwired: the CLI still reports implementation bootstrap; command routes are not wired, so the selected behavior cases fail before reaching this package.",
+    "Package 00 remains a real foundation task after this bootstrap.",
+    "R(slice) and shared v1.3 closure require the shared coherent Quint cohort, frozen v1.3 IDs, shared_v13_manifest, and production_replay_manifest.",
+    "Linux runtime, optional-runtime, and live-comparison gates require their stated external evidence."
+  ],
+  "conflicts": []
+}
