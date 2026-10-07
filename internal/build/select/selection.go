@@ -273,12 +273,6 @@ func snapshotCandidate(candidate Candidate) (CandidateSnapshot, error) {
 	snapshot.Verdict = candidate.Gate.Verdict()
 	snapshot.BlockingCount = repair.RedCount(candidate.Gate)
 	snapshot.BlockingCountKnown = true
-	// RedCount intentionally counts repair-progress observations. A gate can
-	// still be unverified for a blocking condition outside that progress count
-	// (for example, an unstable tree); retain at least one blocker in the score.
-	if !snapshot.Verified && snapshot.BlockingCount == 0 {
-		snapshot.BlockingCount = 1
-	}
 	return snapshot, nil
 }
 

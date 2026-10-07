@@ -213,7 +213,24 @@ func TestSelectUsesGateObservationsAndIgnoresAuditTiming(t *testing.T) {
 	}
 }
 
-type selectionAcceptanceRunner struct{ itemPass map[string]bool }
+func TestUnverifiedCandidateKeepsTheExactRepairBlockingCount(t *testing.T) {
+	gateReport := selectionGateReport(t, map[string]bool{"A1": true, "A2": true}, []acceptance.Failure{{Kind: acceptance.FailureSuite}})
+	if gateReport.IsVerified() || repair.RedCount(gateReport) != 0 {
+		t.Fatalf("fixture should be unverified with zero §3.5 blockers: verified=%t count=%d", gateReport.IsVerified(), repair.RedCount(gateReport))
+	}
+	report, err := Select([]Candidate{{Rung: "R1", Rank: 1, AttemptOrder: 1, Gate: gateReport}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if report.Winner.Verified || report.Winner.BlockingCount != 0 || report.BestUnverified == nil {
+		t.Fatalf("selector changed the exact blocking count or lost unverified output: %+v", report)
+	}
+}
+
+type selectionAcceptanceRunner struct {
+	itemPass map[string]bool
+	failures []acceptance.Failure
+}
 
 func (r selectionAcceptanceRunner) Run(context.Context, gate.AcceptanceExecution) (acceptance.Result, error) {
 	itemPass := make(map[string]bool, len(r.itemPass))
@@ -223,10 +240,11 @@ func (r selectionAcceptanceRunner) Run(context.Context, gate.AcceptanceExecution
 	return acceptance.Result{
 		Process:  contract.ProcessResult{ExitStatus: selectionIntPointer(0)},
 		ItemPass: itemPass,
+		Failures: append([]acceptance.Failure(nil), r.failures...),
 	}, nil
 }
 
-func selectionGateReport(t *testing.T, itemPass map[string]bool) *gate.GateReport {
+func selectionGateReport(t *testing.T, itemPass map[string]bool, failures ...[]acceptance.Failure) *gate.GateReport {
 	t.Helper()
 	fixture := testkit.NewGitFixture(t)
 	selectionWriteFile(t, filepath.Join(fixture.Checkout, ".kogen/acceptance/greet.sh"), []byte("approved acceptance source\n"), 0o644)
@@ -264,9 +282,13 @@ func selectionGateReport(t *testing.T, itemPass map[string]bool) *gate.GateRepor
 		t.Fatalf("create selection run directory: %v", err)
 	}
 	approved := []byte("approved acceptance source\n")
+	var runnerFailures []acceptance.Failure
+	if len(failures) != 0 {
+		runnerFailures = append([]acceptance.Failure(nil), failures[0]...)
+	}
 	report, err := gate.Run(context.Background(), gate.Request{
 		Processes:          process.Supervisor{},
-		AcceptanceRunner:   selectionAcceptanceRunner{itemPass: itemPass},
+		AcceptanceRunner:   selectionAcceptanceRunner{itemPass: itemPass, failures: runnerFailures},
 		Trees:              trees,
 		BaseWorkspace:      base,
 		CandidateWorkspace: candidate,
