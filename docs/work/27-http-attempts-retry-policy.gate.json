@@ -1,0 +1,25 @@
+{
+  "package": "27-http-attempts-retry-policy",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -p=2 -parallel=2 ./internal/provider/transport ./internal/provider/retry ./internal/provider/sse",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'provider-10,shape-24,shape-25,v1.2-04-cache-key-session-headers,v1.2-103-ladder-35,v1.2-110-provider-08,v1.2-111-provider-09,v1.2-112-provider-11,v1.2-113-provider-12,v1.2-114-provider-14,v1.2-115-provider-17,v1.2-116-provider-18,v1.2-117-provider-20,v1.2-125-ladder-36,v1.2-28-provider-13-planner-no-fallback,v1.2-29-provider-15-idle-stall,v1.2-30-provider-16-total-cap,v1.2-90-ladder-22' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/27-http-attempts-retry-policy/work\" --out \"$HOME/cx/kgo/evidence/27-http-attempts-retry-policy/results.jsonl\"",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" stream",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" stream",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" stream"
+  ],
+  "gaps": [
+    "Behavior integration is blocked at the unwired CLI/provider route: the retained frozen v1.2 run reports 0/18 cases passing across 19 instances, all with bootstrap exit 2; rerun after I3/public route wiring.",
+    "I4 mid-rung Build login/usage waits need ladder/controller integration and behavior evidence.",
+    "R(stream) requires package 68's production adapter and full observations against a shared coherent frozen v1.3 Quint cohort; current xspec route exits at bootstrap and the diagnostic source cohort was dirty.",
+    "Planned D-* fixtures are not available as v1.2 cases; await shared frozen v1.3 IDs.",
+    "Linux parity, optional runtime checks, and live provider comparison require external evidence; no live provider call was made."
+  ],
+  "conflicts": []
+}
