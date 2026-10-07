@@ -1,0 +1,18 @@
+{
+  "package": "49-shaper-grammar-prompt",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/shape/prompts",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/49-shaper-grammar-prompt\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'shape-03,shape-04,shape-05,shape-06,shape-10,shape-17,shape-23' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\"",
+    "git diff --check",
+    "git diff --cached --check"
+  ],
+  "gaps": [
+    "I5 and selected Shape behavior remain unverified: all 7 selected v1.2 cases / 9 instances failed before provider use because the CLI Shape route still reports `kogen: implementation bootstrap; command routes are not wired`. No behavior pass is claimed. Retained results: /Users/almirsarajcic/cx/kgo/evidence/49-shaper-grammar-prompt/results.jsonl.",
+    "Package 00 remains a required foundation task; integration must wire this prompt package into the persistent Shape session and rerun the selected cases on the integrated revision.",
+    "R(slice) awaits the shared coherent migrated v1.3 Quint cohort and same-revision private binary; the required scratch-copy spec phase and 500 traces × 25 steps for seeds 17, 23, and 41 were not run.",
+    "Planned D-* fixtures are not frozen v1.2 cases; await shared frozen v1.3 IDs/models. Linux, race/custody, optional-runtime, and live comparison evidence was not run."
+  ],
+  "conflicts": []
+}
