@@ -1,0 +1,19 @@
+{
+  "package": "43-rung-repair-machine",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check (first run exited 2; new test assertion and unrelated queue-lock failure recorded in evidence)",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check (rerun exited 0)",
+    "make build",
+    "frozen v1.2 kogen-conformance command from docs/work/43-rung-repair-machine.evidence.md (exit 1; /Users/almirsarajcic/cx/kgo/evidence/43-rung-repair-machine/results.jsonl)"
+  ],
+  "gaps": [
+    "I4 must wire the machine into Build/ladder execution and close the public approval-to-status path; all 13 selected cases failed at the unwired approval route before their behavior assertions.",
+    "Rerun selected behavior cases after wiring on a changed revision while retaining the existing failed JSONL.",
+    "Shared frozen/migrated v1.3 cases and planned D-* fixture IDs are unavailable; no v1.3 behavior claim is made.",
+    "Linux, optional-runtime, Quint production replay, and live comparison evidence remain with their owning gates."
+  ],
+  "conflicts": [
+    "No historical repair behavior conflict was adjudicated: every selected case failed at step 2 (approve) with exit 2 and stderr 'kogen: implementation bootstrap; command routes are not wired' before reaching its target assertion."
+  ]
+}
