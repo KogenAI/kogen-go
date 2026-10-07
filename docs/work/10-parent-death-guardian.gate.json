@@ -1,0 +1,20 @@
+{
+  "package": "10-parent-death-guardian",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS=\"-mod=vendor -p=2\" GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -count=1 -parallel=2 ./internal/process",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "GOMAXPROCS=2 GOFLAGS=\"-mod=vendor -p=2\" GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off GOOS=linux GOARCH=amd64 go test -c -o /tmp/kogen-process-linux-amd64.test ./internal/process",
+    "GOMAXPROCS=2 GOFLAGS=\"-mod=vendor -p=2\" GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off GOOS=linux GOARCH=arm64 go test -c -o /tmp/kogen-process-linux-arm64.test ./internal/process",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/10-parent-death-guardian\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-36,build-38,cli-29,custody-03,custody-04,custody-05' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The frozen v1.2 command resolved 6 case IDs / 7 instances but all failed at the bootstrap approval route before any guardian or child behavior ran; no behavior pass is claimed. Results: /Users/almirsarajc/cx/kgo/evidence/10-parent-death-guardian/results.jsonl.",
+    "I3 must wire this private guardian through the production process runner and command route, then rerun the selected macOS behavior cases. The CLI source remains the bootstrap stub and Supervisor.Run is not wired to this component.",
+    "Linux amd64 and arm64 test binaries cross-compiled, but Linux real-child runtime evidence for I6 is unavailable.",
+    "CHANGES-v1.3.md §3 crashed-work preservation (D3) is outside this component; planned D-* fixtures are not frozen v1.2 cases and shared frozen v1.3 IDs are unavailable.",
+    "No R(slice) was run: the coherent migrated shared Quint cohort and same-revision private binary are unavailable. Seeds 17, 23, and 41 each still require 500 traces by 25 steps.",
+    "Package 00 remains a real foundation task after bootstrap. Optional runtime, live comparison, and account-backed evidence were not produced."
+  ],
+  "conflicts": []
+}
