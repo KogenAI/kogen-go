@@ -1,0 +1,18 @@
+{
+  "package": "38-landing-commit",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/landing/commit",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/38-landing-commit\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-123-custody-10,v1.2-37-build-02,v1.2-64-build-30,v1.2-67-build-43' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I3 behavior integration is open; the four selected v1.2 cases all stopped at step 2 approval with the CLI bootstrap message before landing was reached. Results: /Users/almirsarajcic/cx/kgo/evidence/38-landing-commit/results.jsonl",
+    "I3 requires the separate D3 crashed-work preservation gate.",
+    "Shared frozen v1.3 suite, migrated Quint cohort, and planned D-* fixture IDs are unavailable; no R(slice) replay or v1.3 behavior claim.",
+    "Linux landing/custody evidence unavailable on this macOS worker.",
+    "Build integration must stop and reap workspace writers before calling commit.Create."
+  ],
+  "conflicts": []
+}
