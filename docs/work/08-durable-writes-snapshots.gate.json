@@ -1,0 +1,17 @@
+{
+  "package": "08-durable-writes-snapshots",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/safefs",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 GOFLAGS='-mod=vendor -p=2' GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off GOMAXPROCS=2 go test -c -o /tmp/kgo-safefs-linux-amd64.test ./internal/safefs",
+    "make build; SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/08-durable-writes-snapshots\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-19,approval-20,provider-26,v1.2-06-crash-after-base-cas,v1.2-31-provider-23-tool-result-budget' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The frozen v1.2 command resolved 5 cases / 5 instances and recorded 0 pass, 5 fail, all blocked at the unwired CLI bootstrap; retained results are /Users/almirsarajcic/cx/kgo/evidence/08-durable-writes-snapshots/results.jsonl.",
+    "I3 behavior integration and rerun of approval-19, approval-20, provider-26, v1.2-06-crash-after-base-cas, and v1.2-31-provider-23-tool-result-budget.",
+    "I6 consumer wiring and full adversarial publication matrix on macOS and Linux; this turn only compile-checked Linux/amd64.",
+    "Shared frozen v1.3 D-REC fixtures and recovery coordination remain outside package 08; no Quint R(slice) replay was run."
+  ],
+  "conflicts": []
+}
