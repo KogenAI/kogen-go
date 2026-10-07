@@ -1,0 +1,18 @@
+{
+  "package": "06-lint",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\" EVIDENCE=\"$HOME/cx/kgo/evidence/06-lint\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-21,format-02,format-03,format-04,format-08,state-05,state-25,v1.2-36-state-06-lint-card-warnings' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Behaviour acceptance remains open: the public kogen intent approve routes are not wired; the single frozen v1.2 run failed all 120 selected instances at that boundary. Results are retained at /Users/almirsarajcic/cx/kgo/evidence/06-lint/results.jsonl.",
+    "I1 must wire the public intent parse/lint/approval path and rerun the selected cases.",
+    "I5 must wire Shape style repairs, warning persistence/card rendering, and shaping lint context including gate paths.",
+    "The lint corpus includes adapter-specific malformed_ref, but the spec does not define reference-token recognition and the selected cases do not exercise it.",
+    "No Quint replay or coherent migrated v1.3 cohort was available; planned D-* fixtures require shared frozen v1.3 IDs.",
+    "Linux, optional-runtime, and live-comparison evidence remains unavailable."
+  ],
+  "conflicts": []
+}
