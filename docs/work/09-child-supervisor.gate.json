@@ -1,0 +1,20 @@
+{
+  "package": "09-child-supervisor",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -count=1 -parallel=2 ./internal/process",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "git diff --cached --check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'custody-01,custody-02,custody-03,custody-05,v1.2-121-custody-08' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I3 production wiring and behavior rerun; the public CLI is still the bootstrap stub and the selected cases did not reach this component.",
+    "Package 10 parent-death guardian and two-second SIGKILL cleanup evidence.",
+    "Linux runtime process-group parity evidence.",
+    "Shared frozen v1.3 D-* fixtures and coherent migrated Quint cohort for R(slice).",
+    "Optional runtime and live-comparison evidence; no live provider or account was used.",
+    "Package 00 remains a real foundation task after bootstrap."
+  ],
+  "conflicts": []
+}
