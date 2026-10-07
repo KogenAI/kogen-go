@@ -87,6 +87,9 @@ func (cli *CLI) defaults() {
 }
 
 func (cli *CLI) runCommand(command parse.Command, cwd string) int {
+	if command.Slug != nil && !validStatusSlug(*command.Slug) {
+		return cli.writeError("intent", "invalid_slug", "Slug must use lowercase letters, digits, and dashes.", 2)
+	}
 	switch command.Route {
 	case parse.RouteVersion:
 		_, _ = io.WriteString(cli.Out, versionLine())

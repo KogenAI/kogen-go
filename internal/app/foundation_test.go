@@ -40,6 +40,22 @@ func TestHelpVersionAndParserRoutes(t *testing.T) {
 	if !strings.HasPrefix(stdout.String(), "kogen status: --watch and --json can't be combined\n\nUsage: kogen status") {
 		t.Fatalf("parser usage output = %q", stdout.String())
 	}
+
+	for _, args := range [][]string{
+		{"status", "ab"},
+		{"status", "--", "--json"},
+		{"intent", "shape", "a--b", "-"},
+		{"status", strings.Repeat("a", 49)},
+	} {
+		stdout.Reset()
+		cli = &CLI{CWD: root, Out: stdout, Err: &bytes.Buffer{}}
+		if code := cli.Run(args); code != 2 {
+			t.Fatalf("invalid slug %q exit = %d, output: %s", args, code, stdout.String())
+		}
+		if got := stdout.String(); got != "intent/invalid_slug: Slug must use lowercase letters, digits, and dashes.\n" {
+			t.Fatalf("invalid slug %q output = %q", args, got)
+		}
+	}
 }
 
 func TestRealApprovalCardPublishStatusAndDraftRemoval(t *testing.T) {
