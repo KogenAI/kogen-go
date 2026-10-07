@@ -1,0 +1,42 @@
+{
+  "package": "67-landing-recovery-replay",
+  "accepted_gate": "component",
+  "commands": [
+    "make build",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' go test -count=1 -parallel=2 ./internal/xspec/landingrecovery",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-36,build-37,build-38,v1.2-06-crash-after-base-cas,v1.2-56-build-22,v1.2-57-build-23,v1.2-58-build-24,v1.2-59-build-25,v1.2-60-build-26,v1.2-61-build-27,v1.2-62-build-28,v1.2-63-build-29' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-17/golden python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-17/golden python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-17/golden python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" rebase",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-23/golden python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-23/golden python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" rebase",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-41/golden python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/rebase XSPEC_GOLDEN=../../outputs/rebase/seed-41/golden python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" rebase",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-17/golden python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-17/golden python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-17/golden python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" recovery",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-23/golden python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-23/golden python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" recovery",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-41/golden python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/recovery XSPEC_GOLDEN=../../outputs/recovery/seed-41/golden python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" recovery"
+  ],
+  "gaps": [
+    "Component-only: CLI and xspec binaries still use the bootstrap entrypoint; all 12 selected v1.2 cases (13 instances) failed before landing/recovery behavior.",
+    "No landing/recovery xspec factories are registered. I7 must wire production observation mapping; no replay pass is claimed.",
+    "Rebase generated 500 traces for seeds 17, 23, 41 with invariants holding, but all 507 traces per conform run diverged at reset with the xspec bootstrap error.",
+    "Recovery hand spec failed typechecking because scenarios omit Fact.work, Fact.preserved, and Fact.preserveOk. Generated 500 traces per seed held invariants, but all 505 traces per conform run diverged at reset.",
+    "D-REC-01–06 are not frozen v1.2 cases. Wait for the shared frozen v1.3 cohort and D3 production preservation implementation.",
+    "I3 behavior integration, I7 complete replay routing, package 00, Linux runtime evidence, optional-runtime checks, and live comparison evidence remain open."
+  ],
+  "conflicts": [
+    "B22/v1.2-56-build-22: historical reference omits base_moved_at_start (ref-bug); not reached by this run.",
+    "B23/v1.2-57-build-23: historical reference rejects already-green moved-base landing with environment/base_acceptance_failed (ref-bug); not reached.",
+    "B24/v1.2-58-build-24: historical reference lands on moved base without verification journal events (ref-bug); not reached.",
+    "B25/v1.2-59-build-25: historical reference lacks integration repair and parks on conflict (R-gap); not reached.",
+    "B26/v1.2-60-build-26: historical reference lacks integration repair and stops the drain with exit 70 after parking (R-gap); not reached.",
+    "B27/v1.2-61-build-27: historical reference retries a .lock once then returns environment/landing_failed, without 1/2/4-second landing_retry events (ref-bug); not reached.",
+    "B29/v1.2-63-build-29: historical reference omits dirty-checkout warning output and landing_warning event (ref-bug); not reached.",
+    "V06/v1.2-06-crash-after-base-cas: frozen suite README records historical Kogen reference leaving an incoming ref after recovery although the case expects cleanup; not reached. B28 has no recorded historical reference conflict."
+  ]
+}
