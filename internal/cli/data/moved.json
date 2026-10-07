@@ -1,0 +1,82 @@
+{
+ "format": "kogen: moved: use <message>",
+ "exit": 2,
+ "order": "prefix rows first in order, then flag rows in order; a flag matches as a token or as <flag>=\u2026",
+ "rows": [
+  {
+   "match": "prefix",
+   "form": "build show",
+   "message": "kogen status <slug>"
+  },
+  {
+   "match": "prefix",
+   "form": "build",
+   "message": "kogen queue start (approved Intents build from the queue)"
+  },
+  {
+   "match": "prefix",
+   "form": "report",
+   "message": "kogen status <slug>"
+  },
+  {
+   "match": "prefix",
+   "form": "approve",
+   "message": "kogen intent approve <slug> <hash>"
+  },
+  {
+   "match": "prefix",
+   "form": "reconcile",
+   "message": "kogen status (crash recovery is automatic in status and queue start)"
+  },
+  {
+   "match": "prefix",
+   "form": "intent check",
+   "message": "kogen intent approve <slug> (prints the review card and check results)"
+  },
+  {
+   "match": "prefix",
+   "form": "intent close",
+   "message": "kogen intent remove <slug>"
+  },
+  {
+   "match": "prefix",
+   "form": "--version",
+   "message": "kogen version"
+  },
+  {
+   "match": "flag",
+   "form": "--task-file",
+   "message": "kogen intent shape <slug> <file>"
+  },
+  {
+   "match": "flag",
+   "form": "--yes",
+   "message": "kogen intent approve <slug> <hash>"
+  },
+  {
+   "match": "flag",
+   "form": "--borrow",
+   "message": "kogen provider login chatgpt for a Kogen-owned login"
+  },
+  {
+   "match": "flag",
+   "form": "--recipe",
+   "message": "build.recipe in .kogen/project.yaml"
+  },
+  {
+   "match": "flag",
+   "form": "--model",
+   "message": "build.roles.builder.model in .kogen/project.yaml"
+  },
+  {
+   "match": "flag",
+   "form": "--effort",
+   "message": "build.roles.builder.effort in .kogen/project.yaml"
+  },
+  {
+   "match": "flag_outside_provider",
+   "form": "--as",
+   "message": "kogen provider use chatgpt --as <label> --project <checkout>"
+  }
+ ]
+}

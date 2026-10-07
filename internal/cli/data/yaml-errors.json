@@ -1,0 +1,29 @@
+{
+ "note": "Order = precedence within one line; the first error by line wins. Conformance asserts the line and the class; exact wording is SHOULD.",
+ "errors": [
+  "document exceeds the maximum size of 1048576 bytes",
+  "leading UTF-8 BOM is not allowed",
+  "document is not valid UTF-8",
+  "tab character: indent with spaces",
+  "directives and document markers are not allowed",
+  "anchors, aliases, tags, and block scalars are not allowed",
+  "anchors, aliases, and tags are not allowed",
+  "maximum nesting depth of 64 collections exceeded",
+  "YAML merge key `<<` is not allowed",
+  "Unicode escape \\u is not supported",
+  "unsupported escape \\<c>",
+  "unterminated quoted string",
+  "text after closing quote",
+  "quote \"<v>\": brackets inside a flow collection",
+  "malformed flow collection near <text>",
+  "unterminated flow collection",
+  "trailing text after flow collection",
+  "unquoted `: ` inside a value: \"<v>\"",
+  "list item in a value position",
+  "unexpected indentation",
+  "duplicate key \"<k>\"",
+  "mapping key has no value",
+  "list item has no value",
+  "empty document"
+ ]
+}

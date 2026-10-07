@@ -1,0 +1,332 @@
+{
+ "shaping": {
+  "turns": {
+   "value": 60,
+   "scaled": false,
+   "unit": ""
+  },
+  "passes_shaper": {
+   "value": 3,
+   "scaled": false,
+   "unit": ""
+  },
+  "passes_fallback_shaper": {
+   "value": 3,
+   "scaled": false,
+   "unit": ""
+  },
+  "free_style_rounds": {
+   "value": 2,
+   "scaled": false,
+   "unit": ""
+  }
+ },
+ "developer": {
+  "turns_per_stage": {
+   "value": 60,
+   "scaled": false,
+   "unit": ""
+  },
+  "budget_note_at_turn": {
+   "value": 48,
+   "scaled": false,
+   "unit": ""
+  },
+  "protected_restores_per_rung": {
+   "value": 3,
+   "scaled": false,
+   "unit": ""
+  },
+  "empty_done_refusals": {
+   "value": 1,
+   "scaled": false,
+   "unit": ""
+  }
+ },
+ "repairs": {
+  "base": {
+   "value": 2,
+   "scaled": false,
+   "unit": ""
+  },
+  "cap_total_per_rung": {
+   "value": 6,
+   "scaled": false,
+   "unit": ""
+  }
+ },
+ "plan": {
+  "file_list_chars": {
+   "value": 160000,
+   "scaled": false,
+   "unit": ""
+  },
+  "request_wall_ms": {
+   "value": 900000,
+   "scaled": true,
+   "unit": "ms"
+  }
+ },
+ "diff_cap_chars": {
+  "value": 200000,
+  "scaled": false,
+  "unit": ""
+ },
+ "ladder": {
+  "r1_wall_ms": {
+   "value": 1200000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "r2_wall_ms": {
+   "value": 720000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "r3_wall_ms": {
+   "value": 720000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "build_budget_ms": {
+   "value": 3600000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "landing_allowance_ms": {
+   "value": 600000,
+   "scaled": true,
+   "unit": "ms"
+  }
+ },
+ "provider": {
+  "first_byte_ms": {
+   "value": 120000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "idle_gap_ms": {
+   "value": 120000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "request_total_ms": {
+   "value": 600000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "backoff_ms": {
+   "value": [
+    2000,
+    4000,
+    8000,
+    16000,
+    32000,
+    60000
+   ],
+   "scaled": true,
+   "unit": "ms"
+  },
+  "switch_after_consecutive_overloads": {
+   "value": 2,
+   "scaled": false,
+   "unit": ""
+  },
+  "attempts_per_request": {
+   "value": 4,
+   "scaled": false,
+   "unit": ""
+  },
+  "stage_retries": {
+   "value": 2,
+   "scaled": false,
+   "unit": ""
+  },
+  "usage_limit_max_wait_ms": {
+   "value": 21600000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "body_cap_bytes": {
+   "value": 16000000,
+   "scaled": false,
+   "unit": ""
+  },
+  "refresh_skew_s": {
+   "value": 300,
+   "scaled": false,
+   "unit": ""
+  },
+  "usage_limit_default_wait_ms": {
+   "value": 900000,
+   "scaled": true,
+   "unit": "ms"
+  }
+ },
+ "locks": {
+  "stale_ms": {
+   "value": 60000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "wait_ms": {
+   "value": 90000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "poll_ms": {
+   "value": 25,
+   "scaled": false,
+   "unit": "ms"
+  }
+ },
+ "login": {
+  "loopback_port": {
+   "value": 1455,
+   "scaled": false,
+   "unit": ""
+  },
+  "accept_wait_ms": {
+   "value": 300000,
+   "scaled": true,
+   "unit": "ms"
+  }
+ },
+ "tools": {
+  "shell_deadline_ms": {
+   "value": 120000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "write_overwrite_line_cap": {
+   "value": 200,
+   "scaled": false,
+   "unit": ""
+  },
+  "read_limit_default": {
+   "value": 200,
+   "scaled": false,
+   "unit": ""
+  },
+  "read_limit_max": {
+   "value": 400,
+   "scaled": false,
+   "unit": ""
+  },
+  "search_lines": {
+   "value": 200,
+   "scaled": false,
+   "unit": ""
+  },
+  "result_clip_chars": {
+   "value": 10000,
+   "scaled": false,
+   "unit": ""
+  },
+  "result_clip_base64_bytes": {
+   "value": 7400,
+   "scaled": false,
+   "unit": ""
+  },
+  "shaper_write_bytes": {
+   "value": 200000,
+   "scaled": false,
+   "unit": ""
+  }
+ },
+ "custody": {
+  "default_timeout_ms": {
+   "value": 120000,
+   "scaled": false,
+   "unit": "ms"
+  },
+  "term_grace_ms": {
+   "value": 200,
+   "scaled": false,
+   "unit": "ms"
+  },
+  "output_tail_bytes": {
+   "value": 16384,
+   "scaled": false,
+   "unit": ""
+  },
+  "acceptance_timeout_ms": {
+   "value": 600000,
+   "scaled": false,
+   "unit": "ms"
+  }
+ },
+ "feedback": {
+  "findings_per_tool": {
+   "value": 10,
+   "scaled": false,
+   "unit": ""
+  },
+  "findings_total": {
+   "value": 20,
+   "scaled": false,
+   "unit": ""
+  },
+  "tail_lines": {
+   "value": 8,
+   "scaled": false,
+   "unit": ""
+  },
+  "tail_chars": {
+   "value": 600,
+   "scaled": false,
+   "unit": ""
+  },
+  "message_chars": {
+   "value": 200,
+   "scaled": false,
+   "unit": ""
+  },
+  "base_red_warning_findings": {
+   "value": 5,
+   "scaled": false,
+   "unit": ""
+  },
+  "summary_lines_per_rung": {
+   "value": 5,
+   "scaled": false,
+   "unit": ""
+  },
+  "summary_line_chars": {
+   "value": 180,
+   "scaled": false,
+   "unit": ""
+  }
+ },
+ "landing": {
+  "transient_retry_ms": {
+   "value": [
+    1000,
+    2000,
+    4000
+   ],
+   "scaled": true,
+   "unit": "ms"
+  }
+ },
+ "cache": {
+  "setup_entries": {
+   "value": 3,
+   "scaled": false,
+   "unit": ""
+  }
+ },
+ "status": {
+  "watch_poll_ms": {
+   "value": 2000,
+   "scaled": true,
+   "unit": "ms"
+  },
+  "watch_poll_min_ms": {
+   "value": 100,
+   "scaled": false,
+   "unit": "ms"
+  }
+ },
+ "note": "scaled=true values are multiplied by KOGEN_TIME_SCALE (tests only). Project-declared timeout_ms values are never scaled. provider.backoff_ms values are ceilings: the actual delay is drawn between half and the full ceiling (v1.1)."
+}

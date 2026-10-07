@@ -1,14 +1,16 @@
 #!/bin/sh
 set -eu
 cd "$(dirname "$0")/.."
-GO=${KGO_GO:-/Users/almirsarajcic/.local/share/mise/installs/go/1.27.1/bin/go}
+GO=${KGO_GO:-go}
 export GOTOOLCHAIN=local GOWORK=off GOFLAGS='-mod=vendor -p=2' GOPROXY=off GOSUMDB=off
 export GOMAXPROCS=${GOMAXPROCS:-2}
 [ "$("$GO" version | cut -d ' ' -f 3)" = go1.27.1 ] || { echo 'Go 1.27.1 required' >&2; exit 1; }
-GOBIN=$(dirname "$GO")
-GIT_BIN=${KGO_GIT:-/Users/almirsarajcic/.local/share/mise/installs/git/2.54.0/bin/git}
+GO_PATH=$(command -v "$GO")
+GOBIN=$(dirname "$GO_PATH")
+GIT_BIN=${KGO_GIT:-git}
 [ "$("$GIT_BIN" --version)" = 'git version 2.54.0' ] || { echo 'Git 2.54.0 required' >&2; exit 1; }
-export PATH="$(dirname "$GIT_BIN"):$PATH"
+GIT_PATH=$(command -v "$GIT_BIN")
+export PATH="$(dirname "$GIT_PATH"):$PATH"
 bad=$(find cmd internal tools -name '*.go' -type f -exec "$GOBIN/gofmt" -l {} +)
 [ -z "$bad" ] || { echo "gofmt required: $bad" >&2; exit 1; }
 shasum -a 256 -c docs/work/VENDOR.sha256 >/dev/null

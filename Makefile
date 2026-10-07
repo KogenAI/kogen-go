@@ -1,5 +1,6 @@
 SHELL := /bin/sh
-GO ?= /Users/almirsarajcic/.local/share/mise/installs/go/1.27.1/bin/go
+GO ?= go
+GIT ?= git
 export GOTOOLCHAIN := local
 export GOWORK := off
 export GOFLAGS := -mod=vendor -p=2
@@ -9,9 +10,9 @@ export GOMAXPROCS := 2
 
 .PHONY: check fmt lint test build race clean
 check:
-	@KGO_GO="$(GO)" ./tools/check.sh
+	@KGO_GO="$(GO)" KGO_GIT="$(GIT)" ./tools/check.sh
 fmt:
-	@find cmd internal tools -name '*.go' -type f -exec "$(dir $(GO))gofmt" -w {} +
+	@find cmd internal tools -name '*.go' -type f -exec gofmt -w {} +
 lint:
 	$(GO) vet ./...
 test:
