@@ -1,0 +1,23 @@
+{
+  "package": "40-moved-base-integration",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -count=1 -p=2 -parallel=2 ./internal/landing/integrate",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "make build; SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/40-moved-base-integration\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-56-build-22,v1.2-57-build-23,v1.2-58-build-24,v1.2-59-build-25,v1.2-60-build-26,v1.2-87-ladder-19' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The frozen v1.2 run resolved six cases to six instances; all six stopped at approval with exit 2 and `kogen: implementation bootstrap; command routes are not wired`. No moved-base assertion ran and no behavior pass is claimed. Results: /Users/almirsarajcic/cx/kgo/evidence/40-moved-base-integration/results.jsonl; workdirs: /Users/almirsarajcic/cx/kgo/evidence/40-moved-base-integration/work/.",
+    "I3/I4 public approval-to-landing and same-session ladder repair wiring is not present in this worktree; behavior integration and post-rebase reruns remain open.",
+    "The shared migrated v1.3 suite and coherent Quint cohort are unavailable. No R(rebase) scratch-copy replay or 500 x 25 trace runs for seeds 17, 23, and 41 were performed. Planned D-* fixtures are not frozen v1.2 cases.",
+    "D3 latest-crashed-work preservation and workspace cleanup/claim handoff remain external closure gates.",
+    "Linux, optional-runtime, live-provider, live-comparison, race, and custody-stress evidence was not run."
+  ],
+  "conflicts": [
+    "v1.2-57-build-23 / build-23 (reference metadata: ref-bug): the historical appendix stops with environment/base_acceptance_failed when moved-base items are already green; v1.3-draft §§3.4 and 3.8.1 absorb those items and allow Intent-only landing. This behavior was not reached by the Go oracle run.",
+    "v1.2-59-build-25 / build-25 (reference metadata: R-gap): the historical reference parks a moved-base conflict without integration repairs; v1.3-draft §3.9.2 requires same-conversation repair under the landing allowance. This behavior was not reached by the Go oracle run.",
+    "v1.2-60-build-26 / build-26 (reference metadata: R-gap): the historical reference parks without integration repairs and stops the drain with exit 70; v1.3-draft §3.9.2 allows repairs through the landing allowance and parks only when exhausted, after which the drain continues. This behavior was not reached by the Go oracle run.",
+    "v1.2-87-ladder-19 / ladder-19 (reference metadata: R-gap): the historical reference immediately parks a moved-base conflict without repairs or a landing allowance and stops the drain with exit 70; v1.3-draft §3.9.2 uses the landing allowance before parking. This behavior was not reached by the Go oracle run."
+  ]
+}
