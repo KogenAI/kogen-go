@@ -1,0 +1,31 @@
+{
+  "package": "66-queue-status-replay",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/xspec/queuestatus",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "make build; SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/66-queue-status-replay\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-41,cli-28,state-17,state-18,state-19,state-21,state-24,v1.2-124-build-31,v1.2-129-cli-27,v1.2-132-state-23,v1.2-22-cli-25-status-overview,v1.2-23-cli-26-status-slug,v1.2-25-state-20-status-next,v1.2-26-state-22-status-next' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py spec",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/66-queue-status-replay/bin/kogen-xspec queue",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/66-queue-status-replay/bin/kogen-xspec queue",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/queue python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/66-queue-status-replay/bin/kogen-xspec queue",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py spec",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/66-queue-status-replay/bin/kogen-xspec status",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/66-queue-status-replay/bin/kogen-xspec status",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "(cwd: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/replay-scratch.tOJOgV/quint/prototype) XSPEC_SLICE=../slices/status python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/66-queue-status-replay/bin/kogen-xspec status"
+  ],
+  "gaps": [
+    "I7 behavior is deferred: the private xspec registry is integration-owned and the current kogen-xspec route exits before reset; all six conforms failed at step 0 (queue 0/509 each, status 0/508 each).",
+    "The 14 selected frozen v1.2 CLI instances all failed at the unchanged app bootstrap; none is counted as compatible or behavior-passing. Full JSONL: /Users/almirsarajcic/cx/kgo/evidence/66-queue-status-replay/results.jsonl.",
+    "Wait for the shared frozen migrated v1.3 suite/model manifest before draft behavior claims; planned D-* fixtures are not v1.2 cases.",
+    "Linux behavior and live comparison/replay evidence require external runs. This worker ran on Darwin 25.6.0 arm64."
+  ],
+  "conflicts": []
+}
