@@ -219,7 +219,7 @@ func validateLadder(value yamlmini.Value, issues *[]Issue) {
 	unknownKeys(ladder, []string{"max_rungs", "experimental_r4"}, "build.ladder", issues)
 	if value, exists := ladder["max_rungs"]; exists {
 		n, valid := positiveInteger(value)
-		if !valid || n > 4 {
+		if !valid || n < 1 || n > 4 {
 			*issues = append(*issues, Issue{Detail: "build.ladder.max_rungs must be an integer from 1 to 4"})
 		}
 	}
@@ -297,16 +297,14 @@ func validateRelativePaths(value yamlmini.Value, field string, output bool, issu
 			*issues = append(*issues, Issue{Detail: field + " must contain only strings"})
 			return
 		}
-		if output {
-			bad := text == "" || text == "." || strings.ContainsAny(text, "\x00\r\n") || filepathIsAbs(text)
-			for _, part := range strings.Split(strings.ReplaceAll(text, "\\", "/"), "/") {
-				if part == ".." || part == "." || part == ".git" {
-					bad = true
-				}
+		bad := text == "" || text == "." || strings.ContainsAny(text, "\x00\r\n") || filepathIsAbs(text)
+		for _, part := range strings.Split(strings.ReplaceAll(text, "\\", "/"), "/") {
+			if part == ".." || part == "." || part == ".git" {
+				bad = true
 			}
-			if bad {
-				*issues = append(*issues, Issue{Detail: field + " entries must be safe relative paths"})
-			}
+		}
+		if bad {
+			*issues = append(*issues, Issue{Detail: field + " entries must be safe relative paths"})
 		}
 		seen = append(seen, text)
 	}

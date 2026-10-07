@@ -39,6 +39,14 @@ domains: {app: lib}
 	}
 }
 
+func TestProjectSchemaRejectsEscapingInputsAndZeroRungs(t *testing.T) {
+	source := []byte("name: demo\nchecks: []\nsetup_inputs: [../secrets]\nbuild:\n  ladder: {max_rungs: 0}\n")
+	_, err := ParseConfig("project.yaml", source)
+	if err == nil || !strings.Contains(err.Error(), "setup_inputs entries must be safe relative paths") || !strings.Contains(err.Error(), "build.ladder.max_rungs must be an integer from 1 to 4") {
+		t.Fatalf("unsafe setup input or zero rungs were accepted: %v", err)
+	}
+}
+
 func TestDraftAuditorDemotionFixture(t *testing.T) {
 	base := "name: demo\nchecks: []\nbuild: {}\n"
 	config, err := ParseConfig("project.yaml", []byte(base))
