@@ -1,0 +1,21 @@
+{
+  "package": "11-child-environment",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -count=1 -parallel=2 ./internal/process",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/11-child-environment\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-12,approval-13,state-03,state-16,v1.2-133-state-26' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\"",
+    "git diff --cached --check"
+  ],
+  "gaps": [
+    "I1 behavior: wire project config, approval, CLI, and production adapter; rerun S03, S16, A12-A13 after integration.",
+    "I5 behavior: package 54 must wire SetupKeyEnvironment into v2 setup cache and implement the separate v3 verification-baseline key; V133 and A12-A13 remain unaccepted behavior evidence. Coordinator must map the TMPDIR v1.2 conflict to the shared draft closure policy.",
+    "Shared frozen v1.3 cases and migrated D-* fixtures are unavailable; do not claim draft behavior acceptance.",
+    "No coherent migrated Quint cohort was available; R(slice) for seeds 17, 23, and 41 with 500 traces by 25 steps remains open.",
+    "Linux runtime evidence, optional runtime evidence, and live comparison evidence remain unavailable."
+  ],
+  "conflicts": [
+    "v1.2-133-state-26 requires the setup key to ignore TMPDIR; target v1.3-draft spec/02-formats.md §2.9 excludes MISE_STATE_DIR, MISE_CACHE_DIR, and MISE_TRUSTED_CONFIG_PATHS from setup child_env but does not exclude TMPDIR. Exact conflict: TMPDIR only. The oracle run stopped at the CLI bootstrap before observing this assertion."
+  ]
+}
