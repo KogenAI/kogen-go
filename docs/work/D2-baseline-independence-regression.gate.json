@@ -1,0 +1,20 @@
+{
+  "package": "D2-baseline-independence-regression",
+  "accepted_gate": "component",
+  "commands": [
+    "gofmt -w internal/setupcache/baseline_v3_test.go internal/approval/prepare/checked_base_test.go",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/setupcache ./internal/approval/prepare",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "python3 tools/package-gate.py D2-baseline-independence-regression"
+  ],
+  "gaps": [
+    "D2 has no frozen v1.2 black-box IDs; D-BASE-01–05 require shared frozen v1.3 IDs before behavior acceptance.",
+    "The shared v1.3 canonical cross-language baseline fixture is unavailable. Frozen spec §2.9 requires sorted object keys and child_env as an object, while the current Go v3 key uses struct field order and a sorted string array; package 54/shared fixture resolution is required.",
+    "I5 must wire setup v2, baseline v3, and approval preparation into production and rerun integrated behavior cases with retained results.",
+    "R(approve) requires the coherent shared migrated Quint cohort, spec check, 500 traces × 25 steps for each seed 17, 23, and 41, and same-revision private-binary conformance using full observations.",
+    "Package 00, Linux runtime, optional-runtime, and live-comparison evidence remain outstanding."
+  ],
+  "conflicts": [
+    "Exact v1.3-draft §2.9 representation mismatch: canonical JSON requires sorted object keys and child_env as an object, but the current Go BaselineKey document uses struct field order and a sorted KEY=value array; fixture hashes are recorded in D2 evidence."
+  ]
+}
