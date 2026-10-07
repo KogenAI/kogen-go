@@ -1,0 +1,18 @@
+{
+  "package": "15-acceptance-ledger-command",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 ./internal/acceptance/...",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-10,approval-11,build-40,shape-16' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "git diff --cached --check"
+  ],
+  "gaps": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check failed in the unrelated internal/queue/lock TestConcurrentAcquireCreatesOneOwner at lock_test.go:127: queue.pid is not a safe regular owner file.",
+    "The frozen v1.2 selection resolved 4 cases / 5 instances with 0 passes because cmd/kogen still reports implementation bootstrap; approval-10, approval-11, shape-16, and build-40 require I1/I3 integration closure and retained reruns on the integrated revision.",
+    "No coherent migrated v1.3 suite or frozen D-* IDs were available; R(slice) was not run.",
+    "Linux, optional runtime, live comparison, race/custody, and the full 236-case / 570-instance denominator remain unverified."
+  ],
+  "conflicts": []
+}
