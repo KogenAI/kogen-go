@@ -1,2 +1,4 @@
-// Package drain is reserved for the Kogen queue/drain implementation.
+// Package drain owns the public queue process lifecycle around the pure
+// scheduler: state-root preparation, exclusive ownership, stop/detach, signals,
+// status refresh, Build outcomes, streamed lines, and final exit counts.
 package drain
