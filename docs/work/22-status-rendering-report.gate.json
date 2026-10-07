@@ -1,0 +1,25 @@
+{
+  "package": "22-status-rendering-report",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/status/render ./internal/status/report",
+    "GOMAXPROCS=2 go test -run='^$' -bench='BenchmarkStatusRender50Intents200Runs' -benchtime=100x -count=1 ./internal/status/render",
+    "make build",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/22-status-rendering-report\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-28,state-24,state-30,v1.2-129-cli-27,v1.2-131-state-12,v1.2-137-format-12,v1.2-22-cli-25-status-overview,v1.2-23-cli-26-status-slug,v1.2-92-ladder-24,v1.2-93-ladder-25' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\" "
+  ],
+  "gaps": [
+    "The exact v1.2 run resolved 10 instances and all 10 stopped before reaching status because the public CLI command routes are still unwired; no black-box pass is claimed.",
+    "I1 must wire static status output.",
+    "I3 must wire and verify watch frame changes, separators, idle termination, and the full CLI S30 timing target.",
+    "I4 must wire and verify the Build rung report path.",
+    "Package 66 must implement the production-backed status xspec adapter. R(status) has not run; shared coherent migrated inputs and the adapter are unavailable, so 500 traces by 25 steps for seeds 17, 23, and 41 remain open.",
+    "Shared frozen v1.3 status case IDs and migrated model/golden observations are unavailable; open status schema decisions need coordinator closure.",
+    "Linux integration evidence was not produced in this package round."
+  ],
+  "conflicts": [
+    "v1.2-131-state-12 expects default Build report land_policy \"green-or-advisory\"; target CHANGES-v1.3.md \u00a71 sets the default to \"green\". The assertion was not reached because the public route is unwired.",
+    "Superseded pre-overlay ladder-24 expects audit[].citation; target \u00a72.10 reports rung, id, verdict, reason, and effective replacement v1.2-92-ladder-24 drops citation. The old case was not selected by the frozen overlay.",
+    "Superseded pre-overlay ladder-25 expects a \"verdict: unverified\" status detail line; target \u00a71.7.5 forbids a verdict line and effective replacement v1.2-93-ladder-25 requires its absence. The old case was not selected by the frozen overlay."
+  ]
+}
