@@ -1,0 +1,25 @@
+{
+  "package": "D1-observational-audit-regression",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/D1-observational-audit-regression\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-73-ladder-05,v1.2-74-ladder-06,v1.2-75-ladder-07,v1.2-76-ladder-08,v1.2-77-ladder-09,v1.2-78-ladder-10,v1.2-79-ladder-11' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check exited 2 on unrelated internal/gitio.TestRunnerSeparatesStreamsAndTimesOutHangingGit (captured stdout was empty instead of stdout-before-hang); the audit and selector packages passed. No retry was run.",
+    "All seven requested v1.2 IDs failed at step 2 because the public intent approve route is not wired; none reached Build audit/repair/selection and no compatible behavior pass is claimed.",
+    "D-AUD-01–05 shared frozen v1.3 replacement IDs and migrated gate scenarios/goldens/adapters/models are unavailable; I4 remains open pending the integrated rerun.",
+    "R(slice) has no coherent shared migrated Quint cohort; seeds 17, 23, 41 × 500 traces × 25 steps and divergence are unmeasured.",
+    "Linux, optional-runtime, live-comparison, shared_v13_manifest, and production_replay_manifest evidence remain external closure gates."
+  ],
+  "conflicts": [
+    "v1.2-73-ladder-05 expects over_strict to demote A2 before repair; draft §3.8.2 requires A2 to pass.",
+    "v1.2-74-ladder-06 expects green policy to park a candidate after demoting A2 without repair; draft prohibits demotion.",
+    "v1.2-75-ladder-07 expects over_strict to demote A2 without a citation; draft keeps every verdict advisory.",
+    "v1.2-76-ladder-08 expects unsupported infeasible to be upheld as valid; draft warns on unknown verdicts and does not accept that verdict.",
+    "v1.2-78-ladder-10 uses a citation-bearing demotion and an old demotion schema; draft has no Build citation field and no demotion.",
+    "v1.2-79-ladder-11 expects pre-repair demotion to let R1 land without A2 passing; draft requires actual passing verification.",
+    "v1.2-77-ladder-09's malformed-JSON/no-demotion eligibility assertion is compatible, but draft additionally requires a warning; the public run did not reach it and it is not counted as a pass."
+  ]
+}
