@@ -31,7 +31,7 @@ All commands used the pinned worker PATH from `WORKER-RULES.md`.
 | `git diff --cached --check` | Passed before the source commit. |
 | Assigned frozen v1.2 command below | Runner exit 1; 5 selected IDs / 6 instances, 0 passed, 6 failed, 0 errors, 0 skipped, 0 unimplemented. All failures occurred at the bootstrap CLI before a check, child process, queue, or shell tool was invoked. |
 
-The assigned command was run at `2026-10-07T18:20:24Z`; its complete JSONL and workdirs remain at `/Users/almirsarajcic/cx/kgo/evidence/09-child-supervisor/results.jsonl` and `/Users/almirsarajcic/cx/kgo/evidence/09-child-supervisor/work`.
+The assigned command was run at `2026-10-07T18:20:24Z`, before implementation commit `642de94` (committed at `2026-10-07T21:27:08+03:00`). The CLI source remained the unchanged bootstrap revision and did not link or invoke the supervisor package, so the retained run records the integration boundary, not behavior of that source commit. It was not repeated to replace the failure. Its complete JSONL and workdirs remain at `/Users/almirsarajcic/cx/kgo/evidence/09-child-supervisor/results.jsonl` and `/Users/almirsarajcic/cx/kgo/evidence/09-child-supervisor/work`.
 
 ```sh
 make build
