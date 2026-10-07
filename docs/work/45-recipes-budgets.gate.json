@@ -1,0 +1,18 @@
+{
+  "package": "45-recipes-budgets",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/build/recipe",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH $HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case state-03,v1.2-103-ladder-35,v1.2-125-ladder-36,v1.2-126-state-15,v1.2-80-ladder-12,v1.2-94-ladder-26,v1.2-99-ladder-31 --jobs 2 --time-scale 0.02 --workdir /Users/almirsarajcic/cx/kgo/evidence/45-recipes-budgets/work --out /Users/almirsarajcic/cx/kgo/evidence/45-recipes-budgets/results.jsonl"
+  ],
+  "gaps": [
+    "The public Build CLI route and production adapter are not wired; all seven selected behavior cases failed before assertions. Results: /Users/almirsarajcic/cx/kgo/evidence/45-recipes-budgets/results.jsonl",
+    "I4 integration must wire recipes/budgets and rerun selected cases on the integrated revision; package 00 remains a real foundation task.",
+    "R4 enablement has an unresolved draft text versus experimental_r4 setting tension; shared frozen v1.3 policy/fixture IDs are required.",
+    "R(slice) is unavailable until the shared coherent migrated Quint cohort exists; seeds 17, 23, and 41 at 500 traces by 25 steps each remain unrun.",
+    "Linux, optional-runtime, and live-comparison external evidence is unavailable."
+  ],
+  "conflicts": []
+}
