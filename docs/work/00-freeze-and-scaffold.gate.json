@@ -1,0 +1,24 @@
+{
+  "package": "00-freeze-and-scaffold",
+  "accepted_gate": "component",
+  "commands": [
+    "make fmt",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "PYTHONDONTWRITEBYTECODE=1 python - (frozen v1.2 data corpus comparison)",
+    "git diff --check"
+  ],
+  "gaps": [
+    "No black-box IDs are assigned to package 00; no behavior result or results JSONL exists.",
+    "cmd/kogen and cmd/kogen-xspec still use the explicit unavailable bootstrap; I1/I2/I3 integration and behavior receipts remain open.",
+    "D1-D3, D-SHAPE and D-CACHE are planned labels; shared frozen v1.3 suite IDs, migrated Quint models/goldens/adapters and R(slice) cohort are unavailable.",
+    "Linux, optional runtimes, race/custody, production replay, live provider/cache comparison and I8 release manifests were not verified."
+  ],
+  "conflicts": [
+    "Historical v1.2 overlay IDs v1.2-73-ladder-05, v1.2-74-ladder-06, v1.2-75-ladder-07 and v1.2-79-ladder-11 expect auditor demotion, which conflicts with v1.3-draft observational auditing; package 00 did not run these cases.",
+    "Shared serializer/tool_choice rules remain open; defer provider wire/session and affected Shape/Build gates.",
+    "Shared provider terminal policy remains open; defer provider, Build, queue and status gates.",
+    "Remaining shared status schema and post-CAS/durable-record reconciliation remain open; defer status, landing and recovery gates.",
+    "CHANGES-v1.3.md leaves independent-review findings 4, 5, 8 and 11-16 open; the exact unresolved items and affected gates are enumerated in docs/work/INPUTS.md.",
+    "Recipe text versus experimental_r4 and reachable landing trailers versus slug reuse remain unresolved cross-language tensions."
+  ]
+}
