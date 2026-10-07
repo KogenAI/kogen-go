@@ -1,0 +1,27 @@
+{
+  "package": "44-observational-build-audit",
+  "accepted_gate": "component",
+  "commands": [
+    "gofmt -w internal/build/audit/*.go",
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/build/audit",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\" EVIDENCE=\"$HOME/cx/kgo/evidence/44-observational-build-audit\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-68-build-44,v1.2-73-ladder-05,v1.2-74-ladder-06,v1.2-75-ladder-07,v1.2-76-ladder-08,v1.2-77-ladder-09,v1.2-78-ladder-10,v1.2-79-ladder-11,v1.2-96-ladder-28' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "D-AUD-01–05 shared frozen v1.3 case IDs are unavailable; local unit tests do not close those fixtures.",
+    "The public Build/ladder/provider path does not call this component. The v1.2 run had 0/9 compatible passes because every case stopped at the unwired approval CLI route; I4/D1 behavior integration and rerun remain open.",
+    "The shared session binder derives a separate Lite session id; this component requires session-id equal to the Build cache key. Reconcile the shared session/wire API before connecting the provider transport.",
+    "R(slice) was not run because the coherent shared v1.3 Quint cohort is unavailable; seeds 17, 23, and 41 at 500 traces × 25 steps each and same-revision private-binary conformance remain open.",
+    "Linux, optional-runtime, and live comparison gates require external evidence and remain open."
+  ],
+  "conflicts": [
+    "v1.2-68-build-44 expects callable auditor tools finish/shell/tool_output and an acceptance_upheld event; v1.3-draft requires auditors to have no tools and uses an observational audit receipt.",
+    "v1.2-73-ladder-05 expects over_strict A2 to be demoted without citation and to permit an advisory landing; v1.3-draft keeps A2 required.",
+    "v1.2-74-ladder-06 expects land: green to park a green-with-advisory-tests candidate after demoting A2 without repair; v1.3-draft requires all approved items to pass.",
+    "v1.2-75-ladder-07 expects over_strict A2 demotion without citation; v1.3-draft makes over_strict advice only.",
+    "v1.2-76-ladder-08 expects unsupported infeasible to be treated as valid/upheld; v1.3-draft treats unsupported verdicts as unknown and requires a warning.",
+    "v1.2-78-ladder-10 expects the auditor to demote a failed change item; v1.3-draft keeps every approved item in verification and landing eligibility.",
+    "v1.2-79-ladder-11 expects demoting A2 to make R1 land without repair; v1.3-draft requires actual passing verification after repair."
+  ]
+}
