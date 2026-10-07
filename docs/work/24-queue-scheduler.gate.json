@@ -1,0 +1,19 @@
+{
+  "package": "24-queue-scheduler",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/24-queue-scheduler\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-01,build-41,build-42,v1.2-112-provider-11,v1.2-124-build-31' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The selected frozen v1.2 run resolved 5 cases/5 instances and failed all 5 before scheduler behavior: build-01 reached the unwired queue start route; the other four stopped at intent approval. No behavior passes or historical case conflicts are established. Retained results: /Users/almirsarajcic/cx/kgo/evidence/24-queue-scheduler/results.jsonl",
+    "Queue start/stop CLI wiring and end-to-end approval-to-status behavior remain open for I3; queue/status production replay remains open for package 66.",
+    "R(queue) is not run: a same-revision queue xspec adapter and the shared coherent migrated v1.3 cohort are unavailable. The 500x25 full-observation runs for seeds 17, 23, and 41 remain open.",
+    "Planned D-* fixtures are not frozen v1.2 cases. Wait for shared frozen v1.3 IDs before claiming their gates.",
+    "Linux queue behavior and the production lifecycle are unverified."
+  ],
+  "conflicts": [
+    "Reference/model discrepancy (not an observed v1.2 case failure): committed quint/slices/queue/spec/queue.qnt line 78 returns exit 0 for stopped_on_request; target spec/01-cli.md §1.7.4 line 175 requires the normal count-based exit unless a Build stopped the drain. The Go transition follows the target spec; reconcile the shared migrated model before replay."
+  ]
+}
