@@ -1,0 +1,19 @@
+{
+  "package": "70-adversarial-effect-matrix",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 tools/safety-matrix.sh",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'custody-01,custody-02,custody-03,custody-04,custody-05,provider-26,v1.2-06-crash-after-base-cas,v1.2-119-custody-06,v1.2-120-custody-07,v1.2-121-custody-08,v1.2-122-custody-09,v1.2-123-custody-10,v1.2-31-provider-23-tool-result-budget' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The frozen v1.2 run resolved 13 cases / 14 instances with 0 passes; every case stopped at the unwired public CLI route before its behavior. The retained result is /Users/almirsarajcic/cx/kgo/evidence/70-adversarial-effect-matrix/results.jsonl.",
+    "D-REC-01 through D-REC-06 are planned fixtures without shared frozen v1.3 IDs; no draft-case pass is claimed.",
+    "I3 must wire the public approval, queue, provider, gate, CAS, and status route before behavior acceptance.",
+    "I6 still needs this full adversarial and custody matrix executed on a real Linux host; only Darwin runtime evidence is available here.",
+    "Optional Rails/ExUnit runtime evidence, live-provider comparison gates, and a coherent migrated v1.3 Quint cohort remain unavailable. R(slice) seeds 17, 23, and 41 require 500 traces by 25 steps each with full observations against the same-revision private binary.",
+    "Package 00 remains a required foundation task."
+  ],
+  "conflicts": []
+}
