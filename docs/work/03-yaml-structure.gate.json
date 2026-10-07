@@ -1,0 +1,17 @@
+{
+  "package": "03-yaml-structure",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/yamlmini",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH $HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case state-01,state-03,v1.2-128-format-05 --jobs 2 --time-scale 0.02 --workdir $HOME/cx/kgo/evidence/03-yaml-structure/work --out $HOME/cx/kgo/evidence/03-yaml-structure/results.jsonl"
+  ],
+  "gaps": [
+    "The selected CLI cases are not behavior-accepted: all 45 instances stop at the scaffold's unwired kogen status route; rerun after package 00 and I1 wire project parsing.",
+    "R(slice) requires the coherent migrated Quint cohort, spec run, 500 traces × 25 steps for seeds 17, 23, and 41, and same-revision private-binary conformance with full observations.",
+    "Shared frozen v1.3 IDs and planned D-* fixture replacements are unavailable; wait for the coordinator's frozen suite before claiming draft gates.",
+    "Linux, optional-runtime, and live-comparison evidence remain open for their named integration rounds."
+  ],
+  "conflicts": []
+}
