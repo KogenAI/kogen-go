@@ -1,0 +1,19 @@
+{
+  "package": "54-setup-baseline-caches",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/setupcache",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-12,approval-13,state-28,v1.2-133-state-26,v1.2-134-state-27' --jobs 2 --time-scale 0.02 --workdir $HOME/cx/kgo/evidence/54-setup-baseline-caches/work --out $HOME/cx/kgo/evidence/54-setup-baseline-caches/results.jsonl",
+    "$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-12,approval-13,state-28,v1.2-133-state-26,v1.2-134-state-27' --jobs 2 --time-scale 0.02 --workdir $HOME/cx/kgo/evidence/54-setup-baseline-caches/final-revision/work --out $HOME/cx/kgo/evidence/54-setup-baseline-caches/final-revision/results.jsonl"
+  ],
+  "gaps": [
+    "Production approval CLI composition does not wire setupcache; both frozen-suite runs failed all five selected cases at the bootstrap route before cache effects. I5 must wire the ports and rerun behavior cases.",
+    "D-BASE-01–05 and v2/v3 cross-language canonical fixtures are planned names without shared frozen v1.3 IDs; D2 exact-base regressions and approval baseTree trace remain open.",
+    "The checkout lacks the target spec clauses, CHANGES-v1.3.md, and Rust reference modules, so canonical cross-language parity could not be checked.",
+    "No coherent migrated Quint cohort is present; R(slice) was not run.",
+    "Linux runtime, optional-runtime, and live comparison evidence remain external gates; no live provider or account calls were made."
+  ],
+  "conflicts": []
+}
