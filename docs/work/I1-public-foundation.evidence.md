@@ -35,7 +35,7 @@ The final run verifies the public parser/help/version, project selection, raw In
 Exact observed historical v1.2 mismatches:
 
 - `approval-01` and `format-08` expect a `Feasibility: not checked` card line. The current card omits that line. `format-08` also expects 18 lines; the current baseline warning card has 16 and no blank line between its warning text and `Approve with:`.
-- `v1.2-128-format-05` passes 22/24 instances. For the anchor case the oracle expects `anchors, aliases, and block scalars are not allowed` or its listed alternate; the CLI emits `anchors, aliases, and block scalars are not allowed` with a different accepted-pattern match. For the unterminated flow case it expects `unterminated flow collection`; CLI emits `malformed flow collection near <end>`. Full strings and instance paths are in the JSONL.
+- `v1.2-128-format-05` passes 22/24 instances. For anchor instance 7 the oracle pattern accepts `anchors, aliases, tags, and block scalars are not allowed` or `anchors, aliases, and tags are not allowed`; CLI emits `anchors, aliases, and block scalars are not allowed`. For unterminated-flow instance 16 it expects `unterminated flow collection`; CLI emits `malformed flow collection near <end>`. Full strings and instance paths are in the JSONL.
 - Before `d09f813`, `v1.2-16` passed 2/3 and `v1.2-20` passed 4/7 because dispatch did not reject all invalid slugs. The committed fix validates slugs before route dispatch; final results are 3/3 and 7/7.
 
 Other failures are not claimed as historical conflicts or passes. The frozen overlay reports queue/provider/Build-dependent cases against explicit I1 controller deferrals. In particular, `v1.2-01` fails only its provider list/logout/use instances (18/21 pass); `v1.2-02` cannot produce a card because the base check baseline fails to load. The full failure messages are retained in each JSONL.
@@ -45,5 +45,5 @@ Remaining closure gates:
 - I2: provider command routes and account/provider behavior.
 - I3: Shape/Build queue execution, active-Build remove refusal, live Build status, recovery/claims, watch, queue stop/detach, and end-to-end process custody. Foundation status reads current checkout Intents and approval refs and derives synthetic status only.
 - I5: public Shape route and the v3 baseline-cache closure. `state-28` remains failed; the frozen fixture's `build/lint-runs` marker is absent.
-- The shared coherent migrated v1.3 Quint cohort and frozen D-* cases were unavailable to this package. No R(slice), D-* or full-observation replay is claimed. Linux, optional-runtime, and live-comparison evidence were not run.
+- No R(slice), D-* or full-observation replay is claimed for this package; those require the shared coherent migrated v1.3 cohort and frozen cases. Linux, optional-runtime, and live-comparison evidence were not run.
 - The v1.2 overlay's complete failures remain visible above and in the retained JSONL; behaviour acceptance still requires the named integration closures.
