@@ -41,6 +41,8 @@ export PATH="$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/
 
 3. `make build` — passed as part of each conformance invocation, building `bin/kogen` and `bin/kogen-xspec`.
 4. An initial partial oracle invocation accidentally omitted IDs `v1.2-77-ladder-09` and `v1.2-78-ladder-10`. It resolved five selected cases and failed 0/5 at the unwired approval route. Its output and workdirs were preserved separately at [`results-partial-omitted-77-78.jsonl`](/Users/almirsarajcic/cx/kgo/evidence/D1-observational-audit-regression/results-partial-omitted-77-78.jsonl) (SHA-256 `8571f3aa29c6ee6b3814ae5a1cae27f43180fc930c6efb7283546f4267b18f5c`) and `work-partial-omitted-77-78/`. This partial run is not the assigned acceptance result.
+
+   The actual partial `--case` invocation was `v1.2-73-ladder-05,v1.2-74-ladder-06,v1.2-75-ladder-07,v1.2-76-ladder-08,v1.2-79-ladder-11`. It initially wrote `results.jsonl` and `work/`; both were moved to the retained partial names above before the complete invocation used those standard paths.
 5. The complete assigned frozen v1.2 command was then run once with the literal effective IDs:
 
    ```sh
