@@ -2,7 +2,7 @@
 
 ## Revisions and host
 
-- Package/base revision before this worker: `5ba8613f28ec57720a6dcf5be4e3d2e1ba326f34`, branch `kgo/63-linux-sandbox`. Implementation commit: pending at evidence drafting; this note will be updated after the package commit.
+- Package/base revision before this worker: `5ba8613f28ec57720a6dcf5be4e3d2e1ba326f34`; implementation commit: `ac47654` (`Implement pinned Linux sandbox adapter`), branch `kgo/63-linux-sandbox`.
 - CLI source revision: `5ba8613f28ec57720a6dcf5be4e3d2e1ba326f34`. No CLI source files changed. The built public route still reports `kogen: implementation bootstrap; command routes are not wired`.
 - Production Linux sandbox/CLI adapter revision: none. `internal/sandbox/availability.go` does not route to the owned Linux package, and shared-file wiring was outside this package's ownership.
 - Target: spec v1.3-draft `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`, `spec/05-sandbox-custody.md` §§5.1, 5.3, 5.5; draft recovery note in `CHANGES-v1.3.md` §3. Rust reference revision `a402540b39cedc7f788472297add7ae2f8a6631a`: `crates/kogen-core/src/run/sandbox.rs`, `sandbox/platform.rs`, and `sandbox_tests.rs`.
