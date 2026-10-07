@@ -166,13 +166,14 @@ func (s *approveSlice) applyEvent(ctx context.Context, value eventValue) {
 	by, _ := value.optionalText("by", "")
 	ident, _ := value.optionalText("ident", "Ann <ann@x.io>")
 	byBad, _ := value.boolean("byBad", false)
+	if err := validateByClaim(by, byBad); err != nil {
+		s.applyErr = err
+		return
+	}
 	witnessMode, err := value.boolean("witnessMode", false)
 	if err != nil {
 		s.fail("usage", 2)
 		return
-	}
-	if byBad && by == "" {
-		by = "\n"
 	}
 	if err := s.world.applyIdentity(ctx, ident); err != nil {
 		s.fail("environment/approval_identity_unavailable", 2)
@@ -341,6 +342,13 @@ func (s *approveSlice) applyEvent(ctx context.Context, value eventValue) {
 	s.baseSymbols[prepared.BaseCommit] = valueString(value, "baseSha", "")
 	s.last, s.exit, s.sha8 = "ok", 0, sha8
 	s.approver, s.feasibility = prepared.Approver, "not checked"
+}
+
+func validateByClaim(by string, byBad bool) error {
+	if byBad && !strings.ContainsAny(by, "\r\n") {
+		return errors.New("intentapprove: byBad=true requires the actual multiline --by value")
+	}
+	return nil
 }
 
 func lateWriteIdentical(prepared *prepare.Prepared, name string, data []byte) bool {

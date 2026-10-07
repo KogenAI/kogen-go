@@ -38,6 +38,12 @@ func TestLateHashClaimRequiresActualSecondReadBytes(t *testing.T) {
 	if _, _, err := lateWriteFor(value, "alpha", nil); err == nil {
 		t.Fatal("stableBeforeCas=false was converted into synthetic source bytes")
 	}
+	if validateByClaim("", true) == nil {
+		t.Fatal("byBad=true was converted into a synthetic invalid argument")
+	}
+	if err := validateByClaim("bad\nname", true); err != nil {
+		t.Fatalf("actual multiline --by value was rejected: %v", err)
+	}
 }
 
 func TestIntentSlicePublishesRealApprovalAndRetriesRealCAS(t *testing.T) {

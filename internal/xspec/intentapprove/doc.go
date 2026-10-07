@@ -21,6 +21,8 @@
 // replacement bytes, so that event is refused instead of manufacturing a
 // second-read source from the boolean. A migrated cohort must add those bytes
 // (or another byte-derived mutation input) before this trace can be replayed.
+// The same rule applies to byBad=true when the event has no actual multiline
+// --by value: an invalid argument is not invented from the boolean.
 //
 // Quint's current intent generator can pair the same hash symbol with either
 // prefixOk value. That pair cannot represent two different real hash
