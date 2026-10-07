@@ -1,0 +1,17 @@
+{
+  "package": "13-candidate-tree-ignore-semantics",
+  "accepted_gate": "component",
+  "commands": [
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 ./internal/gitio",
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; GIT_CONFIG_GLOBAL=/dev/null make check",
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/13-candidate-tree-ignore-semantics\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-122-custody-09,v1.2-123-custody-10,v1.2-64-build-30' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I3 behavior closure is pending because the CLI approve route is still the bootstrap handler; all three selected v1.2 cases failed before candidate-tree behavior and must be rerun after integration.",
+    "Repository make check failed in the supervised Git timeout capture assertion; details and captured stream mismatch are in the evidence note.",
+    "No coherent migrated v1.3 Quint cohort was available for R(slice); seeds 17, 23, and 41 each require 500 traces by 25 steps.",
+    "Planned D-* fixtures are not frozen v1.2 cases; wait for shared frozen v1.3 IDs.",
+    "Linux, optional runtime, live comparison, and the full v1.2 profile (236 cases / 570 instances) remain unverified."
+  ],
+  "conflicts": []
+}
