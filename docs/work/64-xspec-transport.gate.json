@@ -1,0 +1,20 @@
+{
+  "package": "64-xspec-transport",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/xspec/protocol",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' go vet ./internal/xspec/protocol",
+    "git diff --check",
+    "GIT_CONFIG_GLOBAL=/dev/null make check"
+  ],
+  "gaps": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check exited 2 before final observation-validation hardening: internal/gitio tests TestRunnerSeparatesStreamsAndTimesOutHangingGit and TestOriginPolicyUsesGlobalIdentityAndSigningHelperNotLocalHelper failed; the script stopped before CLI builds and its mutation guard. Current protocol code passed targeted test and vet, but the whole check was not repeated.",
+    "No integration-supplied xspec slice factories or private CLI routing are wired; I2 protocol routing and I7 complete routing remain open.",
+    "R(slice) requires the shared frozen v1.3 Quint cohort, scratch-copy spec phase, 500 traces x 25 steps for each seed 17, 23, and 41, full observations, and a same-revision private binary; that cohort and binary are unavailable.",
+    "The assigned frozen v1.2 case list is empty: 0 case IDs / 0 instances. No behavior result JSONL or behavior pass exists.",
+    "Blank temporary HOME and temporary-origin behavior for effectful xspec factories must be supplied and verified by integration.",
+    "Planned D-* fixtures are not frozen v1.2 cases; shared migrated v1.3 IDs and models are unavailable.",
+    "Linux, race/custody, optional-runtime, and live comparison evidence was not run."
+  ],
+  "conflicts": []
+}
