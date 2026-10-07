@@ -1,0 +1,21 @@
+{
+  "package": "07-rooted-path-safety",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/safefs",
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 -v -run TestRootRejectsFIFOAndDeviceFilesWithoutBlocking ./internal/safefs",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "git diff --check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'provider-26' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The retained provider-26 run failed before a provider request because cmd/kogen routes are not wired; rerun after integration. Results: /Users/almirsarajcic/cx/kgo/evidence/07-rooted-path-safety/results.jsonl",
+    "I3 approval-to-status behavior and provider anchors remain open; no production adapter revision exists.",
+    "I6 full adversarial-effect matrix and Linux execution remain open; only macOS safefs component fixtures ran.",
+    "The host denied mknod; direct in-root character-device fixture remains for a host that permits it. /dev/null kind refusal passed through the descriptor helper.",
+    "Controller consumers still need integration with RootedFS across state, journal, cache, approval staging, tool handles, and protection restoration.",
+    "D-* cases and the coherent migrated v1.3 Quint cohort are unavailable; no D-* behavior or R(slice) result is claimed."
+  ],
+  "conflicts": []
+}
