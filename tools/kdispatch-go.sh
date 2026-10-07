@@ -8,6 +8,24 @@ RUNNER=${KGO_RUNNER:-$HOME/cx/run.sh}
 MAX=${MAX:-4}
 MAX_FIXES=${MAX_FIXES:-2}
 POLL=${POLL:-10}
+DEFER_LINUX=0
+case "$#" in
+  0) ;;
+  1) [ "$1" = --defer-linux ] || { echo 'Usage: kdispatch-go.sh [--defer-linux]' >&2; exit 2; }; DEFER_LINUX=1;;
+  *) echo 'Usage: kdispatch-go.sh [--defer-linux]' >&2; exit 2;;
+esac
+DEFERRED_LINUX="$R/docs/work/DEFERRED-LINUX.md"
+has_open_linux_deferral() {
+  [ -f "$DEFERRED_LINUX" ] && grep -F '| OPEN |' "$DEFERRED_LINUX" >/dev/null
+}
+open_linux_deferral_for() {
+  [ -f "$DEFERRED_LINUX" ] && grep -F "| $1 |" "$DEFERRED_LINUX" | grep -F '| OPEN |' >/dev/null
+}
+if has_open_linux_deferral; then
+  [ "$DEFER_LINUX" = 1 ] || { echo 'Open Linux deferrals are recorded; restart with --defer-linux to acknowledge DEFERRED-LINUX.md.' >&2; exit 2; }
+else
+  [ "$DEFER_LINUX" = 0 ] || { echo '--defer-linux requires an OPEN entry in docs/work/DEFERRED-LINUX.md.' >&2; exit 2; }
+fi
 export GOMAXPROCS=2
 export PATH="$HOME/.local/share/mise/installs/git/2.54.0/bin:$PATH"
 case "$MAX:$MAX_FIXES:$POLL" in *[!0-9:]*|:*|*::*) echo 'Invalid numeric configuration' >&2; exit 2;; esac
@@ -148,6 +166,20 @@ launch() {
 }
 integrate() {
   local p=${PACKAGES[$i]} wt="$W/${PACKAGES[$i]}" branch="kgo/${PACKAGES[$i]}" before sha gate
+  case "$p" in
+    I8-*)
+      if has_open_linux_deferral; then
+        echo "I8 release gate blocked by open Linux deferrals in $DEFERRED_LINUX" >&2
+        return 2
+      fi
+      ;;
+    I[1-7]-*)
+      if open_linux_deferral_for "$p" && [ "$DEFER_LINUX" != 1 ]; then
+        echo "$p has an open Linux deferral; restart with --defer-linux after recording it in DEFERRED-LINUX.md" >&2
+        return 2
+      fi
+      ;;
+  esac
   lock "$D/merge.lock" || return 2
   record "$p" INTEGRATING
   before=$(git -C "$R" rev-parse main)
