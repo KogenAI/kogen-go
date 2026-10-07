@@ -3,7 +3,8 @@
   "accepted_gate": "component",
   "commands": [
     "GOMAXPROCS=2 go test -p=2 -parallel=2 -run '^$' ./internal/approval/publish",
-    "make build"
+    "make build",
+    "python3 tools/package-gate.py 19-approval-cas"
   ],
   "gaps": [
     "GIT_CONFIG_GLOBAL=/dev/null make check remains unrun because the shared ~/cx/kgo/gates.lock already existed and this worker could not acquire it.",
