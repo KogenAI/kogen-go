@@ -1,0 +1,16 @@
+{
+  "package": "19-approval-cas",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 -run '^$' ./internal/approval/publish",
+    "make build"
+  ],
+  "gaps": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check remains unrun because the shared ~/cx/kgo/gates.lock already existed and this worker could not acquire it.",
+    "The assigned frozen v1.2 conformance command remains unrun; no cases or instances are claimed as passing.",
+    "I1 must wire intent approve and close the selected CLI/state/approval behavior cases.",
+    "R(approve) for package 65 requires the shared coherent migrated v1.3 cohort and same-revision private binary; no replay traces are claimed.",
+    "Linux, optional runtime, shared frozen v1.3 cases/models, and post-CAS durable record reconciliation remain closure gates."
+  ],
+  "conflicts": []
+}
