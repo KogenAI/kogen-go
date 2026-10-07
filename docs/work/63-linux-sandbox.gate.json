@@ -1,0 +1,17 @@
+{
+  "package": "63-linux-sandbox",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 -v ./internal/sandbox/linux",
+    "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 GOMAXPROCS=2 go test -p=2 -parallel=2 -c -o /tmp/kogen-linux-sandbox.test ./internal/sandbox/linux",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build && SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\" EVIDENCE=\"$HOME/cx/kgo/evidence/63-linux-sandbox\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'custody-01,custody-02,custody-03,custody-04,custody-05,v1.2-119-custody-06,v1.2-120-custody-07,v1.2-121-custody-08,v1.2-122-custody-09,v1.2-123-custody-10' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Real Linux host/bubblewrap 0.13.0 namespace and filesystem enforcement probe was unavailable on this Darwin host; Linux runtime/process/death behavior remains unverified.",
+    "The shared sandbox runner does not route to internal/sandbox/linux; I6 must wire Probe/Runner to the production supervisor and rerun custody-01–05 and v1.2-119–123.",
+    "All 10 frozen-oracle cases (11 instances) stopped at the unwired public CLI approval route; no selected case is behavior-compatible.",
+    "No coherent shared frozen v1.3 suite/Quint cohort was available; D-* fixtures and R(slice) seeds 17, 23, and 41 remain deferred. Optional-runtime and live comparison evidence also remain open."
+  ],
+  "conflicts": []
+}
