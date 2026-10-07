@@ -6,8 +6,11 @@ Recorded 8 October 2026 in the assigned worktree
 
 ## Revisions and scope
 
-- Implementation commit: `7b11d41` (`Implement durable landing publication`).
-  The branch began at `c5b14d5b4415c38d3b7bbcffb3c41b4bc8879add`.
+- Implementation commits: `7b11d417f123d3d7f144974c44e30baf98c9b5a3`
+  (`Implement durable landing publication`) and
+  `86c52e8639f87bbed3aa01daeb00bad726710fa8` (`Harden landing publication CAS
+  handling`). The branch began at
+  `c5b14d5b4415c38d3b7bbcffb3c41b4bc8879add`.
 - Target spec: `kogen-spec` `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`
   (`v1.3-draft`), `spec/03-build.md` §3.9.3 steps 1–6 and failure handling,
   §3.10; `CHANGES-v1.3.md` §3 and its open-finding note in §6.
@@ -18,14 +21,15 @@ Recorded 8 October 2026 in the assigned worktree
   `0f93bad988fb8d7a8eff4e94954d1db0a046c89d`. The installed runner reports
   `v1.2+unknown`; runner SHA-256 is
   `0b53a3b60956cbe8dde7af54e274c46b3e8d430c45662d7dff67445f440b39f9`.
-- CLI and private adapter binaries were built with Go `1.27.1`, Git
-  `2.54.0`, Darwin arm64. `bin/kogen` SHA-256 is
-  `87af5b3aa6e117b09551c00b6c609604cd7952d93e8e140f03ef1a59c6fa5d2d`;
+- The first CLI/adapter build used Go `1.27.1`, Git `2.54.0`, Darwin arm64;
+  its source revision was `c5b14d5b4415c38d3b7bbcffb3c41b4bc8879add` with
+  `vcs.modified=true` (`results.jsonl`). The post-hardening build used clean
+  source revision `86c52e8639f87bbed3aa01daeb00bad726710fa8` with
+  `vcs.modified=false` (`results-002.jsonl`). Current `bin/kogen` SHA-256 is
+  `0924745d3019565a8d6777599c9f2d95ccf6320db9d193b3438a6e686be2976d`;
   `bin/kogen-xspec` SHA-256 is
-  `54ecdc148debe763f10f3512d1d67caac311cca6689164747a63d4a13026649c`.
-  Both binaries report source revision `c5b14d5b4415c38d3b7bbcffb3c41b4bc8879add`
-  with `vcs.modified=true`. `internal/xspec/landingrecovery` remains a stub;
-  no adapter replay was run.
+  `9f89fdc2d2721043e2d6c39778af84e2aa3b764a4fed9c17e0d04e6d4afe9939`.
+  `internal/xspec/landingrecovery` remains a stub; no adapter replay was run.
 - Scope is `internal/landing/publish/**` and this package's evidence and gate
   receipt. No shared contract, command route, Makefile, spec, suite, golden, or
   external replay harness was changed.
@@ -60,12 +64,12 @@ and crash-after-CAS retention.
 
 | Command | Result |
 |---|---|
-| `GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/landing/publish` | Passed after correcting two development iterations: one compile error in the retry outcome comparison and one test-fixture worktree setup/removal error. The corrected focused run passed all publication tests. |
-| `GIT_CONFIG_GLOBAL=/dev/null make check` | Passed format, vendor fingerprints, `go vet ./...`, all repository tests, and both builds. Full log: `$HOME/cx/kgo/evidence/39-landing-publication/make-check-001.log`. |
-| `make build` | Passed as the first command in the assigned oracle invocation. Both `kogen` and `kogen-xspec` were built before the oracle run. |
-| Assigned frozen v1.2 command below | Runner resolved 4 requested case IDs to 5 instances. **0 passed, 4 failed, 0 errors, 0 skipped.** Each case stopped at step 2 approval with the public CLI bootstrap response; no selected assertion reached landing. Results and workdirs are retained at `$HOME/cx/kgo/evidence/39-landing-publication/results.jsonl` and `$HOME/cx/kgo/evidence/39-landing-publication/work/`. |
+| `GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/landing/publish` | Passed after correcting development compile/fixture errors. After CAS hardening it passed all publication tests again. |
+| `GIT_CONFIG_GLOBAL=/dev/null make check` | Passed on the initial publisher (`make-check-001.log`). On the hardened source, one run failed in unrelated `internal/queue/lock/TestConcurrentAcquireCreatesOneOwner` with `queue.pid is not a safe regular owner file` (`make-check-002.log`); a fresh full check on the same source passed format, vendor fingerprints, vet, all tests, and both builds (`make-check-003.log`). All three logs are retained under `$HOME/cx/kgo/evidence/39-landing-publication/`. |
+| `make build` | Passed in both oracle invocations. The second build was from clean source revision `86c52e8639f87bbed3aa01daeb00bad726710fa8`. |
+| Assigned frozen v1.2 command and post-hardening rerun | Both runs resolved 4 requested case IDs to 5 instances. Each run had **0 passed, 4 failed, 0 errors, 0 skipped**. All cases stopped at step 2 approval with the public CLI bootstrap response; no selected assertion reached landing. Results/workdirs remain at `$HOME/cx/kgo/evidence/39-landing-publication/results.jsonl`, `$HOME/cx/kgo/evidence/39-landing-publication/work/`, `$HOME/cx/kgo/evidence/39-landing-publication/results-002.jsonl`, and `$HOME/cx/kgo/evidence/39-landing-publication/work-002/`. |
 
-The exact assigned command was run once:
+The exact assigned command was run once against the initial source revision:
 
 ```sh
 make build
@@ -79,6 +83,21 @@ PYTHONDONTWRITEBYTECODE=1 PATH="$HOME/.local/share/mise/installs/python/3.14.7/b
   --out "$EVIDENCE/results.jsonl"
 ```
 
+After committing CAS hardening, I rebuilt and ran the same profiles, case IDs,
+job count, and time scale with separate evidence paths so the original result
+was preserved:
+
+```sh
+make build
+SUITE="$HOME/cx/kgo/inputs/conformance-v1.2"
+EVIDENCE="$HOME/cx/kgo/evidence/39-landing-publication"
+PYTHONDONTWRITEBYTECODE=1 PATH="$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH" \
+  "$SUITE/bin/kogen-conformance" run --kogen "$PWD/bin/kogen" \
+  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-06-crash-after-base-cas,v1.2-61-build-27,v1.2-62-build-28,v1.2-63-build-29' \
+  --jobs 2 --time-scale 0.02 --workdir "$EVIDENCE/work-002" \
+  --out "$EVIDENCE/results-002.jsonl"
+```
+
 | Resolved case | Instances | Result |
 |---|---:|---|
 | `v1.2-06-crash-after-base-cas` | 1 | Failed at first approval: expected exit 5 and a SHA-256 digest; got exit 2, empty stdout, and `kogen: implementation bootstrap; command routes are not wired`. |
@@ -86,8 +105,8 @@ PYTHONDONTWRITEBYTECODE=1 PATH="$HOME/.local/share/mise/installs/python/3.14.7/b
 | `v1.2-62-build-28` | 2 (`1:non-bare origin`, `2:checkout is the origin`) | Both failed at approval: expected exit 0 and queued approval output; got exit 2 and the CLI bootstrap response. |
 | `v1.2-63-build-29` | 1 | Failed at approval: expected exit 0 and queued approval output; got exit 2 and the CLI bootstrap response. |
 
-The runner reported that no provider request reached its fake server. Compatible
-oracle passes: **none**. No landing behavior pass is claimed. The frozen
+Both oracle runs reported that no provider request reached its fake server.
+Compatible oracle passes: **none**. No landing behavior pass is claimed. The frozen
 `v1.2-06` case file itself notes historical Elixir reference drift for its
 `acceptance` project key; this Go run stopped earlier at the no-hash approval
 step and did not reproduce or reach that parser incompatibility.
@@ -95,8 +114,12 @@ step and did not reproduce or reach that parser incompatibility.
 ## Conflicts and closure gates
 
 - No v1.2-versus-draft landing assertion conflict was observed: every selected
-  case failed before landing at the CLI bootstrap. The exact observed command
-  failures are above; `conflicts` is empty in the component receipt.
+  case failed before landing at the CLI bootstrap in both retained runs. The
+  exact observed command failures are above; `conflicts` is empty in the
+  component receipt.
+- The first full check on hardened source hit an unrelated queue-lock failure;
+  the next full check passed without a source change. Both results remain
+  recorded in `make-check-002.log` and `make-check-003.log`.
 - **I3 behavior integration is open.** Public approval → queue → provider →
   gate → CAS → status routes are not wired. Integration must render returned
   dirty-checkout warnings to stderr and rerun the selected cases after a source
