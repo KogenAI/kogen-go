@@ -1,2 +1,3 @@
-// Package recipe is reserved for the Kogen build/recipe implementation.
+// Package recipe resolves the frozen Build recipes, planner contract, and
+// Build/landing time allowances. It does not orchestrate provider or Git work.
 package recipe
