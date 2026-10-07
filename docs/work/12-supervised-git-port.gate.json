@@ -1,0 +1,19 @@
+{
+  "package": "12-supervised-git-port",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 ./internal/gitio",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/12-supervised-git-port\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-02,approval-03,approval-04,approval-05,approval-06,approval-07,approval-22,v1.2-122-custody-09,v1.2-67-build-43' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Acceptance command selected 9 cases / 11 instances; 0 passed because the CLI command routes are not wired. Results: /Users/almirsarajcic/cx/kgo/evidence/12-supervised-git-port/results.jsonl",
+    "I1 basic-object and I3 identity/custody behavior require wired integration and compatible behavior evidence.",
+    "Approval, queue, provider, gate, CAS, and status integration remains unavailable; package 00 foundation work remains.",
+    "Native candidate-tree ignore semantics and immutable-base/private-index integration remain for their owning work.",
+    "No coherent migrated v1.3 Quint cohort is available for R(slice); planned D-* fixtures await shared frozen v1.3 IDs.",
+    "Linux parity, optional runtime, and live-comparison evidence were not run."
+  ],
+  "conflicts": []
+}
