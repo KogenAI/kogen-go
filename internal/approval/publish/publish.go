@@ -370,11 +370,11 @@ func matchingLedger(root contract.RootedFS, slug, hash string) []byte {
 func readAndVerifySources(root contract.RootedFS, paths packageFilePaths, prepared *prepare.Prepared, givenPrefix string) error {
 	intentBytes, err := readRegular(root, paths.intent)
 	if err != nil {
-		return failure("hash_mismatch", fmt.Errorf("%s is now unavailable, not %s; review it again with kogen intent approve %s: %w", prepared.Intent.Slug, givenPrefix, prepared.Intent.Slug, err))
+		return failure("hash_mismatch", fmt.Errorf("%s is now unavailable, not %s; review it again with kogen intent approve %s", prepared.Intent.Slug, givenPrefix, prepared.Intent.Slug))
 	}
 	acceptanceBytes, err := readRegular(root, paths.acceptance)
 	if err != nil {
-		return failure("hash_mismatch", fmt.Errorf("%s is now unavailable, not %s; review it again with kogen intent approve %s: %w", prepared.Intent.Slug, givenPrefix, prepared.Intent.Slug, err))
+		return failure("hash_mismatch", fmt.Errorf("%s is now unavailable, not %s; review it again with kogen intent approve %s", prepared.Intent.Slug, givenPrefix, prepared.Intent.Slug))
 	}
 	actualHash := intent.ApprovalSHA256(intentBytes, acceptanceBytes)
 	if actualHash != prepared.ApprovalSHA256 || !bytes.Equal(intentBytes, prepared.IntentBytes) || !bytes.Equal(acceptanceBytes, prepared.AcceptanceBytes) {

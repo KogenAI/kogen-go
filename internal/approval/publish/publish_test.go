@@ -128,6 +128,12 @@ func TestPublishLateReadRefusesChangedSourcesWithoutTouchingRef(t *testing.T) {
 	if !errors.As(err, &failure) || failure.Reason != "hash_mismatch" {
 		t.Fatalf("Publish error = %v, want late hash_mismatch", err)
 	}
+	changedBytes := []byte("changed after commit creation\n")
+	changedHash := intent.ApprovalSHA256(testIntentBytes, changedBytes)
+	wantError := fmt.Sprintf("intent/hash_mismatch: greeting is now %s, not %s; review it again with kogen intent approve greeting", changedHash[:8], state.request.GivenHashPrefix)
+	if err.Error() != wantError {
+		t.Fatalf("late source mismatch = %q, want %q", err, wantError)
+	}
 	if got := strings.TrimSpace(string(state.fixture.RunIn(t, state.fixture.Origin, "for-each-ref", "--format=%(objectname)", "refs/kogen/intents/greeting"))); got != "" {
 		t.Fatalf("approval ref changed after late-read refusal: %s", got)
 	}
