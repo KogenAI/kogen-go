@@ -1,0 +1,19 @@
+{
+  "package": "52-shape-audits",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/shape/audit",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/52-shape-audits\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-17,shape-21,v1.2-135-shape-26,v1.2-33-shape-json-is-unsupported' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Frozen v1.2 command: 0/4 cases and 0/9 instances passed because CLI routes still return the bootstrap diagnostic; no audit assertion reached the component.",
+    "I5 integration must wire the audit transport/session/accounting, rooted artifact publication, combined repair traversal, and predicate/dependency recheck to the Build decision.",
+    "I6 V135 witness integration and evidence remain open.",
+    "D-SHAPE-02 and D-SHAPE-03 require literal IDs from the shared frozen v1.3 suite.",
+    "No coherent migrated v1.3 Shape Quint cohort or package-specific Shape audit slice was available for R(slice).",
+    "Linux, optional-runtime, and live comparison evidence remain external gates."
+  ],
+  "conflicts": []
+}
