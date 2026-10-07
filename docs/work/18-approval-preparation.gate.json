@@ -1,0 +1,18 @@
+{
+  "package": "18-approval-preparation",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/approval/prepare",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/18-approval-preparation\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-01,approval-03,approval-05,approval-06,approval-07,approval-08,approval-09,approval-10,approval-11,approval-12,approval-13,approval-14,approval-15,approval-16,approval-17,approval-19,approval-20,approval-21,state-09,state-25,state-28,v1.2-27-approval-18-status-next' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The required frozen v1.2 run resolved 22 cases and 22 instances; all 22 stopped at the public bootstrap diagnostic (kogen: implementation bootstrap; command routes are not wired). No case is counted as passing. Retained results: /Users/almirsarajcic/cx/kgo/evidence/18-approval-preparation/results.jsonl.",
+    "The concrete setupcache v2 and independent v3 baseline implementation is absent from this revision; package prepare consumes explicit cache ports and its tests use fakes.",
+    "I1 uncached-base behavior, the approval cases, S28, and I5 require the public integration plus the concrete package 54 port; D-BASE-01–05 need shared frozen v1.3 IDs and migrated fixtures.",
+    "R(slice) was not run because the shared coherent migrated Quint cohort is unavailable; seeds 17, 23, and 41 remain unverified.",
+    "Linux native, optional-runtime, and live comparison evidence remains unavailable. No provider or account access was used."
+  ],
+  "conflicts": []
+}
