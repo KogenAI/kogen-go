@@ -151,22 +151,22 @@ func TestRepeatCycleAndBudgetStop(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	first, ok, err := recipe.NextAttempt(4, 2, DefaultRepeatFrom(), true)
+	first, ok, err := recipe.nextAttempt(4, 2, DefaultRepeatFrom(), true)
 	if err != nil || !ok || first.Name != "sol-high-2" || first.Rung.Index != 3 {
 		t.Fatalf("first repeat = %+v, ok=%v, err=%v", first, ok, err)
 	}
-	second, ok, err := recipe.NextAttempt(5, 2, DefaultRepeatFrom(), true)
+	second, ok, err := recipe.nextAttempt(5, 2, DefaultRepeatFrom(), true)
 	if err != nil || !ok || second.Name != "raw-request-2" || second.Rung.Index != 4 {
 		t.Fatalf("second repeat = %+v, ok=%v, err=%v", second, ok, err)
 	}
-	third, ok, err := recipe.NextAttempt(6, 3, DefaultRepeatFrom(), true)
+	third, ok, err := recipe.nextAttempt(6, 3, DefaultRepeatFrom(), true)
 	if err != nil || !ok || third.Name != "sol-high-3" {
 		t.Fatalf("third repeat = %+v, ok=%v, err=%v", third, ok, err)
 	}
-	if _, ok, err := recipe.NextAttempt(4, 2, nil, true); err != nil || ok {
+	if _, ok, err := recipe.nextAttempt(4, 2, nil, true); err != nil || ok {
 		t.Fatalf("nil repeat_from should stop: ok=%v err=%v", ok, err)
 	}
-	if _, ok, err := recipe.NextAttempt(4, 2, DefaultRepeatFrom(), false); err != nil || ok {
+	if _, ok, err := recipe.nextAttempt(4, 2, DefaultRepeatFrom(), false); err != nil || ok {
 		t.Fatalf("exhausted budget should stop: ok=%v err=%v", ok, err)
 	}
 }

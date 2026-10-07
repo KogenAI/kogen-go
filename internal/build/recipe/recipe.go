@@ -204,10 +204,10 @@ type RungAttempt struct {
 	Name   string
 }
 
-// NextAttempt returns the next original rung, then cycles from repeatFrom
-// (zero-based) when supplied. Repeats are fresh attempts and are named with
-// their attempt ordinal, for example sol-high-2 and raw-request-3.
-func (r Recipe) NextAttempt(completedRungs, repeatNumber int, repeatFrom *int, budgetLeft bool) (RungAttempt, bool, error) {
+// nextAttempt returns the next original rung, then cycles from repeatFrom
+// (zero-based) when supplied. Build.NextAttempt applies configured caps and
+// the raw-request experiment policy before delegating here.
+func (r Recipe) nextAttempt(completedRungs, repeatNumber int, repeatFrom *int, budgetLeft bool) (RungAttempt, bool, error) {
 	if !budgetLeft || len(r.Rungs) == 0 {
 		return RungAttempt{}, false, nil
 	}
@@ -258,7 +258,7 @@ func (b Build) NextAttempt(completedRungs, repeatNumber int, budgetLeft bool) (R
 	if repeatFrom != nil && *repeatFrom >= count {
 		repeatFrom = nil
 	}
-	return recipe.NextAttempt(completedRungs, repeatNumber, repeatFrom, budgetLeft)
+	return recipe.nextAttempt(completedRungs, repeatNumber, repeatFrom, budgetLeft)
 }
 
 // DefaultRepeatFrom returns the spec's repeat start: the third rung (index 2).
