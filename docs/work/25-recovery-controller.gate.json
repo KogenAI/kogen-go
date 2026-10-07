@@ -1,0 +1,25 @@
+{
+  "package": "25-recovery-controller",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS=-p=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "GOOS=linux CGO_ENABLED=0 GOMAXPROCS=2 GOFLAGS=-p=2 go test -c -o /tmp/kogen-recovery-linux.test ./internal/recovery",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-36,build-37,build-38,state-17,state-18,state-19,state-21,v1.2-06-crash-after-base-cas,v1.2-25-state-20-status-next' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/25-recovery-controller/work\" --out \"$HOME/cx/kgo/evidence/25-recovery-controller/results.jsonl\"",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/25-recovery-controller/bin/kogen-xspec recovery",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/25-recovery-controller/bin/kogen-xspec recovery",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/recovery python3 harness/xspec.py conform -- /Users/almirsarajcic/Areas/Kogen/kogen-go-wt/25-recovery-controller/bin/kogen-xspec recovery"
+  ],
+  "gaps": [
+    "Frozen v1.2 command result: 0/9 passed; each selected case failed before recovery behavior because the public kogen command routes still report implementation bootstrap. Retained JSONL: /Users/almirsarajcic/cx/kgo/evidence/25-recovery-controller/results.jsonl.",
+    "I3 remains open: wire public approval, queue, provider, gate, CAS, status, recovery, and D3 preservation, then rerun the selected cases while retaining this failed result.",
+    "D-REC-01 through D-REC-06 are planned fixtures unavailable in v1.2. Wait for shared frozen v1.3 case IDs; D3 implementation and integration remain required.",
+    "R(recovery) remains open: scratch spec fails 0/5 due stale 02-interrupted Fact fields, and corrected conformance runs are 0/505 at reset because kogen-xspec routes remain bootstrap stubs.",
+    "Package 00 remains a foundation task. Linux runtime, optional-runtime, and live comparison gates need external evidence; only Linux compilation was verified."
+  ],
+  "conflicts": []
+}
