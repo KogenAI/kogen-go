@@ -1,0 +1,19 @@
+{
+  "package": "23-queue-lock-detach",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -count=5 -parallel=2 ./internal/queue/lock",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "GOMAXPROCS=2 GOOS=linux GOARCH=amd64 go test -p=2 -c -o /tmp/kogen-23-queue-lock-linux.test ./internal/queue/lock",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'build-32,build-35,v1.2-65-build-33,v1.2-66-build-34' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/23-queue-lock-detach/work\" --out \"$HOME/cx/kgo/evidence/23-queue-lock-detach/results.jsonl\""
+  ],
+  "gaps": [
+    "Frozen v1.2 command result: 0/4 passed; all four cases failed before queue behavior because public CLI command routes still report implementation bootstrap. Retained results: /Users/almirsarajcic/cx/kgo/evidence/23-queue-lock-detach/results.jsonl.",
+    "I3 must wire queue start/stop/detach through approval, provider, gate, CAS, and status, then rerun the selected cases while retaining this failed run.",
+    "Package 00 and the I3 queue, custody, recovery, and D3 closure gates remain outstanding; this receipt covers only the lock component.",
+    "No coherent shared migrated v1.3 Quint cohort or frozen v1.3 IDs were available; no R(queue) replay or planned D-* fixture pass is claimed.",
+    "Linux runtime, optional-runtime, and live comparison gates require external evidence; Linux test code was compiled only."
+  ],
+  "conflicts": []
+}
