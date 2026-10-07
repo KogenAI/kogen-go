@@ -1,0 +1,18 @@
+{
+  "package": "50-shape-conversations-accounting",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/shape/session",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/50-shape-conversations-accounting\"; mkdir -p \"$EVIDENCE\"",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'shape-07,shape-08,shape-09,shape-10,shape-11,shape-12,shape-13,shape-23,shape-24,shape-25' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Frozen v1.2 run resolved 10 cases / 11 instances and failed all before provider behavior because the public Shape route remains the bootstrap stub; retain /Users/almirsarajcic/cx/kgo/evidence/50-shape-conversations-accounting/results.jsonl.",
+    "D-SHAPE-01–06 are planned fixtures; wait for literal IDs in the shared frozen v1.3 suite before claiming their gates.",
+    "I5 must wire this component into the public Shape route and verify end-to-end behavior and receipt publication on the integrated revision.",
+    "The coherent migrated v1.3 Quint cohort/private adapter, Linux, optional-runtime, and live-comparison evidence are unavailable in this worker environment."
+  ],
+  "conflicts": []
+}
