@@ -1,0 +1,17 @@
+{
+  "package": "51-shape-deterministic-validation",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/shape/validate ./internal/intent ./internal/shape/prompts",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'shape-01,shape-03,shape-04,shape-11,shape-15,shape-16,shape-17,shape-18' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/51-shape-deterministic-validation/work\" --out \"$HOME/cx/kgo/evidence/51-shape-deterministic-validation/results.jsonl\""
+  ],
+  "gaps": [
+    "I5 production Shape route and concrete acceptance adapter are not wired; the selected v1.2 run failed all 8 cases / 9 instances before any provider request. Retained results: /Users/almirsarajcic/cx/kgo/evidence/51-shape-deterministic-validation/results.jsonl",
+    "R(slice) not run: requires the shared coherent migrated Quint cohort, 500 traces x 25 steps for each seed 17, 23, 41, and full observations against the same-revision private binary.",
+    "D-SHAPE planned fixtures are not frozen v1.2 cases; wait for shared frozen v1.3 IDs.",
+    "Linux, optional runtime, live comparison, I7 replay, and I8 release evidence remain outstanding."
+  ],
+  "conflicts": []
+}
