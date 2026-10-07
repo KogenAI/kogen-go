@@ -1,0 +1,20 @@
+{
+  "package": "56-rails-adapter",
+  "accepted_gate": "component",
+  "commands": [
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 ./internal/acceptance/rails",
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; for file in internal/acceptance/rails/testdata/rails/bin/rails internal/acceptance/rails/testdata/rails/config/application.rb internal/acceptance/rails/testdata/rails/config/boot.rb internal/acceptance/rails/testdata/rails/config/environment.rb internal/acceptance/rails/testdata/rails/test/test_helper.rb internal/acceptance/rails/testdata/rails/.kogen/acceptance/greet_test.rb; do ruby -c \"$file\" || exit 1; done",
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; GIT_CONFIG_GLOBAL=/dev/null make check",
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; make build",
+    "git diff --check",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/56-rails-adapter\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-113-provider-12' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I5: run the versioned Rails fixture through Shape, approve, and Build after the public routes and adapter wiring are integrated; this revision's CLI still emits 'kogen: implementation bootstrap; command routes are not wired'.",
+    "I6: run the Rails adapter under a real Rails runtime with its local gem bundle; Rails is not installed on this host and no tools were installed.",
+    "No Rails-specific shared frozen v1.3 case is available; the standard v1.2 suite makes no Rails coverage claim.",
+    "R(slice) remains open pending the coherent shared migrated Quint cohort and same-revision replay for seeds 17, 23, and 41.",
+    "Linux parity, optional-runtime evidence, live comparison, and shared v1.3 closure remain open."
+  ],
+  "conflicts": []
+}
