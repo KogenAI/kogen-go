@@ -28,6 +28,7 @@ Pinned worker PATH was set before shell commands as required by `docs/work/WORKE
 | `git diff --check` | Passed. |
 | `GOMAXPROCS=2 go test -p=2 -parallel=2 -run '^$' ./internal/approval/publish` | Passed compilation only; no test cases ran. |
 | `make build` | Passed at source revision `f5dc74dcceddb7db34b118dd90093584bbedc56f`. `bin/kogen` SHA-256 `ab745a2cfb362e9f499517365ed5203af872f273bdca5c1843dc612fd10c4f03`; `bin/kogen-xspec` SHA-256 `54b9d7dd308855ef073c12c6e6e46aa80272ccb129ddb7a789f5bac68be495af`. Both report Go 1.27.1, darwin/arm64, and the same revision; VCS modified is true while this evidence note is untracked. |
+| `python3 tools/package-gate.py 19-approval-cas` | Passed receipt validation: accepted compiled component evidence; behavior remains with the closure round. |
 | `GIT_CONFIG_GLOBAL=/dev/null make check` | Not run: `~/cx/kgo/gates.lock` already existed and could not be acquired by this worker. No pass is claimed. |
 | Assigned frozen v1.2 command | Not run: the lock could not be acquired. No case or instance is counted as passing. |
 
