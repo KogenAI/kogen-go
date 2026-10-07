@@ -1,0 +1,22 @@
+{
+  "package": "48-candidate-selection-report",
+  "accepted_gate": "component",
+  "commands": [
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"",
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/build/select",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "GOMAXPROCS=2 make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/48-candidate-selection-report\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-81-ladder-13,v1.2-82-ladder-14,v1.2-83-ladder-15,v1.2-84-ladder-16,v1.2-85-ladder-17,v1.2-86-ladder-18,v1.2-87-ladder-19,v1.2-91-ladder-23,v1.2-92-ladder-24,v1.2-93-ladder-25' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Behavior acceptance is open: all ten selected IDs stop at step 2 because the public intent-approval/Build route is not wired; no compatible pass is claimed.",
+    "I4 integration must wire the selector to the Build/ladder flow and rerun the selected cases after integration; package 00 remains a foundation task after bootstrap.",
+    "D-AUD-03–05 are planned labels without frozen v1.2 cases; wait for the shared frozen v1.3 IDs and coherent migrated suite/model/goldens.",
+    "R(slice) is unrun: no shared coherent migrated Quint cohort was available for seeds 17, 23, and 41 at 500 traces × 25 steps against a same-revision private binary.",
+    "Linux, optional-runtime, and live-comparison evidence remains external and unavailable in this worker run.",
+    "I8 still requires shared_v13_manifest and production_replay_manifest; neither is available from this component run."
+  ],
+  "conflicts": [
+    "Historical v1.2 cases v1.2-73-ladder-05, v1.2-74-ladder-06, v1.2-75-ladder-07, and v1.2-79-ladder-11 expect the auditor to demote A2 before repair, conflicting with draft §3.8.2–3 observational audit behavior. They were outside this selected command and must remain individually reported in I4/I8."
+  ]
+}
