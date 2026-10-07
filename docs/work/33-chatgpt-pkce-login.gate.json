@@ -1,0 +1,20 @@
+{
+  "package": "33-chatgpt-pkce-login",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/auth/oauth",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build; SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/33-chatgpt-pkce-login\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-32-provider-21-login-flow' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I2 provider/account route is not wired: provider list/login/logout must use the fake OIDC flow and vault; the selected login case needs a retained behavior rerun.",
+    "I3 public provider CLI and full flow remain integration closure gates; this receipt is component-only.",
+    "Linux callback reuse runtime evidence is unavailable on this macOS 26.7.1 arm64 worker.",
+    "No live provider call was made. No OAuth R(slice) was assigned or run; I7 still requires the coherent migrated Quint cohort, 500 traces by 25 steps for seeds 17, 23 and 41, and full-observation conformance against the same-revision private binary.",
+    "Shared frozen v1.3 conformance IDs and migrated D-* fixtures are unavailable; no planned draft fixture is claimed as a passing case.",
+    "Package 00 remains an active foundation task."
+  ],
+  "conflicts": [
+    "v1.2-32-provider-21-login-flow: fail, 0/1 instances. Step 1 `kogen provider list` exited 2 instead of 0; expected stdout `chatgpt: not signed in\\ngrok: not signed in\\n`, got empty stdout; actual stderr `kogen: implementation bootstrap; command routes are not wired\\n`. Results: /Users/almirsarajcic/cx/kgo/evidence/33-chatgpt-pkce-login/results.jsonl. This is the unwired CLI route, not an OAuth protocol mismatch."
+  ]
+}
