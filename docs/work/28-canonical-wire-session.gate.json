@@ -1,0 +1,29 @@
+{
+  "package": "28-canonical-wire-session",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'provider-19,v1.2-03-consecutive-request-byte-prefix,v1.2-04-cache-key-session-headers,v1.2-05-missing-usage,v1.2-104-provider-01,v1.2-105-provider-02,v1.2-106-provider-03,v1.2-107-provider-04,v1.2-117-provider-20' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" session",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" session",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" session"
+  ],
+  "gaps": [
+    "Frozen v1.2 command resolved 9 cases/9 instances and failed all 9 at unwired approval/provider-login CLI setup; no provider request reached its assertions. Absolute results: /Users/almirsarajc/cx/kgo/evidence/28-canonical-wire-session/results.jsonl.",
+    "I2 provider-byte/transport integration, I3 public CLI/provider execution, and I5 independent Shape/Build/Shape-to-Build wiring remain open.",
+    "Private kogen-xspec adapter remains at bootstrap; R(session) spec passed 7/7 hand scenarios and each 500-trace seed generated, but each conform was 0/507 at reset.",
+    "Draft §4.9.2 explicit GPT-6/GPT-5.6 cache-breakpoint marker is not emitted; adapter serialization needs a frozen implementation decision.",
+    "D-CACHE-04 live feasible replay/95% telemetry was not run. D-CACHE-05/06 are not frozen v1.2 IDs; await shared v1.3 IDs.",
+    "Linux execution and live provider/cache evidence remain external gates; this run used macOS arm64."
+  ],
+  "conflicts": [
+    "v1.2-104-provider-01 expects role-specific builder text in top-level instructions and exactly 3 builder schemas; draft §4.9.2 requires generic instructions and the complete 7-schema union before role instructions. Not reached by this run.",
+    "v1.2-105-provider-02 expects exactly 3 schemas in the owned additional_tools item; the draft target carries the complete 7-schema union. Not reached by this run.",
+    "v1.2-106-provider-03 expects exactly 3 schemas for tool-less roles; the draft target retains all 7 schemas and disables calls with tool_choice none. Not reached by this run."
+  ]
+}
