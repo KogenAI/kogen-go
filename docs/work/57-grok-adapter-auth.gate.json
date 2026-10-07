@@ -1,0 +1,17 @@
+{
+  "package": "57-grok-adapter-auth",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' go test -count=1 -parallel=2 ./internal/auth/grok ./internal/provider/grok",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH $HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'provider-10,v1.2-01-fixed-cli-help-and-grok,v1.2-24-state-14-grok-account-row,v1.2-34-format-11-account-selection' --jobs 2 --time-scale 0.02 --workdir /Users/almirsarajcic/cx/kgo/evidence/57-grok-adapter-auth/work --out /Users/almirsarajcic/cx/kgo/evidence/57-grok-adapter-auth/results.jsonl"
+  ],
+  "gaps": [
+    "I5 must wire Shape/provider CLI routes and rerun the selected behavior cases; the retained v1.2 result is 0/26 because the CLI returned its bootstrap diagnostic.",
+    "D-SHAPE-04–05 were exercised only by local fixtures; wait for their shared frozen v1.3 IDs before claiming those gates.",
+    "No coherent migrated Quint cohort is available, so no R(slice) replay or seeds were run.",
+    "Linux, optional runtime, live-provider and live-comparison gates remain unverified."
+  ],
+  "conflicts": []
+}
