@@ -1,0 +1,33 @@
+# 04-project-schema-and-roles
+
+Goal: Project, schema and roles. Time allowance: 90 minutes including verification and commit.
+
+Dependencies: 03,12.
+
+## Owned files and deliverable
+
+`internal/project/**`. Project/origin/base resolution; grouped schema diagnostics, role precedence, provider-aware fallback_shaper alias, reject explicit alias/cross-provider roles; green land default and refuse uncalibrated auditor_demotion true.; evidence: docs/work/04-project-schema-and-roles.evidence.md
+
+## Acceptance cases
+
+C23,S02–03,S13,S15–16,V126 plus D-AUD-01,D-SHAPE-04–05 config fixtures. I1 schema; I3 live roles; I5 fallback.
+
+Exact command against the frozen v1.2 oracle (literal effective IDs, with overlay):
+
+```sh
+make build
+SUITE="$HOME/cx/kgo/inputs/conformance-v1.2"
+EVIDENCE="$HOME/cx/kgo/evidence/04-project-schema-and-roles"
+mkdir -p "$EVIDENCE"
+PYTHONDONTWRITEBYTECODE=1 PATH="$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH" \
+  "$SUITE/bin/kogen-conformance" run --kogen "$PWD/bin/kogen" \
+  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-23,state-03,state-13,state-16,v1.2-126-state-15,v1.2-35-state-02-schema-errors' \
+  --jobs 2 --time-scale 0.02 --workdir "$EVIDENCE/work" \
+  --out "$EVIDENCE/results.jsonl"
+```
+
+## Notes
+
+Read WORKER-RULES.md, PLAN.md, QUEUE-source.md, the relevant authoritative spec clauses and CHANGES-v1.3.md, and relevant Rust modules before implementing. Run `GIT_CONFIG_GLOBAL=/dev/null make check` plus the acceptance command. Write commands, resolved IDs/instances, revision, compatible passes, exact draft conflicts and deferred closure gates to your unique evidence note; never count unwired cases as passing. Package 00 remains a real foundation task after this bootstrap. This scaffold does not freeze interfaces or assert conformance.
+
+R(slice) requires a scratch copy of the shared coherent migrated Quint cohort: spec, then 500 traces ×25 steps for each seed 17,23,41, and conform against the same-revision private binary; full observations only. Never change the source oracle or goldens. Planned D-* fixtures are not available v1.2 cases; record this gap and wait for shared frozen v1.3 IDs before claiming their gates. Linux, optional runtime and live comparison gates require their stated external evidence. Worker commit does not confer behaviour acceptance; compiled component evidence may be code-ready until its closure round.

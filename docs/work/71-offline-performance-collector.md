@@ -1,0 +1,33 @@
+# 71-offline-performance-collector
+
+Goal: Offline performance collector. Time allowance: 60 minutes including verification and commit.
+
+Dependencies: I4,I5,I6.
+
+## Owned files and deliverable
+
+`tools/perf-offline.py`, `docs/work/PERFORMANCE.md`. Pinned host/tool/binary manifest, status 50/200 workload, cold/warm compile/check, fake-provider full pipeline wall/CPU/RSS/binary size; same schema for three languages. No provider cells.; evidence: docs/work/71-offline-performance-collector.evidence.md
+
+## Acceptance cases
+
+S30; retain C20,V01. Instrumentation must not change public output. I8.
+
+Exact command against the frozen v1.2 oracle (literal effective IDs, with overlay):
+
+```sh
+make build
+SUITE="$HOME/cx/kgo/inputs/conformance-v1.2"
+EVIDENCE="$HOME/cx/kgo/evidence/71-offline-performance-collector"
+mkdir -p "$EVIDENCE"
+PYTHONDONTWRITEBYTECODE=1 PATH="$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH" \
+  "$SUITE/bin/kogen-conformance" run --kogen "$PWD/bin/kogen" \
+  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-20,state-30,v1.2-01-fixed-cli-help-and-grok' \
+  --jobs 2 --time-scale 0.02 --workdir "$EVIDENCE/work" \
+  --out "$EVIDENCE/results.jsonl"
+```
+
+## Notes
+
+Read WORKER-RULES.md, PLAN.md, QUEUE-source.md, the relevant authoritative spec clauses and CHANGES-v1.3.md, and relevant Rust modules before implementing. Run `GIT_CONFIG_GLOBAL=/dev/null make check` plus the acceptance command. Write commands, resolved IDs/instances, revision, compatible passes, exact draft conflicts and deferred closure gates to your unique evidence note; never count unwired cases as passing. Package 00 remains a real foundation task after this bootstrap. This scaffold does not freeze interfaces or assert conformance.
+
+R(slice) requires a scratch copy of the shared coherent migrated Quint cohort: spec, then 500 traces ×25 steps for each seed 17,23,41, and conform against the same-revision private binary; full observations only. Never change the source oracle or goldens. Planned D-* fixtures are not available v1.2 cases; record this gap and wait for shared frozen v1.3 IDs before claiming their gates. Linux, optional runtime and live comparison gates require their stated external evidence. Worker commit does not confer behaviour acceptance; compiled component evidence may be code-ready until its closure round.
