@@ -1,2 +1,3 @@
-// Package retry is reserved for the Kogen provider/retry implementation.
+// Package retry owns provider retry, continuation, authentication-refresh,
+// overload-switch, and provider-wait transitions for one logical request.
 package retry
