@@ -2,7 +2,7 @@
 
 ## Revisions and scope
 
-- Worker branch: `kgo/21-status-derivation`; base revision before this package: `e641b4e8b18a4e2d548cd2da88765493706578e9`. The implementation commit is recorded in the final handoff.
+- Worker branch: `kgo/21-status-derivation`; base revision before this package: `e641b4e8b18a4e2d548cd2da88765493706578e9`; implementation/source commit: `e508ea1` (`Implement status derivation`).
 - Target: `kogen-spec` v1.3-draft, `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`; status precedence from `spec/02-formats.md` §2.11 and display/order requirements from `spec/01-cli.md` §1.7.5. Reviewed `CHANGES-v1.3.md` at the same revision.
 - Rust reference: `a402540b39cedc7f788472297add7ae2f8a6631a`, especially `crates/kogen-core/src/status/model.rs`, `status/project.rs`, and `crates/kogen-cli/src/handlers/status/{report,render}.rs`.
 - Go: `go1.27.1 darwin/arm64`. `bin/kogen` SHA-256 at the acceptance run: `104983b316000d63b724ee57b5f1fbe58e90e8f895a896117159edef18d8c383`. `bin/kogen-xspec` SHA-256: `da4928db73e09751b89517dfb9d6426f1754a777e7ccc5d24062d6982a6b6e56`; it is still the bootstrap binary. No status adapter is wired (`internal/xspec/queuestatus` contains only its package stub).
