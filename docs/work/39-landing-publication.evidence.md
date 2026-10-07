@@ -6,8 +6,8 @@ Recorded 8 October 2026 in the assigned worktree
 
 ## Revisions and scope
 
-- Implementation worker source began at `c5b14d5b4415c38d3b7bbcffb3c41b4bc8879add`;
-  the final worker commit is recorded after commit below.
+- Implementation commit: `7b11d41` (`Implement durable landing publication`).
+  The branch began at `c5b14d5b4415c38d3b7bbcffb3c41b4bc8879add`.
 - Target spec: `kogen-spec` `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`
   (`v1.3-draft`), `spec/03-build.md` §3.9.3 steps 1–6 and failure handling,
   §3.10; `CHANGES-v1.3.md` §3 and its open-finding note in §6.
