@@ -1,0 +1,5 @@
+name: rails-adapter-fixture
+checks: []
+acceptance_checks: []
+acceptance:
+  adapter: rails

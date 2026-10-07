@@ -1,0 +1,1 @@
+This fixture leaves Bundler's local seed directory empty; runtime gems must be provided by the host fixture environment.
