@@ -1,0 +1,15 @@
+{
+  "package": "D3-durable-crashed-work-preservation",
+  "accepted_gate": "component",
+  "commands": [
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/recovery/preserve",
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; GOMAXPROCS=2 GOFLAGS=-p=2 GIT_CONFIG_GLOBAL=/dev/null make check"
+  ],
+  "gaps": [
+    "D-REC-01 through D-REC-06 are planned fixtures without frozen shared v1.3 IDs; I3 must wire the production preserver and close behavior acceptance.",
+    "R(recovery) remains open until a coherent migrated Quint cohort is available and 500 traces × 25 steps for seeds 17, 23, and 41 conform with full observations against the same-revision private binary.",
+    "No v1.2 black-box cases are assigned to D3; the component has no public approval-to-status route yet, so behavior acceptance is not claimed.",
+    "Package 00 remains a required foundation task. Linux runtime, optional runtime, and live comparison gates need their stated external evidence."
+  ],
+  "conflicts": []
+}
