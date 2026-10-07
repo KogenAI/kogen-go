@@ -1,2 +1,3 @@
-// Package project is reserved for the Kogen project implementation.
+// Package project loads project and machine configuration, resolves canonical
+// project/origin/base paths, and merges provider-aware role settings.
 package project
