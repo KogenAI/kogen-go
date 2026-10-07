@@ -1,0 +1,24 @@
+{
+  "package": "I1-public-foundation",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/app (PASS)",
+    "GIT_CONFIG_GLOBAL=/dev/null make check on d09f813 (PASS)",
+    "Blank-HOME hostile-global Git make check on cebede0 source contents (PASS; pre-commit hook marker absent)",
+    "make build and prescribed frozen-v1.2 command from docs/work/I1-public-foundation.md on cebede0 (exit 1; 134 cases, 454 instances, 57 pass / 77 fail; /Users/almirsarajcic/cx/kgo/evidence/I1-public-foundation/results.jsonl)",
+    "make build and same literal frozen-v1.2 selection on d09f813 (exit 1; 134 cases, 454 instances, 59 pass / 75 fail; /Users/almirsarajcic/cx/kgo/evidence/I1-public-foundation-d09f813/results.jsonl)"
+  ],
+  "gaps": [
+    "I2 provider CLI and account/provider behavior",
+    "I3 queue/Build execution, active-Build removal, live status, watch, recovery, queue lifecycle and end-to-end custody",
+    "I5 public Shape route and v3 baseline-cache closure",
+    "Shared frozen v1.3 Quint cohort, R(slice), D-* fixtures and full-observation replay unavailable",
+    "Linux, optional runtime and live-comparison evidence not run"
+  ],
+  "conflicts": [
+    "approval-01 and format-08 v1.2 card goldens require Feasibility: not checked; final card omits that line; format-08 also expects 18 lines while current output has 16",
+    "v1.2-128-format-05: 22/24; two exact YAML diagnostic text mismatches are anchor 7 (expected listed anchor wording) and flow-unterminated 16 (expected unterminated flow collection, actual malformed flow collection near <end>)",
+    "v1.2-01-fixed-cli-help-and-grok: provider list/logout/use instances 19-21 fail on the deferred provider route (18/21 pass)",
+    "v1.2-02-approval-hash-intent-and-test-bytes: card/hash step cannot proceed; CLI reports environment/approval_check_failed: could not run or load the base check baseline"
+  ]
+}
