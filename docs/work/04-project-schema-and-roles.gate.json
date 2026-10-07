@@ -6,7 +6,7 @@
     "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check at e1f3b57 (failed in two internal/gitio tests; retained in evidence)",
     "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check at 7e0a742 (check success marker in $HOME/cx/kgo/evidence/04-project-schema-and-roles/make-check-7e0a742.log; wrapper returned 1 on zsh read-only status assignment)",
     "make build (passed)",
-    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-23,state-03,state-13,state-16,v1.2-126-state-15,v1.2-35-state-02-schema-errors' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\" (revision 7e0a742; exit 1; 6 cases/8 instances fail at unwired CLI routes; prior result retained as results-e1f3b57.jsonl)"
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/04-project-schema-and-roles\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-23,state-03,state-13,state-16,v1.2-126-state-15,v1.2-35-state-02-schema-errors' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
   ],
   "gaps": [
     "Public CLI project/config/role routes are not wired; assigned black-box cases are not accepted.",
