@@ -1,0 +1,16 @@
+{
+  "package": "26-sse-decoder",
+  "accepted_gate": "component",
+  "commands": [
+    "export PATH=\"$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/mise/installs/go/1.27.1/bin:$HOME/.local/share/mise/installs/python/3.14.7/bin:$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH\"; export GOMAXPROCS=2; GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/26-sse-decoder\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-108-provider-06,v1.2-109-provider-07,v1.2-110-provider-08,v1.2-111-provider-09' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I2 provider/account integration has not wired this package into provider routes or the shared component gate.",
+    "I3 CLI closure is open: all four selected IDs fail at step 2 (intent approve) with exit 2 because command routes are not wired; the provider is never reached. Preserve these results and rerun after a changed revision wires the public path.",
+    "R(stream) was not run; it awaits a scratch copy of the coherent shared migrated Quint cohort and full-observation replay for 500 traces x 25 steps at seeds 17, 23, and 41 against the same-revision private binary.",
+    "Planned D-* fixture names are not frozen v1.2 cases; wait for shared frozen v1.3 IDs before claiming those gates.",
+    "Linux, optional-runtime, and live comparison evidence was not produced."
+  ],
+  "conflicts": []
+}
