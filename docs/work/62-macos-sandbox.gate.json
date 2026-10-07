@@ -1,0 +1,19 @@
+{
+  "package": "62-macos-sandbox",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 -v ./internal/sandbox/...",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/62-macos-sandbox\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'custody-01,custody-02,custody-03,custody-04,custody-05,v1.2-119-custody-06,v1.2-120-custody-07,v1.2-122-custody-09' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Behavior acceptance is open: the frozen v1.2 command resolved 8 cases / 9 instances and all failed before sandbox execution because the CLI command routes are unwired. Full result: /Users/almirsarajc/cx/kgo/evidence/62-macos-sandbox/results.jsonl.",
+    "I3 must wire Shape/approval and Build policy composition, a Git-backed checkout/index/tracked-byte/origin-ref integrity snapshot, sandbox warnings/events/reporting, and the approve-to-status path; rerun the selected cases and retain this failure.",
+    "Linux bwrap implementation and real Linux parity were not run; package 63 owns that gate.",
+    "Shared frozen v1.3 D-* fixtures and a coherent migrated Quint cohort are unavailable. D-REC recovery/preservation closure remains outside this package.",
+    "R(slice) was not run: no 500x25 traces for seeds 17, 23, and 41, observations, or divergence comparison are claimed.",
+    "Optional-runtime, live-provider, and live-comparison gates were not run."
+  ],
+  "conflicts": []
+}
