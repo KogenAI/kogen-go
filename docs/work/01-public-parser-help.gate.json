@@ -1,0 +1,18 @@
+{
+  "package": "01-public-parser-help",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "mkdir -p /Users/almirsarajcic/cx/kgo/evidence/01-public-parser-help",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=/Users/almirsarajcic/.local/share/mise/installs/python/3.14.7/bin:$PATH /Users/almirsarajcic/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-10,cli-15,cli-18,cli-19,cli-20,cli-22,format-06,format-09,v1.2-01-fixed-cli-help-and-grok,v1.2-07-cli-03-unknown-command,v1.2-08-cli-04-unknown-subcommand,v1.2-09-cli-05-unknown-option,v1.2-10-cli-06-missing-positionals,v1.2-11-cli-07-unexpected-argument,v1.2-12-cli-08-option-needs-value,v1.2-13-cli-09-boolean-takes-no-value,v1.2-14-cli-11-unknown-provider,v1.2-15-cli-12-watch-with-json,v1.2-16-cli-13-double-dash,v1.2-17-cli-14-options-before-command,v1.2-18-cli-16-short-option,v1.2-19-cli-17-help-bad-topic,v1.2-20-cli-21-invalid-slug,v1.2-21-cli-24-help-after-positionals,v1.2-33-shape-json-is-unsupported' --jobs 2 --time-scale 0.02 --workdir /Users/almirsarajcic/cx/kgo/evidence/01-public-parser-help/work --out /Users/almirsarajcic/cx/kgo/evidence/01-public-parser-help/results.jsonl",
+    "git diff --cached --check"
+  ],
+  "gaps": [
+    "I1 must wire the parser and renderer into cmd/kogen; the assigned oracle run had 25 failed cases / 166 instances because cmd/kogen still reaches internal/app.Bootstrap, which reports command routes are not wired. No behavior cases are accepted.",
+    "Project- and handler-dependent acceptance rows close through I3; rerun the assigned cases after integration and retain the current failed results.",
+    "The shared frozen v1.3 suite and coherent migrated Quint cohort are unavailable. D-* labels are planned fixtures, not frozen v1.2 cases. R(slice) remains unrun and requires 500 traces × 25 steps for seeds 17, 23 and 41 against a same-revision private binary.",
+    "Linux, optional runtimes, race/custody, live provider comparison and release-manifest evidence remain open."
+  ],
+  "conflicts": []
+}

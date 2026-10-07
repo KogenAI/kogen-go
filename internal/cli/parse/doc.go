@@ -1,2 +1,2 @@
-// Package parse is reserved for the Kogen cli/parse implementation.
+// Package parse implements Kogen's fixed public command tree and argument grammar.
 package parse
