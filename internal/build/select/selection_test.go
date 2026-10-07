@@ -28,9 +28,15 @@ func TestRankingUsesApprovedCompletionThenBlockersDiffAndRank(t *testing.T) {
 		want bool
 	}{
 		{
-			name: "all approved items pass before fewer blockers",
-			a:    CandidateSnapshot{AllApprovedItemsPass: true, BlockingCountKnown: true, BlockingCount: 8},
-			b:    CandidateSnapshot{AllApprovedItemsPass: false, BlockingCountKnown: true, BlockingCount: 0},
+			name: "more approved items pass before fewer blockers",
+			a:    CandidateSnapshot{PassedItems: 3, TotalItems: 3, AllApprovedItemsPass: true, BlockingCountKnown: true, BlockingCount: 8},
+			b:    CandidateSnapshot{PassedItems: 2, TotalItems: 3, BlockingCountKnown: true, BlockingCount: 0},
+			want: true,
+		},
+		{
+			name: "same passing count proceeds to blockers",
+			a:    CandidateSnapshot{PassedItems: 1, TotalItems: 2, BlockingCountKnown: true, BlockingCount: 0},
+			b:    CandidateSnapshot{PassedItems: 1, TotalItems: 1, AllApprovedItemsPass: true, BlockingCountKnown: true, BlockingCount: 1},
 			want: true,
 		},
 		{
@@ -52,9 +58,15 @@ func TestRankingUsesApprovedCompletionThenBlockersDiffAndRank(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "earlier rank",
-			a:    CandidateSnapshot{BlockingCountKnown: true, DiffLines: 5, Rank: 1},
-			b:    CandidateSnapshot{BlockingCountKnown: true, DiffLines: 5, Rank: 2},
+			name: "earlier rung rank",
+			a:    CandidateSnapshot{BlockingCountKnown: true, DiffLines: 5, Rank: 1, AttemptOrder: 2},
+			b:    CandidateSnapshot{BlockingCountKnown: true, DiffLines: 5, Rank: 2, AttemptOrder: 1},
+			want: true,
+		},
+		{
+			name: "earlier stable attempt within rung",
+			a:    CandidateSnapshot{BlockingCountKnown: true, DiffLines: 5, Rank: 1, AttemptOrder: 1},
+			b:    CandidateSnapshot{BlockingCountKnown: true, DiffLines: 5, Rank: 1, AttemptOrder: 2},
 			want: true,
 		},
 	}
@@ -74,8 +86,8 @@ func TestSelectKeepsPerRungAndBestUnverifiedCapSnapshots(t *testing.T) {
 	longDiff := []byte("diff --git a/large b/large\n--- a/large\n+++ b/large\n@@ -1 +1,2 @@\n-old\n+new\n+extra\n")
 	shortDiff := []byte("diff --git a/small b/small\n+new\n")
 	input := []Candidate{
-		{Rung: "R2", Rank: 2, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R2", Diff: shortDiff},
-		{Rung: "R1", Rank: 1, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R1", Diff: longDiff, SnapshotReason: repair.ReasonBudget},
+		{Rung: "R2", Rank: 2, AttemptOrder: 2, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R2", Diff: shortDiff},
+		{Rung: "R1", Rank: 1, AttemptOrder: 1, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R1", Diff: longDiff, SnapshotReason: repair.ReasonBudget},
 	}
 
 	report, err := Select(input)
@@ -93,6 +105,9 @@ func TestSelectKeepsPerRungAndBestUnverifiedCapSnapshots(t *testing.T) {
 	}
 	if report.Candidates[0].DiffPath != "candidate-R1.diff" || !report.Candidates[0].CapSnapshot || report.Candidates[0].SnapshotReason != string(repair.ReasonBudget) {
 		t.Fatalf("cap candidate snapshot was lost: %+v", report.Candidates[0])
+	}
+	if report.Candidates[0].DiffLines != 3 || report.Candidates[1].DiffLines != 1 {
+		t.Fatalf("diff line metrics = R1:%d R2:%d, want changed lines excluding headers", report.Candidates[0].DiffLines, report.Candidates[1].DiffLines)
 	}
 	if report.Demoted || report.AdvisoryItems == nil || len(report.AdvisoryItems) != 0 || report.AuditMode != AuditModeObservational {
 		t.Fatalf("report did not pin observational policy fields: %+v", report)
@@ -144,16 +159,22 @@ func TestCandidateRefAndDiffNameValidateRungIdentity(t *testing.T) {
 	}
 }
 
-func TestSelectRejectsDuplicateAttemptRanksAndNoCandidates(t *testing.T) {
+func TestSelectRejectsDuplicateAttemptOrdersAndNoCandidates(t *testing.T) {
 	if _, err := Select(nil); !errors.Is(err, ErrNoCandidates) {
 		t.Fatalf("empty selection error = %v", err)
 	}
 	_, err := Select([]Candidate{
-		{Rung: "R1", Rank: 1},
-		{Rung: "R2", Rank: 1},
+		{Rung: "R1", Rank: 1, AttemptOrder: 1},
+		{Rung: "R2", Rank: 2, AttemptOrder: 1},
 	})
 	if !errors.Is(err, ErrInvalidCandidate) {
-		t.Fatalf("duplicate rank error = %v", err)
+		t.Fatalf("duplicate attempt order error = %v", err)
+	}
+	if _, err := Select([]Candidate{
+		{Rung: "R1", Rank: 1, AttemptOrder: 1},
+		{Rung: "R1-2", Rank: 1, AttemptOrder: 2},
+	}); err != nil {
+		t.Fatalf("repeated rung attempts with distinct stable order were rejected: %v", err)
 	}
 }
 
@@ -165,8 +186,8 @@ func TestSelectUsesGateObservationsAndIgnoresAuditTiming(t *testing.T) {
 	}
 
 	candidates := []Candidate{
-		{Rung: "R1", Rank: 1, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R1", Diff: []byte("small\n"), Gate: partial},
-		{Rung: "R2", Rank: 2, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R2", Diff: []byte("larger\nextra\n"), Gate: allPass},
+		{Rung: "R1", Rank: 1, AttemptOrder: 1, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R1", Diff: []byte("small\n"), Gate: partial},
+		{Rung: "R2", Rank: 2, AttemptOrder: 2, Ref: "refs/kogen/candidates/0123456789abcdef0123456789abcdef/R2", Diff: []byte("larger\nextra\n"), Gate: allPass},
 	}
 	before, err := Select(candidates)
 	if err != nil {

@@ -32,11 +32,13 @@ var (
 // gate count. SnapshotReason is copied from the rung controller so cap-time
 // output remains available to the report.
 //
-// Rank is the stable attempt order assigned by the orchestrator. It is not
-// derived from completion or audit timing.
+// Rank is the one-based recipe rung index. AttemptOrder is the stable order
+// assigned when an attempt starts; it is not derived from completion or audit
+// timing and breaks ties between repeated attempts.
 type Candidate struct {
 	Rung           string
 	Rank           int
+	AttemptOrder   int
 	Ref            string
 	Diff           []byte
 	Gate           *gate.GateReport
@@ -46,10 +48,11 @@ type Candidate struct {
 // CandidateSnapshot is a detached record of the candidate and its observed
 // gate state. Diff is kept for the caller to publish as a per-rung artifact
 // and is omitted from JSON reports; DiffPath is the corresponding run-relative
-// artifact name. DiffLines is the total line count of the captured diff.
+// artifact name. DiffLines counts added plus removed implementation lines.
 type CandidateSnapshot struct {
 	Rung                 string       `json:"rung"`
 	Rank                 int          `json:"rank"`
+	AttemptOrder         int          `json:"attempt_order"`
 	Ref                  string       `json:"ref,omitempty"`
 	DiffPath             string       `json:"diff_path"`
 	Diff                 []byte       `json:"-"`
@@ -69,6 +72,7 @@ type CandidateSnapshot struct {
 type CandidateSummary struct {
 	Rung                 string       `json:"rung"`
 	Rank                 int          `json:"rank"`
+	AttemptOrder         int          `json:"attempt_order"`
 	Ref                  string       `json:"ref,omitempty"`
 	DiffPath             string       `json:"diff_path"`
 	DiffLines            int          `json:"diff_lines"`
@@ -99,17 +103,18 @@ type Report struct {
 	AdvisoryItems  []string            `json:"advisory_items"`
 }
 
-// Select snapshots all supplied rung outputs and orders them by: all approved
-// acceptance items pass, fewer blocking observations, smaller unified diff,
-// then earlier stable rank. Audit advice is not an input and cannot change the
-// winner, score, candidate references, or captured diff bytes.
+// Select snapshots all supplied rung outputs and orders them by: most approved
+// acceptance items passing, fewer blocking observations, fewer added/removed
+// implementation lines, then earlier rung and stable attempt order. Audit
+// advice is not an input and cannot change the winner, score, candidate
+// references, or captured diff bytes.
 func Select(candidates []Candidate) (Report, error) {
 	if len(candidates) == 0 {
 		return Report{}, ErrNoCandidates
 	}
 
 	snapshots := make([]CandidateSnapshot, 0, len(candidates))
-	seenRanks := make(map[int]struct{}, len(candidates))
+	seenOrders := make(map[int]struct{}, len(candidates))
 	seenRungs := make(map[string]struct{}, len(candidates))
 	totalItems := -1
 	for _, candidate := range candidates {
@@ -117,13 +122,13 @@ func Select(candidates []Candidate) (Report, error) {
 		if err != nil {
 			return Report{}, err
 		}
-		if _, exists := seenRanks[candidate.Rank]; exists {
-			return Report{}, fmt.Errorf("%w: duplicate rank %d", ErrInvalidCandidate, candidate.Rank)
+		if _, exists := seenOrders[candidate.AttemptOrder]; exists {
+			return Report{}, fmt.Errorf("%w: duplicate attempt order %d", ErrInvalidCandidate, candidate.AttemptOrder)
 		}
 		if _, exists := seenRungs[candidate.Rung]; exists {
 			return Report{}, fmt.Errorf("%w: duplicate rung %q", ErrInvalidCandidate, candidate.Rung)
 		}
-		seenRanks[candidate.Rank] = struct{}{}
+		seenOrders[candidate.AttemptOrder] = struct{}{}
 		seenRungs[candidate.Rung] = struct{}{}
 		if candidate.Gate != nil {
 			counts := candidate.Gate.Counts()
@@ -138,10 +143,15 @@ func Select(candidates []Candidate) (Report, error) {
 		snapshots = append(snapshots, snapshot)
 	}
 
-	// Preserve artifact order by actual attempt rank, independent of completion
-	// order. Ranking below is a separate stable score order.
+	// Preserve artifact order by rung and stable attempt order, independent of
+	// completion order. Ranking below is a separate score order.
 	artifacts := cloneSnapshots(snapshots)
-	sort.Slice(artifacts, func(i, j int) bool { return artifacts[i].Rank < artifacts[j].Rank })
+	sort.Slice(artifacts, func(i, j int) bool {
+		if artifacts[i].Rank != artifacts[j].Rank {
+			return artifacts[i].Rank < artifacts[j].Rank
+		}
+		return artifacts[i].AttemptOrder < artifacts[j].AttemptOrder
+	})
 
 	ranked := cloneSnapshots(snapshots)
 	sort.Slice(ranked, func(i, j int) bool { return better(ranked[i], ranked[j]) })
@@ -229,8 +239,8 @@ func (r Report) Event(ts int64) (journal.RunEvent, error) {
 }
 
 func snapshotCandidate(candidate Candidate) (CandidateSnapshot, error) {
-	if !validRungName(candidate.Rung) || candidate.Rank < 1 {
-		return CandidateSnapshot{}, fmt.Errorf("%w: rung and positive rank are required", ErrInvalidCandidate)
+	if !validRungName(candidate.Rung) || candidate.Rank < 1 || candidate.AttemptOrder < 1 {
+		return CandidateSnapshot{}, fmt.Errorf("%w: rung, positive rank, and positive attempt order are required", ErrInvalidCandidate)
 	}
 	if candidate.Ref != "" && !validCandidateRef(candidate.Ref) {
 		return CandidateSnapshot{}, fmt.Errorf("%w: candidate ref is malformed", ErrInvalidCandidate)
@@ -242,10 +252,11 @@ func snapshotCandidate(candidate Candidate) (CandidateSnapshot, error) {
 	snapshot := CandidateSnapshot{
 		Rung:           candidate.Rung,
 		Rank:           candidate.Rank,
+		AttemptOrder:   candidate.AttemptOrder,
 		Ref:            candidate.Ref,
 		DiffPath:       filename,
 		Diff:           bytes.Clone(candidate.Diff),
-		DiffLines:      lineCount(candidate.Diff),
+		DiffLines:      changedLineCount(candidate.Diff),
 		Verdict:        gate.VerdictUnverified,
 		CapSnapshot:    isCapReason(candidate.SnapshotReason),
 		SnapshotReason: string(candidate.SnapshotReason),
@@ -289,8 +300,8 @@ func validCandidateRef(ref string) bool {
 }
 
 func better(a, b CandidateSnapshot) bool {
-	if a.AllApprovedItemsPass != b.AllApprovedItemsPass {
-		return a.AllApprovedItemsPass
+	if a.PassedItems != b.PassedItems {
+		return a.PassedItems > b.PassedItems
 	}
 	if a.BlockingCountKnown != b.BlockingCountKnown {
 		return a.BlockingCountKnown
@@ -301,18 +312,24 @@ func better(a, b CandidateSnapshot) bool {
 	if a.DiffLines != b.DiffLines {
 		return a.DiffLines < b.DiffLines
 	}
-	return a.Rank < b.Rank
+	if a.Rank != b.Rank {
+		return a.Rank < b.Rank
+	}
+	return a.AttemptOrder < b.AttemptOrder
 }
 
-func lineCount(diff []byte) int {
-	if len(diff) == 0 {
-		return 0
+func changedLineCount(diff []byte) int {
+	count := 0
+	for _, line := range bytes.Split(diff, []byte{'\n'}) {
+		if len(line) == 0 {
+			continue
+		}
+		if (line[0] == '+' && !bytes.HasPrefix(line, []byte("+++"))) ||
+			(line[0] == '-' && !bytes.HasPrefix(line, []byte("---"))) {
+			count++
+		}
 	}
-	lines := bytes.Count(diff, []byte{'\n'})
-	if diff[len(diff)-1] != '\n' {
-		lines++
-	}
-	return lines
+	return count
 }
 
 func isCapReason(reason repair.Reason) bool {
@@ -327,7 +344,7 @@ func isCapReason(reason repair.Reason) bool {
 
 func summarize(candidate CandidateSnapshot) CandidateSummary {
 	return CandidateSummary{
-		Rung: candidate.Rung, Rank: candidate.Rank, Ref: candidate.Ref,
+		Rung: candidate.Rung, Rank: candidate.Rank, AttemptOrder: candidate.AttemptOrder, Ref: candidate.Ref,
 		DiffPath: candidate.DiffPath, DiffLines: candidate.DiffLines,
 		PassedItems: candidate.PassedItems, TotalItems: candidate.TotalItems,
 		AllApprovedItemsPass: candidate.AllApprovedItemsPass,
