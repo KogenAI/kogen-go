@@ -1,0 +1,17 @@
+{
+  "package": "32-jwt-jwks-verification",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/32-jwt-jwks-verification\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-32-provider-21-login-flow' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "git diff --check"
+  ],
+  "gaps": [
+    "I3 OAuth CLI behavior is not closed: the retained v1.2 case failed at step 1 because kogen provider list exits 2 while command routes are unwired; no OAuth/JWT exchange was reached. Results: /Users/almirsarajcic/cx/kgo/evidence/32-jwt-jwks-verification/results.jsonl",
+    "No production OAuth adapter currently consumes internal/auth/jwt; package 33 integration must wire it and rerun the selected behavior case after integration.",
+    "The shared coherent v1.3 Quint/conformance cohort and frozen v1.3 IDs are unavailable. Planned D-* fixture labels are not v1.2 cases. R(slice) is not run; it needs the shared scratch cohort, seeds 17/23/41, 500 traces x 25 steps per seed, and full observations against a same-revision private binary.",
+    "Linux, race/custody, optional-runtime, production replay, and live provider comparison evidence remain unavailable."
+  ],
+  "conflicts": []
+}
