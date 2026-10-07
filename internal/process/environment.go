@@ -138,12 +138,12 @@ func BuildChildEnvironment(ctx context.Context, runner contract.ProcessRunner, r
 	return child, nil
 }
 
-// SetupKeyEnvironment removes only run-specific mise and temporary paths.
-// Setup cache identity still includes the remaining constructed child env.
+// SetupKeyEnvironment removes the three mise state/trust paths excluded by
+// §2.9. TMPDIR remains part of child_env in the v1.3 draft's literal wording.
 func SetupKeyEnvironment(environment Environment) Environment {
 	result := make(Environment, len(environment))
 	for key, value := range environment {
-		if key == "TMPDIR" || key == "MISE_STATE_DIR" || key == "MISE_CACHE_DIR" || key == "MISE_TRUSTED_CONFIG_PATHS" {
+		if key == "MISE_STATE_DIR" || key == "MISE_CACHE_DIR" || key == "MISE_TRUSTED_CONFIG_PATHS" {
 			continue
 		}
 		result[key] = value

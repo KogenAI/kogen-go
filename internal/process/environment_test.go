@@ -297,7 +297,7 @@ func TestBuildChildEnvironmentWithoutMiseAndGitBaseSplit(t *testing.T) {
 	}
 }
 
-func TestSetupKeyEnvironmentExcludesOnlyRunSpecificPaths(t *testing.T) {
+func TestSetupKeyEnvironmentExcludesMiseStatePathsButKeepsTMPDIR(t *testing.T) {
 	first := Environment{
 		"PATH": "/tools/bin", "NODE_OPTIONS": "--conditions=production",
 		"TMPDIR": "/run/one/tmp", "MISE_STATE_DIR": "/run/one/mise-state",
@@ -308,9 +308,10 @@ func TestSetupKeyEnvironmentExcludesOnlyRunSpecificPaths(t *testing.T) {
 		"TMPDIR": "/run/two/tmp", "MISE_STATE_DIR": "/run/two/mise-state",
 		"MISE_CACHE_DIR": "/run/two/mise-cache", "MISE_TRUSTED_CONFIG_PATHS": "/project:/workspace",
 	}
-	want := Environment{"PATH": "/tools/bin", "NODE_OPTIONS": "--conditions=production"}
-	if !reflect.DeepEqual(SetupKeyEnvironment(first), want) || !reflect.DeepEqual(SetupKeyEnvironment(second), want) {
-		t.Fatalf("run paths changed setup-key env: %#v / %#v", SetupKeyEnvironment(first), SetupKeyEnvironment(second))
+	wantFirst := Environment{"PATH": "/tools/bin", "NODE_OPTIONS": "--conditions=production", "TMPDIR": "/run/one/tmp"}
+	wantSecond := Environment{"PATH": "/tools/bin", "NODE_OPTIONS": "--conditions=production", "TMPDIR": "/run/two/tmp"}
+	if !reflect.DeepEqual(SetupKeyEnvironment(first), wantFirst) || !reflect.DeepEqual(SetupKeyEnvironment(second), wantSecond) {
+		t.Fatalf("unexpected setup-key env: %#v / %#v", SetupKeyEnvironment(first), SetupKeyEnvironment(second))
 	}
 	second["NODE_OPTIONS"] = "--conditions=development"
 	if reflect.DeepEqual(SetupKeyEnvironment(first), SetupKeyEnvironment(second)) {
