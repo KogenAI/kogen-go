@@ -1,0 +1,20 @@
+{
+  "package": "34-refresh-concurrency",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' go test -count=1 -parallel=2 ./internal/auth/refresh",
+    "GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' go vet ./internal/auth/refresh",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/34-refresh-concurrency\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-30,provider-10,provider-22' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I2/I3 provider route and real refresh HTTP callback wiring; I3 owns the selected CLI behavior cases.",
+    "End-to-end proof that injected auth is reread per request and bypasses refresh.",
+    "The selected v1.2 cases ran on final source revision d68039b and all failed at the public CLI bootstrap before refresh was reached; see absolute results JSONL /Users/almirsarajcic/cx/kgo/evidence/34-refresh-concurrency/results.jsonl. No behavior pass is claimed.",
+    "R(slice) awaits a shared frozen coherent v1.3 Quint cohort and manifest; required replay is the spec phase then 500 traces by 25 steps for seeds 17, 23, and 41 against the same-revision private binary.",
+    "Planned D-* fixtures need shared frozen v1.3 case IDs and are not v1.2 cases.",
+    "Linux runtime, race-detector, optional-runtime, and live comparison evidence remain unavailable."
+  ],
+  "conflicts": []
+}
