@@ -175,8 +175,48 @@ func TestEmptyAndTimestampedOwnerStalenessAreRecovered(t *testing.T) {
 	}
 }
 
+func TestStaleOwnerTakeoverDoesNotLetOldOwnerDeleteReplacement(t *testing.T) {
+	home := t.TempDir()
+	store, err := vault.Open(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer store.Close()
+	first, err := Acquire(context.Background(), home, "chatgpt", "default")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ownerPath := filepath.Join(home, ".kogen", "locks", "chatgpt-default.lock", ownerFileName)
+	contents, err := os.ReadFile(ownerPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fields := strings.Fields(string(contents))
+	if len(fields) != 3 {
+		t.Fatalf("owner record has %d fields, want pid/ms/token", len(fields))
+	}
+	if err := os.WriteFile(ownerPath, []byte(fmt.Sprintf("%s %d %s\n", fields[0], time.Now().Add(-2*time.Minute).UnixMilli(), fields[2])), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	second, err := Acquire(context.Background(), home, "chatgpt", "default")
+	if err != nil {
+		_ = first.Release()
+		t.Fatalf("second owner did not take over the stale directory: %v", err)
+	}
+	if err := first.Release(); !errors.Is(err, ErrLockOwnership) {
+		t.Fatalf("stale first owner release error = %v, want ErrLockOwnership", err)
+	}
+	lockPath := filepath.Join(home, ".kogen", "locks", "chatgpt-default.lock")
+	if _, err := os.Stat(lockPath); err != nil {
+		t.Fatalf("old owner removed the replacement lock: %v", err)
+	}
+	if err := second.Release(); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestLockWaitIsBoundedAndContextCancelable(t *testing.T) {
-	t.Setenv("KOGEN_TIME_SCALE", "0.00001") // Scaled 90 seconds is floored to 1 ms.
+	t.Setenv("KOGEN_TIME_SCALE", "0.0001") // Scaled wait/stale limits are 9 ms/6 ms.
 	home := t.TempDir()
 	store, err := vault.Open(home)
 	if err != nil {
@@ -187,7 +227,18 @@ func TestLockWaitIsBoundedAndContextCancelable(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer owner.Release()
+	ownerPath := filepath.Join(home, ".kogen", "locks", "chatgpt-default.lock", ownerFileName)
+	contents, err := os.ReadFile(ownerPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fields := strings.Fields(string(contents))
+	if len(fields) != 3 {
+		t.Fatalf("owner record has %d fields, want pid/ms/token", len(fields))
+	}
+	if err := os.WriteFile(ownerPath, []byte(fmt.Sprintf("%s %d %s\n", fields[0], time.Now().Add(time.Hour).UnixMilli(), fields[2])), 0o600); err != nil {
+		t.Fatal(err)
+	}
 	started := time.Now()
 	_, err = Acquire(context.Background(), home, "chatgpt", "default")
 	var timeout *LockTimeoutError
@@ -197,10 +248,18 @@ func TestLockWaitIsBoundedAndContextCancelable(t *testing.T) {
 	if elapsed := time.Since(started); elapsed > time.Second {
 		t.Fatalf("scaled lock wait took %s, expected bounded wait under one second", elapsed)
 	}
+	if err := owner.Release(); err != nil {
+		t.Fatal(err)
+	}
 
+	t.Setenv("KOGEN_TIME_SCALE", "1")
+	owner, err = Acquire(context.Background(), home, "chatgpt", "default")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer owner.Release()
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Millisecond)
 	defer cancel()
-	t.Setenv("KOGEN_TIME_SCALE", "1")
 	_, err = Acquire(ctx, home, "chatgpt", "default")
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("canceled Acquire error = %v, want context deadline", err)

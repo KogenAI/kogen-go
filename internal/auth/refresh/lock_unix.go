@@ -125,6 +125,9 @@ func (l *Lock) Release() error {
 	}
 	l.released = true
 	defer l.closeFDs()
+	if err := acquireOwnerFile(context.Background(), l.ownerFD, time.Now().Add(time.Second)); err != nil {
+		return lockFailure("could not release credential lock")
+	}
 
 	contents, err := readOwner(l.ownerFD)
 	if err != nil || ownerToken(contents) != l.token {
@@ -214,6 +217,17 @@ func initializeLock(ctx context.Context, parentFD int, name string, deadline tim
 	if err := writeOwner(ownerFD, owner); err != nil || unix.Fsync(dirFD) != nil {
 		cleanupOwnedDirectory(parentFD, name, dirFD, ownerFD)
 		_ = unix.Flock(ownerFD, unix.LOCK_UN)
+		_ = unix.Close(ownerFD)
+		_ = unix.Close(dirFD)
+		return nil, lockFailure("could not publish credential lock")
+	}
+	if !pathIsSameDirectory(parentFD, name, dirFD) {
+		_ = unix.Flock(ownerFD, unix.LOCK_UN)
+		_ = unix.Close(ownerFD)
+		_ = unix.Close(dirFD)
+		return nil, errLockPathChanged
+	}
+	if err := unix.Flock(ownerFD, unix.LOCK_UN); err != nil {
 		_ = unix.Close(ownerFD)
 		_ = unix.Close(dirFD)
 		return nil, lockFailure("could not publish credential lock")
