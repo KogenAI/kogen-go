@@ -33,7 +33,8 @@ func TestCreateUsesNoHardlinksEmptyTemplateAndDetachedBase(t *testing.T) {
 		Timeout:          30 * time.Second,
 		StdoutLimit:      1 << 20,
 	}
-	factory := Factory{Git: gitio.NewWorkspace(process.Supervisor{}), Policy: policy}
+	git := &recordingGit{inner: gitio.NewWorkspace(process.Supervisor{})}
+	factory := Factory{Git: git, Policy: policy}
 	created, err := factory.Create(context.Background(), CloneRequest{
 		Source: fixture.Checkout, WorkspacesDir: workspacesDir,
 		RunID: "0123456789abcdef0123456789abcdef", Rung: "R1", BaseCommit: baseID,
@@ -43,6 +44,9 @@ func TestCreateUsesNoHardlinksEmptyTemplateAndDetachedBase(t *testing.T) {
 	}
 	if created.BaseCommit != baseID || created.Rung != "R1" {
 		t.Fatalf("workspace identity = %#v", created)
+	}
+	if len(git.calls) == 0 || !containsArgs(git.calls[0], "--local", "--no-hardlinks", "--no-checkout", "--template=", "--") {
+		t.Fatalf("clone invocation is missing required isolation flags: %#v", git.calls)
 	}
 	if got := strings.TrimSpace(string(fixture.RunIn(t, created.Path, "rev-parse", "HEAD"))); got != base {
 		t.Fatalf("workspace HEAD = %q, want %q", got, base)
@@ -220,6 +224,29 @@ func TestInstallApprovedRejectsDigestAndUnsafeMetadataPaths(t *testing.T) {
 type scriptedProcessRunner struct {
 	results []contract.ProcessResult
 	specs   []contract.ProcessSpec
+}
+
+type recordingGit struct {
+	inner contract.GitPort
+	calls [][]string
+}
+
+func (g *recordingGit) Exec(ctx context.Context, args []string, stdin []byte, policy contract.GitPolicy) (contract.GitResult, error) {
+	g.calls = append(g.calls, append([]string(nil), args...))
+	return g.inner.Exec(ctx, args, stdin, policy)
+}
+
+func containsArgs(args []string, required ...string) bool {
+	set := make(map[string]bool, len(args))
+	for _, arg := range args {
+		set[arg] = true
+	}
+	for _, arg := range required {
+		if !set[arg] {
+			return false
+		}
+	}
+	return true
 }
 
 func (r *scriptedProcessRunner) Run(_ context.Context, spec contract.ProcessSpec) (contract.ProcessResult, error) {
