@@ -1,0 +1,23 @@
+{
+  "package": "65-intent-approve-replay",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 go test -count=1 -p=2 -parallel=2 ./internal/xspec/intentapprove",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/65-intent-approve-replay\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'approval-02,approval-03,approval-04,approval-22,approval-23,approval-24,state-08,state-29,v1.2-02-approval-hash-intent-and-test-bytes' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Frozen v1.2 acceptance command resolved 9 IDs / 14 instances; all 14 failed before package behavior because cmd/kogen is still routed to app.Bootstrap. Full results are preserved at /Users/almirsarajcic/cx/kgo/evidence/65-intent-approve-replay/results.jsonl; the command was not retried.",
+    "R(intent) and R(approve) were not run: no coherent migrated/frozen v1.3 Quint cohort or private kogen-xspec factory routing is available. Seeds 17, 23 and 41 have no results.",
+    "I7 integration routing and behavior acceptance remain open; rerun assigned cases on the integrated revision and preserve the results.",
+    "Planned D-* fixtures are unavailable v1.2 cases; await shared frozen v1.3 IDs.",
+    "Linux, optional-runtime, custody stress/race and live comparison evidence is unavailable. No live provider or account access was used."
+  ],
+  "conflicts": [
+    "Draft input gap: quint/slices/intent/spec/intent.qnt:285-287 independently chooses prefixOk while fixing hash symbol abcd1234; the adapter ignores prefixOk and requires a claim symbol that can be checked against actual bytes.",
+    "Draft input gap: quint/slices/approve/spec/approve.qnt:29,185-186 supplies stableBeforeCas=false and newSha8 without replacement bytes; the adapter refuses a late-write claim without lateIntentBytes or lateAcceptanceBytes.",
+    "Draft input gap: quint/slices/approve/spec/approve.qnt:31,185 can set byBad without the invalid argument bytes; the adapter requires an actual multiline by value.",
+    "Draft input gap: quint/slices/approve/spec/approve.qnt:190-191 lets feas=PROVEN stand in for a witness, while spec/02-formats.md:95,102 requires a Witness record and commit at refs/kogen/witness/<slug>; the adapter refuses model text as proof."
+  ]
+}
