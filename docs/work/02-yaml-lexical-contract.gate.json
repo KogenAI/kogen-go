@@ -1,0 +1,17 @@
+{
+  "package": "02-yaml-lexical-contract",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/yamlmini",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'state-01,v1.2-128-format-05' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/02-yaml-lexical-contract/work\" --out \"$HOME/cx/kgo/evidence/02-yaml-lexical-contract/results.jsonl\""
+  ],
+  "gaps": [
+    "I1 behavior closure: state-01 and v1.2-128-format-05 returned the unwired CLI bootstrap response in all 44 instances; rerun after command routing is integrated. Results: /Users/almirsarajcic/cx/kgo/evidence/02-yaml-lexical-contract/results.jsonl",
+    "Package 03 must integrate block and flow structure checks with the shared first-error candidate ordering.",
+    "No shared frozen v1.3 replacement IDs are available; planned D-* fixtures are not v1.2 cases.",
+    "R(slice) replay, Linux parity, optional runtime, and live comparison evidence remain for their named integration/release gates."
+  ],
+  "conflicts": []
+}
