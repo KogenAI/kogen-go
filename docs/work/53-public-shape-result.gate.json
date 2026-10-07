@@ -1,0 +1,18 @@
+{
+  "package": "53-public-shape-result",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/shape/run",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/53-public-shape-result\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'format-07,format-08,format-09,provider-24,provider-26,shape-01,shape-03,shape-04,shape-05,shape-06,shape-07,shape-08,shape-09,shape-10,shape-11,shape-12,shape-13,shape-15,shape-16,shape-17,shape-18,shape-21,shape-23,shape-24,shape-25,v1.2-118-provider-25,v1.2-33-shape-json-is-unsupported' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I5 must wire the public CLI route, provider/session transport, resolved roles, rooted tools, validation, and output to this component; the frozen v1.2 run stopped at the bootstrap route with 0/27 cases and 0/57 instances passed.",
+    "Rerun the assigned compatible behavior cases on the integrated revision and retain the absolute results JSONL path in its behavior receipt.",
+    "D-SHAPE-01–06 need literal IDs from the shared frozen v1.3 suite; planned fixture labels are not v1.2 cases.",
+    "No coherent migrated v1.3 Shape Quint cohort was available for the required R(slice) scratch replay.",
+    "Linux, optional-runtime, and live comparison evidence remain external gates."
+  ],
+  "conflicts": []
+}
