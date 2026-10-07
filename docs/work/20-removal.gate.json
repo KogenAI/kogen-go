@@ -1,0 +1,19 @@
+{
+  "package": "20-removal",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 -count=1 ./internal/approval/remove",
+    "make build",
+    "./bin/kogen version",
+    "git diff --cached --check",
+    "python3 tools/package-gate.py 20-removal"
+  ],
+  "gaps": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check was not run because /Users/almirsarajcic/cx/kgo/gates.lock already existed and could not be acquired; this worker did not alter it.",
+    "The assigned approval-22, approval-23, approval-24 frozen v1.2 command was not run under the shared lock. No cases or expanded instances are claimed as passing, and no results JSONL path exists.",
+    "I1 must wire the public draft/force removal handler; I3 must wire the live active-Build removal case and close the approval → queue → provider path.",
+    "R(intent) for package 65 requires a same-revision production adapter and the shared coherent migrated v1.3 cohort; no trace results are claimed for seeds 17, 23, or 41.",
+    "Planned D-* fixtures need shared frozen v1.3 IDs and migrated observations. Linux, optional-runtime, and live provider/account evidence remain open."
+  ],
+  "conflicts": []
+}
