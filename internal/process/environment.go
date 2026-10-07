@@ -341,7 +341,9 @@ func trustedConfigPaths(sources ...string) string {
 			}
 		}
 	}
-	sort.Strings(unique)
+	// Preserve source order: inherited paths come first, followed by mise's
+	// paths and then Kogen's project and workspace roots. Sorting absolute paths
+	// would let a temp-rooted project change that precedence across hosts.
 	return strings.Join(unique, string(os.PathListSeparator))
 }
 

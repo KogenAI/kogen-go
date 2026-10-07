@@ -190,6 +190,21 @@ func TestBuildChildEnvironmentExactAllowlistMiseAndProjectPrecedence(t *testing.
 	}
 }
 
+func TestTrustedConfigPathsPreservesPrecedenceWhenTMPDIRSortsFirst(t *testing.T) {
+	tmpDir := "/dev/shm/kogen-run"
+	if tmpDir >= "/existing/trusted" {
+		t.Fatalf("test TMPDIR %q must sort before inherited trusted paths", tmpDir)
+	}
+	project := filepath.Join(tmpDir, "project")
+	workspace := filepath.Join(tmpDir, "workspace")
+
+	got := trustedConfigPaths("/existing/trusted", "/mise/trusted", project, workspace)
+	want := strings.Join([]string{"/existing/trusted", "/mise/trusted", project, workspace}, string(os.PathListSeparator))
+	if got != want {
+		t.Fatalf("trusted config paths = %q, want source precedence %q", got, want)
+	}
+}
+
 func basePathFiltered(miseBin, otherBin string) string {
 	return strings.Join([]string{miseBin, otherBin}, string(os.PathListSeparator))
 }

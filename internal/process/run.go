@@ -191,7 +191,7 @@ func (Supervisor) Run(ctx context.Context, spec contract.ProcessSpec) (contract.
 		waited = <-waitDone
 	}
 	_ = stdinWrite.Close()
-	if inputErr := <-inputDone; inputErr != nil && !errors.Is(inputErr, syscall.EPIPE) {
+	if inputErr := <-inputDone; inputErr != nil && !isClosedChildStdin(inputErr) {
 		// A child that exited before consuming all stdin is a valid observation;
 		// other input errors mean the requested invocation was not delivered.
 		if waited.err == nil && cancelErr == nil && !timedOut {
@@ -220,6 +220,10 @@ func (Supervisor) Run(ctx context.Context, spec contract.ProcessSpec) (contract.
 		return result, cancelErr
 	}
 	return result, nil
+}
+
+func isClosedChildStdin(err error) bool {
+	return errors.Is(err, syscall.EPIPE) || errors.Is(err, os.ErrClosed) || errors.Is(err, io.ErrClosedPipe)
 }
 
 func drainOutput(pipe *os.File, done <-chan error) error {

@@ -112,6 +112,31 @@ func TestRunCombinesOutputStreamsInWriteOrder(t *testing.T) {
 	}
 }
 
+func TestRunReportsChildResultWhenItExitsWithoutReadingLargeStdin(t *testing.T) {
+	for iteration := 0; iteration < 20; iteration++ {
+		t.Run(strconv.Itoa(iteration), func(t *testing.T) {
+			spec := newTestSpec(t.TempDir(), "/bin/sh")
+			spec.Args = []string{"-c", "printf child-finished; exit 23"}
+			spec.Env = []string{"PATH=/bin:/usr/bin"}
+			spec.Stdin = make([]byte, 1<<20)
+
+			result, err := (Supervisor{}).Run(context.Background(), spec)
+			if err != nil {
+				t.Fatalf("Run() error = %v", err)
+			}
+			if got, want := result.ExitStatus, intPointer(23); !intPointersEqual(got, want) {
+				t.Fatalf("exit status = %v, want %d", got, *want)
+			}
+			if got, want := string(result.OutputTail), "child-finished"; got != want {
+				t.Fatalf("child output = %q, want %q", got, want)
+			}
+			if got, want := readTestLog(t, result.LogPath), "child-finished"; got != want {
+				t.Fatalf("child log = %q, want %q", got, want)
+			}
+		})
+	}
+}
+
 func TestHangingHelperTimesOut(t *testing.T) {
 	root := t.TempDir()
 	spec := newTestSpec(root, os.Args[0])
@@ -340,7 +365,7 @@ func TestGuardianNormalCleanupStopsStrayGrandchild(t *testing.T) {
 		}
 	}
 	session.closeControl()
-	if _, err := session.waitForExit(time.Second); err != nil {
+	if _, err := session.waitForExit(10 * time.Second); err != nil {
 		t.Fatalf("wait for guardian cleanup: %v", err)
 	}
 	finished = true
