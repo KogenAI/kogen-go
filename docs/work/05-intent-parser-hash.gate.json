@@ -1,0 +1,16 @@
+{
+  "package": "05-intent-parser-hash",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH $HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case state-04,state-07,state-08,v1.2-02-approval-hash-intent-and-test-bytes --jobs 2 --time-scale 0.02 --workdir /Users/almirsarajcic/cx/kgo/evidence/05-intent-parser-hash/work --out /Users/almirsarajcic/cx/kgo/evidence/05-intent-parser-hash/results.jsonl (exit 1; retained; 0/4 cases, 0/19 instances passed)"
+  ],
+  "gaps": [
+    "Public CLI intent approval/shape integration is unwired; rerun the selected frozen v1.2 cases after integration on the changed revision.",
+    "R(intent) needs the shared coherent migrated Quint cohort in a scratch copy, spec, 500 traces x 25 steps for seeds 17, 23, and 41, and same-revision private-binary conformance with full observations.",
+    "Package 00 remains a required foundation handoff; planned D-* fixtures and v1.3-draft replacements need shared frozen IDs.",
+    "Linux, optional-runtime, and live-comparison evidence is unavailable."
+  ],
+  "conflicts": []
+}
