@@ -3,10 +3,11 @@
 ## Revision, source and scope
 
 - Worker branch: `kgo/67-landing-recovery-replay`; source base `351c657cdc1da3f10c3a3f2ed1cb4a1975bf2c01`.
+- Implementation commit: `64677d6f82a7208175ddec5d98b86dd65587d4b2`. This package changes only fixtures and documentation; application source is unchanged from the listed base.
 - Target: `kogen-spec` `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`, v1.3-draft. Reviewed `spec/03-build.md` §§3.9.2–3.10, `spec/02-formats.md` §§2.5.3/2.8, and `CHANGES-v1.3.md` §3.
 - Rust reference: `kogen-rs` `a402540b39cedc7f788472297add7ae2f8a6631a`; read the landing engine/rebase/repository paths, recovery project/replay, and xspec rebase/recovery decoders.
 - Host/toolchain: macOS 26.7.1 arm64; Go `1.27.1`, Git `2.54.0`, Python `3.14.7`, Node `24.21.0`, Quint `0.33.0`. The required pinned PATH was used.
-- CLI and private adapter were built together from this worktree with `make build`; build source was base revision `351c657` plus this task's uncommitted owned-file changes. SHA-256: `bin/kogen` `9482e354a9e961350d0044ce8c4401aa29045f6432fc3863ea663b882849ccd7`; `bin/kogen-xspec` `d1790fe83217a1dd91b347da31bbad98daeeb8d37dc9c9ac0534144f9eabebd8`.
+- CLI and private adapter were built together with `make build` from the application source in the implementation commit. SHA-256: `bin/kogen` `9482e354a9e961350d0044ce8c4401aa29045f6432fc3863ea663b882849ccd7`; `bin/kogen-xspec` `d1790fe83217a1dd91b347da31bbad98daeeb8d37dc9c9ac0534144f9eabebd8`.
 - Scope changed only `internal/xspec/landingrecovery/**` and this package's evidence/gate files. No shared contract, command registry, spec, suite, source oracle, golden, or external harness was changed.
 
 ## Implemented production effects
