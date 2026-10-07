@@ -1,0 +1,20 @@
+{
+  "package": "21-status-derivation",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/status/derive",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "git diff --check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/21-status-derivation\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'state-17,state-18,state-19,state-21,state-24,state-30,v1.2-132-state-23,v1.2-22-cli-25-status-overview,v1.2-23-cli-26-status-slug,v1.2-24-state-14-grok-account-row,v1.2-25-state-20-status-next,v1.2-26-state-22-status-next' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I1 public status/render wiring is absent; selected status conformance cases fail at the bootstrap route and are not behavior passes.",
+    "I3 live approval-to-queue-to-status closure remains open.",
+    "R(status) is deferred to package 66: shared Quint/harness working tree is not a coherent frozen cohort, and the Go xspec status adapter is unwired; seeds 17, 23, and 41 were not run.",
+    "Package 00 must freeze shared v1.3 status case IDs and migrated model/golden observations."
+  ],
+  "conflicts": [
+    "v1.2-132-state-23 expects the current Intent replacement to demote a slug with a reachable Kogen-Intent trailer to draft, and to queue it after reapproval. Draft spec §2.11 says current Intent bytes are not compared and a reused slug stays landed until the trailer is gone. The v1.2 assertion was not reached in this run because kogen status is unwired; implementation follows the draft clause."
+  ]
+}
