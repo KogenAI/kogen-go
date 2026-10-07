@@ -1,0 +1,18 @@
+{
+  "package": "55-exunit-adapter",
+  "accepted_gate": "component",
+  "commands": [
+    "make build",
+    "GOMAXPROCS=2 go test -count=1 -parallel=2 ./internal/acceptance/exunit",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "SUITE=$HOME/cx/kgo/inputs/conformance-v1.2 EVIDENCE=$HOME/cx/kgo/evidence/55-exunit-adapter; PYTHONDONTWRITEBYTECODE=1 PATH=$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH $SUITE/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2,exunit --case 'build-40,exunit-01,exunit-02,exunit-03,exunit-04,exunit-05,exunit-06,shape-16' --jobs 2 --time-scale 0.02 --workdir $EVIDENCE/work --out $EVIDENCE/results.jsonl",
+    "cd /Users/almirsarajcic/cx/kgo/evidence/55-exunit-adapter/runtime-workspace-02; KOGEN_LEDGER_REPORT=/Users/almirsarajcic/cx/kgo/evidence/55-exunit-adapter/runtime-run-02/ledger.jsonl KOGEN_INTENT_SLUG=greet mise exec -- elixir -e 'Code.require_file(\"/Users/almirsarajcic/cx/kgo/evidence/55-exunit-adapter/runtime-run-02/ledger_formatter.ex\")' -S mix test --formatter KogenLedgerFormatter --formatter ExUnit.CLIFormatter /Users/almirsarajcic/cx/kgo/evidence/55-exunit-adapter/runtime-workspace-02/test/acceptance/greet_test.exs"
+  ],
+  "gaps": [
+    "Frozen conformance cases build-40, exunit-01 through exunit-06, and shape-16 did not reach adapter behavior: the public CLI command routes are not wired. Retained results: /Users/almirsarajcic/cx/kgo/evidence/55-exunit-adapter/results.jsonl (0/8 cases, 0/9 instances).",
+    "H16/B40 and I5 fixture closure require the real Shape-to-approval-to-Build path to invoke this adapter.",
+    "I6 Linux parity and the complete optional-runtime matrix remain outstanding; direct runtime evidence is macOS only.",
+    "R(slice) remains unrun for seeds 17, 23, and 41 because a coherent shared migrated Quint cohort was unavailable."
+  ],
+  "conflicts": []
+}

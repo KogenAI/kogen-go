@@ -1,2 +1,2 @@
-// Package exunit is reserved for the Kogen acceptance/exunit implementation.
+// Package exunit implements the built-in ExUnit acceptance adapter.
 package exunit
