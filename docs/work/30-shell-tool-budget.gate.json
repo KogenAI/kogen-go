@@ -1,0 +1,19 @@
+{
+  "package": "30-shell-tool-budget",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 GOFLAGS='-mod=vendor -p=2' GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -count=1 -parallel=2 ./internal/provider/tools",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-118-provider-25,v1.2-121-custody-08,v1.2-31-provider-23-tool-result-budget,v1.2-43-build-08' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "I3 behavior acceptance remains open: the public approval/queue command route and production provider adapter are unwired. All four selected cases failed at approval before their tool assertions; retained results are at /Users/almirsarajcic/cx/kgo/evidence/30-shell-tool-budget/results.jsonl. Rerun after the integration source revision changes and preserve this run.",
+    "The coherent migrated v1.3 Quint cohort and shared frozen v1.3 IDs are unavailable. No D-* or R(slice) pass is claimed; no 500 x 25 traces for seeds 17, 23, and 41 were run.",
+    "Linux runtime parity, optional-runtime evidence, and live-comparison evidence were not run."
+  ],
+  "conflicts": [
+    "Historical provider-23-shell-tool-results expects exactly 10,000 characters from a 15,030-character shell result, including END-OF-OUTPUT, and expects [non-UTF-8 output tail, base64 encoded] before //5hYmM=. Current §4.9.3 requires the configured byte/token budget with a head/tail range notice and [non-UTF-8 output, base64 encoded] for the full payload. Its selected overlay replacement v1.2-31-provider-23-tool-result-budget failed before provider traffic, so this assertion was not exercised.",
+    "Historical build-08-empty-done-refused treats a text-only Done. reply as an empty completion claim; current §3.6 makes text-only replies progress and requires finish alone with {}. Its selected overlay replacement v1.2-43-build-08 failed before provider traffic, so this assertion was not exercised."
+  ]
+}
