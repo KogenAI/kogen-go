@@ -331,6 +331,9 @@ func validateInput(ctx context.Context, input Input, auditor *Auditor) error {
 		identity.Rung != input.Rung || identity.Epoch != ConversationEpoch {
 		return fmt.Errorf("%w: session identity does not match the resolved auditor role and rung", ErrInvalidInput)
 	}
+	if identity.SessionID != identity.CacheKey {
+		return fmt.Errorf("%w: auditor session id must equal the persisted Build cache key", ErrInvalidInput)
+	}
 	if identity.ThreadID != session.DeriveThreadID(identity.RunID, ConversationStage, ConversationAttempt, input.Rung, ConversationEpoch) {
 		return fmt.Errorf("%w: auditor thread id does not match the run/stage/attempt/rung/epoch tuple", ErrInvalidInput)
 	}

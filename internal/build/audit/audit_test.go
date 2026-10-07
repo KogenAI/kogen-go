@@ -264,6 +264,11 @@ func TestAuditRunsAtMostOncePerItemAcrossBuildAndRejectsMismatchedRoleSession(t 
 	if _, err := auditor.BeforeRepair(context.Background(), invalid, nil); !errors.Is(err, ErrInvalidInput) {
 		t.Fatalf("mismatched session role error = %v, want ErrInvalidInput", err)
 	}
+	invalid = validInput(t, "R4", role)
+	invalid.Session = newAuditSessionWithID(t, role, "R4", "session_other")
+	if _, err := auditor.BeforeRepair(context.Background(), invalid, nil); !errors.Is(err, ErrInvalidInput) {
+		t.Fatalf("mismatched session/cache id error = %v, want ErrInvalidInput", err)
+	}
 }
 
 func TestNewRequiresResolvedAuditorRole(t *testing.T) {
@@ -289,11 +294,15 @@ func validInput(t *testing.T, rung string, role contract.RoleSettings) Input {
 }
 
 func newAuditSession(t *testing.T, role contract.RoleSettings, rung string) *session.Conversation {
+	return newAuditSessionWithID(t, role, rung, "cache_example")
+}
+
+func newAuditSessionWithID(t *testing.T, role contract.RoleSettings, rung, sessionID string) *session.Conversation {
 	t.Helper()
 	conversation, err := session.New(contract.ConversationIdentity{
 		RunID: "run_example", CacheKey: "cache_example",
 		ThreadID:  session.DeriveThreadID("run_example", ConversationStage, ConversationAttempt, rung, ConversationEpoch),
-		SessionID: "session_example",
+		SessionID: sessionID,
 		Role:      "auditor", Stage: ConversationStage, Attempt: ConversationAttempt, Rung: rung,
 		Epoch: ConversationEpoch, Provider: role.Provider, Model: role.Model, Effort: role.Effort,
 	})
