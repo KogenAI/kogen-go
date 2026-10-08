@@ -1,0 +1,18 @@
+{
+  "package": "69-diagnostic-adapters",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "git diff --cached --check"
+  ],
+  "gaps": [
+    "No literal frozen v1.2 D-slice IDs or instances are assigned; compatible behavior passes are 0.",
+    "I7 must wire gate, orchestration, accounts, and setup-cache observations through the agreed shared frozen v1.3 D cases and retain behavior results.",
+    "No coherent migrated Quint cohort was available; R(slice) spec replay and 500 traces x 25 steps for seeds 17, 23, and 41 against the same-revision private binary remain open.",
+    "Package 00 remains a foundation dependency; Linux, optional-runtime, live-comparison, and I8 manifest evidence remain external closure gates."
+  ],
+  "conflicts": [
+    "Historical v1.2 orchestration.qnt Audit(nowLandable) can change landability, conflicting with CHANGES-v1.3.md section 1 and spec/03-build.md section 3.8.2, where audit advice cannot change approved items, counts, selector results, or landing.",
+    "Historical fixtures ladder-05-advisory-lands-by-default, ladder-06-advisory-with-land-green, ladder-10-all-change-items-demoted, and ladder-11-demotion-rescore-lands assert that incompatible demotion/landing behavior; no runtime black-box conflict was observed because no such cases were assigned or run."
+  ]
+}
