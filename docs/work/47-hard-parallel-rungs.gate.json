@@ -1,0 +1,17 @@
+{
+  "package": "47-hard-parallel-rungs",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -p=2 -parallel=2 ./internal/build/parallel",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build\nSUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"\nEVIDENCE=\"$HOME/cx/kgo/evidence/47-hard-parallel-rungs\"\nmkdir -p \"$EVIDENCE\"\nPYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \\\n  \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" \\\n  --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-102-ladder-34,v1.2-71-ladder-03,v1.2-72-ladder-04' \\\n  --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" \\\n  --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Full make check exited 2 because internal/queue/lock TestConcurrentAcquireCreatesOneOwner failed with: queue.pid is not a safe regular owner file. The parallel package test passed; the full check build step was not reached.",
+    "Behavior receipt: /Users/almirsarajcic/cx/kgo/evidence/47-hard-parallel-rungs/results.jsonl records 0/3 cases and 0/3 instances passing; all cases stopped at the unwired kogen queue start handler before ladder assertions or provider requests.",
+    "I3 Build execution and I4 parallel/sequential ladder wiring, journal integration, selection, landing, and behavior reruns remain open.",
+    "No shared frozen v1.3 case IDs or coherent migrated Quint cohort was available. Planned D-* fixtures and R(slice) remain open; no 500 x 25 traces for seeds 17, 23, and 41 were run.",
+    "Linux behavior, optional runtime, live comparison, and release admission require their stated external evidence."
+  ],
+  "conflicts": []
+}
