@@ -4,6 +4,7 @@
 
 - Worker branch: `kgo/I2-provider-account-boundary`.
 - Source base revision before this package: `1cf6be267dc336eda52b033a79eae6aea3e8fe25`.
+- Package implementation revision exercised by the final checks: `9240141` (`Add provider account boundary routes`).
 - The CLI binary used by the v1.2 run was built from the package worktree by the command's `make build`: `bin/kogen`, SHA-256 `49b075448e8f1dbe27ba144e238a3222ce10f48645442b965a2de16ddcd47f53`.
 - The compiled xspec adapter artifact was `bin/kogen-xspec`, SHA-256 `7db01d922e9f01eff2d48338a927c02a77f5a191d225d3672c1738a76815c616`.
 - `internal/app/provider_routes.go` uses the file account store and credential vault for list/use/login/logout. The app test completes ChatGPT discovery, browser authorization, callback, PKCE exchange, RS256 identity validation, credential persistence, account selection/listing, revocation, and logout against a local fake OIDC server. It verifies mode `0600` and that an empty list does not create account state. No live account or provider was used.
