@@ -1,0 +1,18 @@
+{
+  "package": "59-context-checkpoint",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/optional/checkpoint",
+    "lockdir=\"$HOME/cx/kgo/gates.lock/oauth-port1455\"; mkdir \"$lockdir\"; trap 'rmdir \"$lockdir\"' EXIT; set -o pipefail; GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check 2>&1 | tee \"$HOME/cx/kgo/evidence/59-context-checkpoint/make-check.log\"",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/59-context-checkpoint\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-28-provider-13-planner-no-fallback' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "The assigned frozen CLI case resolved to 1 instance and failed at queue start because queue execution is still owned by the Build integration round; no provider request ran. Retained result: /Users/almirsarajc/cx/kgo/evidence/59-context-checkpoint/results.jsonl.",
+    "I6 must wire build.context_bytes thresholding, the no-tools summarizer dispatch, checkpoint journal publication, fresh continuation session, and status count through the real Build controller, then run P13 effects and assigned integrated cases.",
+    "R(session) awaits a coherent migrated shared v1.3 cohort and same-revision production-backed xspec adapter; full observations and 500 traces by 25 steps for seeds 17, 23, and 41 were not run.",
+    "Planned D-* fixtures have no frozen v1.2 IDs; wait for the shared frozen v1.3 suite and migrated models before claiming those gates.",
+    "Linux optional/safety parity, provisioned Rails/ExUnit runtime evidence, and live comparison gates remain external closure requirements."
+  ],
+  "conflicts": []
+}
