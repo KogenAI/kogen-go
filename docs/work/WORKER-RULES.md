@@ -1,5 +1,7 @@
 # Go worker rules
 
+Before starting, read docs/work/REVIEW-MIDBUILD.md and fix every finding assigned to your package or gate; record each in your receipt. Gate/integration packages (I4+) must treat the P1 findings assigned to them as blocking.
+
 Use only your assigned worktree and owned files. One bounded gpt-6-luna/max package; no subagents. Stop at a reviewable boundary at the stated cap and record remaining work. Never push, merge, touch other worktrees, change global configuration, or install/update tools. Shared contract/entrypoint/Makefile/module changes require coordinator ownership or the explicit package-00/integration handoff. Do not edit spec, suite, goldens or external replay harness.
 
 Commit on your assigned kgo/<package> branch with plain `git commit`, using the user's normal identity and signing configuration. Never pass `-c commit.gpgsign=false`, unset signing, or add AI attribution/trailers. If signing cannot complete, record the blocker without bypassing it. Test Git fixtures use empty global/system config, local identities and disabled signing; production commits retain the origin policy.
