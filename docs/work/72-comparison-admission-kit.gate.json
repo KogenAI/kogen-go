@@ -1,0 +1,38 @@
+{
+  "package": "72-comparison-admission-kit",
+  "accepted_gate": "component",
+  "commands": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/72-comparison-admission-kit\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-28-provider-13-planner-no-fallback' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3 tools/compare-results.py historical --results \"$HOME/cx/kgo/evidence/I7-production-replay-and-draft-reconciliation/results.jsonl\" --expected-cases 236 --expected-instances 570 --exclude-profile exunit --output \"$HOME/cx/kgo/evidence/72-comparison-admission-kit/historical-236.json\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -c 'import ast, pathlib; [ast.parse(pathlib.Path(p).read_text(), filename=p) for p in (\"tools/compare-manifest.py\", \"tools/cache-report.py\", \"tools/compare-results.py\")]'",
+    "python3 -m json.tool docs/work/72-comparison-admission-kit.gate.json >/dev/null",
+    "python3 tools/compare-manifest.py --help >/dev/null",
+    "python3 tools/cache-report.py --help >/dev/null",
+    "python3 tools/compare-results.py --help >/dev/null",
+    "git diff --check"
+  ],
+  "gaps": [
+    "GIT_CONFIG_GLOBAL=/dev/null make check failed at internal/testkit/TestAdversarialSigningHelperHangIsSupervised because signer-started was absent and the helper did not run; retained log: /Users/almirsarajcic/cx/kgo/evidence/72-comparison-admission-kit/make-check.log (SHA-256 192f811ec59f31332a96de601bdf88d16d9c2147dcd1cf3e362d49348ba7e941). No retry was run.",
+    "The assigned v1.2 case v1.2-28-provider-13-planner-no-fallback passed 0/1 cases and 0/1 instances; it stopped at queue start with controller/approval_invalid, before the planner assertion. Results: /Users/almirsarajcic/cx/kgo/evidence/72-comparison-admission-kit/results.jsonl.",
+    "Shared v1.3 full-oracle/G and production-replay manifests are unavailable; P1-P13 complete mappings and D-CACHE-01-06 literal shared IDs are not frozen.",
+    "Held-out real-task bytes, independent grader rubrics, verified rate snapshots, worker-effort data, and a scored-cell manifest are unavailable; no real-task, cost, speed, build-effort, or live-cache cells were run.",
+    "I7, D1, D2, and D3 have component-only receipts; behavior/integration closure is outstanding. Package 00 remains required.",
+    "Current Go public request telemetry lacks stable request ID, adapter/prompt versions, cache namespace ID, dedicated static-prefix digest, eligibility-rule ID/digest, session ID, and stage/attempt/rung/epoch thread scopes; its current derived session ID is distinct from cache_key. The REVIEW-MIDBUILD public-cache-evidence finding remains open with I5/54/D2/D-CACHE closure.",
+    "Current Go journal validation rejects cached_input greater than uncached input; this producer-side issue is outside package 72 and prevents qualifying valid cache-heavy telemetry.",
+    "R(slice) was not run: no coherent shared migrated cohort. Seeds 17, 23, and 41 × 500 traces × 25 steps remain unmeasured.",
+    "Linux, optional-runtime, live-cache replay, and I8 comparison/release evidence remain external closure gates."
+  ],
+  "conflicts": [
+    "v1.2-73-ladder-05 expects pre-repair A2 demotion/landing; v1.3-draft §3.8.2 makes audit advice observational. I7 stopped at queue start before audit behavior.",
+    "v1.2-74-ladder-06 expects green policy to park after demoting A2 without repair; v1.3-draft prohibits demotion. I7 stopped before audit behavior.",
+    "v1.2-75-ladder-07 expects over_strict to demote A2 without citation; v1.3-draft keeps verdicts advisory. I7 stopped before audit behavior.",
+    "v1.2-76-ladder-08 expects unsupported infeasible to be upheld as valid; v1.3-draft warns on unknown verdicts and does not accept that verdict. I7 stopped before audit behavior.",
+    "v1.2-78-ladder-10 expects citation-bearing demotion under the old schema; v1.3-draft has no Build citation field or demotion. I7 stopped before audit behavior.",
+    "v1.2-79-ladder-11 expects pre-repair demotion to permit landing without A2 passing; v1.3-draft requires actual passing verification. I7 stopped before audit behavior.",
+    "D2 Go baseline fixture digest 8a9d09574395261b1633f2324b97c4a4faf8f164484aad4e5de1e2f352ce8fe6 differs from v1.3-draft canonical digest fe65716657b6320a5fcdf9972e16b08748c92c26ae54fa70c6987926fdb891d9 because child_env representation and JSON key ordering differ.",
+    "D3 recovery hand fixture omits required work, preserved, and preserveOk fields; this is a fixture/schema mismatch, not a v1.2 behavior pass.",
+    "I7 local draft stream case 11-auth-capability-and-provider-fallback with refreshable=false records provider_wait/pause (waited=300000, exit 0, refreshed=false), while the draft scenario expects stopped/provider-login (exit 4); not a v1.2 case conflict."
+  ]
+}
