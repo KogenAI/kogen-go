@@ -1,0 +1,21 @@
+{
+  "package": "46-sequential-ladder",
+  "accepted_gate": "component",
+  "commands": [
+    "gofmt -w internal/build/ladder/*.go",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "set -o pipefail; GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check 2>&1 | tee $HOME/cx/kgo/evidence/46-sequential-ladder/make-check-final.log",
+    "git diff --cached --check",
+    "make build",
+    "SUITE=$HOME/cx/kgo/inputs/conformance-v1.2 EVIDENCE=$HOME/cx/kgo/evidence/46-sequential-ladder; mkdir -p $EVIDENCE; PYTHONDONTWRITEBYTECODE=1 PATH=$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH $SUITE/bin/kogen-conformance run --kogen $PWD/bin/kogen --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case v1.2-68-build-44,v1.2-69-ladder-01,v1.2-70-ladder-02,v1.2-80-ladder-12,v1.2-81-ladder-13,v1.2-88-ladder-20,v1.2-89-ladder-21,v1.2-90-ladder-22,v1.2-91-ladder-23,v1.2-94-ladder-26,v1.2-95-ladder-27,v1.2-96-ladder-28,v1.2-97-ladder-29,v1.2-98-ladder-30,v1.2-99-ladder-31 --jobs 2 --time-scale 0.02 --workdir $EVIDENCE/work --out $EVIDENCE/results.jsonl"
+  ],
+  "gaps": [
+    "Public Build CLI/adapter wiring remains unavailable: the 15 selected v1.2 cases all failed at approve setup before ladder assertions; no behavior pass is claimed. Results: /Users/almirsarajc/cx/kgo/evidence/46-sequential-ladder/results.jsonl",
+    "I4 must integrate sequential and hard-parallel scheduling, audit, selection/report, Build journal, and landing, then rerun the assigned behavior cases.",
+    "v1.2-99-ladder-31 leaves an unresolved R4/experimental_r4 tension with draft §3.1 and §2.3; await the shared frozen v1.3 policy and IDs.",
+    "Planned D-* fixtures have no frozen shared v1.3 IDs and are not claimed.",
+    "R(slice) awaits the shared coherent migrated Quint cohort and same-revision private binary; seeds 17, 23, and 41 at 500 traces by 25 steps each remain unrun.",
+    "Linux, optional-runtime, and live-comparison evidence requires external runs. Package 00 remains a real foundation task."
+  ],
+  "conflicts": []
+}
