@@ -1,0 +1,26 @@
+{
+  "package": "I4-repair-ladder-parity",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/app -run '^Test(LadderWiring|RemainingLadderRungs)' -count=1 -timeout=60s (passed)",
+    "GOMAXPROCS=2 make build (final source; passed)",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check (pre-final edit passed; two final-source runs failed at internal/queue/lock.TestConcurrentAcquireCreatesOneOwner; logs retained outside the worktree)",
+    "Verbatim frozen v1.2 acceptance shell block in docs/work/I4-repair-ladder-parity.md (exit 1; results: /Users/almirsarajcic/cx/kgo/evidence/I4-repair-ladder-parity/results.jsonl)"
+  ],
+  "gaps": [
+    "Behavior integration: internal/app/build_routes.go remains owned by I3 and does not invoke the ladder adapter or provide its rung executor; public v1.2 build/ladder acceptance cases stop at controller/approval_invalid.",
+    "Report/watch integration: status_routes.go remains outside I4 ownership; status --watch reports that queue lifecycle is closed with the Build integration round, and report/watch behavior requires rerun after integration.",
+    "The separate landing allowance remains at the caller boundary and has no end-to-end I4 route proof.",
+    "Final make check is blocked by two runs of the unowned internal/queue/lock.TestConcurrentAcquireCreatesOneOwner failure; the focused I4 tests and final make build pass.",
+    "D-AUD-01–05 and shared observational replacement fixtures are absent from the frozen v1.2 suite; wait for shared frozen v1.3 IDs.",
+    "R(slice) was not run because the shared coherent migrated Quint cohort is unavailable; closure requires the scratch copy, 500 traces by 25 steps for seeds 17, 23, and 41, and full observations against the same-revision private binary.",
+    "Linux, optional-runtime, and live-comparison gates lack external evidence.",
+    "Acceptance overlapped with another KGO-CONFCHECK run and a KTS runner without the required shared gate lock; preserve the run and do not attribute causation to individual custody/provider failures."
+  ],
+  "conflicts": [
+    "v1.2-68-build-44 expects a tool-using historical auditor and acceptance_upheld; v1.3 draft auditing is tool-less, observational, and cannot uphold or demote acceptance. Selected but not behaviorally measured because the route stopped at controller/approval_invalid.",
+    "v1.2-73-ladder-05, v1.2-74-ladder-06, v1.2-75-ladder-07, v1.2-78-ladder-10, and v1.2-79-ladder-11 require auditor demotion or demotion-driven landing/reranking; the v1.3 draft forbids auditor demotion and makes audit advice observational. Selected but not behaviorally measured because the route stopped at controller/approval_invalid.",
+    "v1.2-76-ladder-08 treats infeasible as a recognized upheld verdict; the v1.3 draft recognizes valid, over_strict, and contradicts and warns on an unknown verdict. Selected but not behaviorally measured because the route stopped at controller/approval_invalid.",
+    "v1.2-92-ladder-24 expects the v1.2 audit citation field audit[].citation; the v1.3 draft report carries only rung, id, verdict, and reason for each audit. Selected but not behaviorally measured because the route stopped at controller/approval_invalid."
+  ]
+}
