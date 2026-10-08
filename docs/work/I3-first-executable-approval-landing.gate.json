@@ -1,0 +1,21 @@
+{
+  "package": "I3-first-executable-approval-landing",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/app -run 'TestPublicApprovalQueueGateLandingAndStatus|TestQueueInvalidApprovalDoesNotCallTheAgent' -count=1",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "Frozen v1.2 runner with assigned profiles and case list except v1.2-49-build-15 was mistyped as v1.2-45-build-15; run exited 143 after custody-04. Partial JSONL: /Users/almirsarajcic/cx/kgo/evidence/I3-first-executable-approval-landing/results.jsonl"
+  ],
+  "gaps": [
+    "The assigned exact frozen v1.2 command did not complete; the partial run was unserialized because ~/cx/kgo/gates.lock was held by another worker.",
+    "Production ChatGPT planner/builder adapter is not wired; the default Build agent fails closed with provider/build_agent_unavailable.",
+    "D-REC-01–06 and new draft schema receipts require shared frozen v1.3 IDs; the shared Quint cohort was dirty and no R(slice) replay was run.",
+    "Queue signal/lock historical anchors remain incomplete; later audit/ladder integration and moved-base repair remain open.",
+    "Linux and optional/live runtime evidence remains unavailable."
+  ],
+  "conflicts": [
+    "Frozen v1.2 build-36 asserts glob_count 0 for {state_root}/{run_id:greet}-* after SIGKILL; target spec §3.10.5 and CHANGES-v1.3 §3 require preserving the latest recoverable workspace/candidate before cleanup. The case failed before the cleanup assertion at fake_requests: 1.",
+    "Frozen v1.2-130-state-11 requires an exact run.json key set that omits recovery; draft spec §3.10 and CHANGES-v1.3 §3 add recovery records and cleanup-pending state. The overlay case was not reached."
+  ]
+}

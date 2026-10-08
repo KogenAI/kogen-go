@@ -10,6 +10,7 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"kogen-go/internal/build/single"
 	"kogen-go/internal/cli/parse"
 	"kogen-go/internal/cli/render"
 	"kogen-go/internal/contract"
@@ -22,12 +23,16 @@ import (
 // replaces the process environment and makes command wiring deterministic in
 // component tests.
 type CLI struct {
-	In   io.Reader
-	Out  io.Writer
-	Err  io.Writer
-	CWD  string
-	Env  process.Environment
-	argv []string
+	In  io.Reader
+	Out io.Writer
+	Err io.Writer
+	CWD string
+	Env process.Environment
+	// buildAgent and buildSignals are app-level seams for exercising the real
+	// queue, gate, and landing path without live model or signal dependencies.
+	buildAgent   single.Agent
+	buildSignals <-chan os.Signal
+	argv         []string
 }
 
 // Run executes one public command with the process streams and environment.
@@ -103,7 +108,7 @@ func (cli *CLI) runCommand(command parse.Command, cwd string) int {
 	case parse.RouteIntentShape:
 		return cli.writeError("controller", "internal_error", "intent shaping is wired in the Shape integration round", 70)
 	case parse.RouteQueueStart, parse.RouteQueueStop:
-		return cli.writeError("controller", "internal_error", "queue execution is wired in the Build integration round", 70)
+		return cli.queue(command, cwd)
 	case parse.RouteProviderList, parse.RouteProviderLogin, parse.RouteProviderLogout, parse.RouteProviderUse:
 		return cli.writeError("controller", "internal_error", "provider commands are wired in the provider integration round", 70)
 	default:

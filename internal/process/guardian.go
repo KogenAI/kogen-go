@@ -29,21 +29,6 @@ const (
 	guardianWaitLimit   = 1500 * time.Millisecond
 )
 
-// Guardian submodes are selected only by a private environment marker and
-// inherited control descriptors. They are not public command-line routes.
-func init() {
-	switch os.Getenv(internalProcessMode) {
-	case guardianMode:
-		if guardianDescriptorsPresent() {
-			os.Exit(guardianEntry())
-		}
-	case anchorMode:
-		if anchorDescriptorsPresent() {
-			os.Exit(anchorEntry())
-		}
-	}
-}
-
 type guardianRequest struct {
 	Operation  string   `json:"operation"`
 	Executable string   `json:"executable,omitempty"`
