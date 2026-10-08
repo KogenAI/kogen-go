@@ -49,7 +49,6 @@ export PATH="$HOME/.local/share/mise/installs/git/2.54.0/bin:$HOME/.local/share/
 
 ## Remaining closure gates
 
-- Run `GIT_CONFIG_GLOBAL=/dev/null make check` after the shared fake OAuth lock is free, and record its result without changing this preserved CLI failure.
 - I6 must wire opt-in `build.context_bytes` thresholding, same-builder/no-tools summarizer dispatch, checkpoint journal event, continuation session, and status count through the real Build controller; then run the P13 effects fixture and assigned integrated cases.
 - R(session) requires the shared coherent migrated Quint cohort, same-revision private binary, all hand cases, and 500×25 traces for each seed 17, 23, 41 with full observations. Wait for the frozen shared v1.3 IDs before D-* claims.
 - Linux optional/safety parity, provisioned Rails/ExUnit runtime evidence, and live comparison gates remain unclaimed; no live provider or account was used.
