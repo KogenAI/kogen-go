@@ -8,7 +8,7 @@
 - Toolchain/host: Go `go1.27.1 darwin/arm64`, Git `2.54.0`, Python `3.14.7`, macOS `26.7.1 arm64`. Pinned tool paths were placed first on `PATH`.
 - Frozen CLI input: `$HOME/cx/kgo/inputs/conformance-v1.2`; runner SHA-256 `0b53a3b60956cbe8dde7af54e274c46b3e8d430c45662d7dff67445f440b39f9`; profile manifest SHA-256 `aef0b5f8787f9d151f3c77aca6ff8edc67ca89a2f6a55ee10fb6326303260273`.
 - Built CLI SHA-256: `80f66ba6a0e6cb20683f36a90b7d8e7a974660af89bc33161c6785cfaaaa74c3`; private adapter SHA-256: `d839a650c20b3aed57e8721217be418521e285cc44f7dafa46430640b83c9323`.
-- CLI and private adapter sources were unchanged in this component commit; both binaries were built from the same worker tree. The private `kogen-xspec` adapter remains the bootstrap stub.
+- CLI source revision: worker tree `8c2c9a38dad6f45d2068aa362aa4d686eb25d380` (`cmd/kogen` unchanged in this package). Private adapter source revision: the same worker tree (`cmd/kogen-xspec` unchanged and still the bootstrap stub). Both binaries were built from that worker tree.
 
 The owned package now provides an explicit byte-threshold predicate, a new `checkpoint-<turn>` summarizer session that copies raw history and retains the builder role/model/effort/run affinity, a no-tools request configuration that keeps the shared immutable prefix, canonical bounded checkpoint creation, and a digest-epoch continuation containing only the verbatim approved request/plan items plus the checkpoint. Invalid, empty, and oversized results return `continuation_failed`. `context_continuation` is the journal event already counted by status rendering. No credentials or prompt text are emitted in diagnostics.
 
