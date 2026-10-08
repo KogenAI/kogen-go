@@ -1,0 +1,17 @@
+{
+  "package": "I2-provider-account-boundary",
+  "accepted_gate": "component",
+  "commands": [
+    "go test -count=1 -parallel=2 ./internal/app ./cmd/kogen-xspec",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "Exact command in docs/work/I2-provider-account-boundary.md, executed via /Users/almirsarajcic/cx/kgo/evidence/I2-provider-account-boundary/assigned-command.sh; make build passed and the runner retained /Users/almirsarajcic/cx/kgo/evidence/I2-provider-account-boundary/results.jsonl (167 cases, 497 instances, 59 pass, 108 fail)."
+  ],
+  "gaps": [
+    "Public provider CLI dispatch remains the unowned I1 placeholder in internal/app/foundation.go; provider profile cases did not reach the I2 route.",
+    "cmd/kogen-xspec/main.go still calls app.Bootstrap; serveProtocol is compiled but not wired as the executable entrypoint.",
+    "Build- and Shape-dependent provider profile behavior remains an integration closure; 0 of 5 selected provider cases passed.",
+    "The full selected historical run recorded 59 pass and 108 fail; the complete IDs and actual failure messages are in the retained results JSONL. Failures outside I2 scope remain with their owning closure rounds.",
+    "Shared migrated v1.3 cohort and frozen replacement IDs are unavailable; R(slice), planned D-* fixture claims, and Linux integration evidence remain outstanding."
+  ],
+  "conflicts": []
+}
