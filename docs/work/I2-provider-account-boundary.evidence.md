@@ -48,9 +48,8 @@ These are oracle row results only; none is represented as a provider profile acc
 
 All 108 failing rows and their exact expected/actual messages are retained in the JSONL. Relevant provider failures stop at the existing unowned dispatch placeholders:
 
-- `provider-10`, `provider-22`, `v1.2-32-provider-21-login-flow`, and `v1.2-34-format-11-account-selection` receive `controller/internal_error: provider commands are wired in the provider integration round` before the implemented account route runs.
 - `provider-19`, `v1.2-28-provider-13-planner-no-fallback`, `v1.2-29-provider-15-idle-stall`, `v1.2-30-provider-16-total-cap`, `v1.2-31-provider-23-tool-result-budget`, `v1.2-104-provider-01`, and `v1.2-106-provider-03` through `v1.2-118-provider-25` stop at `controller/internal_error: queue execution is wired in the Build integration round`.
-- `provider-10`, `provider-22`, `v1.2-105-provider-02`, and `v1.2-34-format-11-account-selection` stop at the provider dispatch placeholder during login; `v1.2-32-provider-21-login-flow` stops at that placeholder during provider list.
+- `provider-10`, `provider-22`, `v1.2-105-provider-02`, and `v1.2-34-format-11-account-selection` stop at `controller/internal_error: provider commands are wired in the provider integration round` during login; `v1.2-32-provider-21-login-flow` stops at that placeholder during provider list.
 - `provider-24` and `provider-26` stop at `controller/internal_error: intent shaping is wired in the Shape integration round`; the runner also reports that no provider request reached its fake server.
 
 No tested I2 assertion reached an implemented provider route and demonstrated a v1.2-versus-draft semantic conflict. Accordingly, this package records no exact historical semantic conflicts; the observed failures above are deferred wiring closures. Failures in the other selected profiles remain visible in the retained JSONL and are not attributed to I2 or counted as compatible passes.
