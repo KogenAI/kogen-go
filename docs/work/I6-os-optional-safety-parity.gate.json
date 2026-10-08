@@ -1,0 +1,25 @@
+{
+  "package": "I6-os-optional-safety-parity",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 -run 'TestOptionalWiring|TestBuildSandbox' -v ./internal/app",
+    "GOMAXPROCS=2 tools/safety-matrix.sh",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "git diff --check",
+    "gofmt -d internal/app/optional_wiring.go internal/app/optional_wiring_test.go",
+    "sh /tmp/kogen-I6-optional-safety-parity-acceptance.sh (verbatim command block in docs/work/I6-os-optional-safety-parity.md; results at /Users/almirsarajcic/cx/kgo/evidence/I6-os-optional-safety-parity/results.jsonl)"
+  ],
+  "gaps": [
+    "Public Build route must call the optional sandbox probe and configure the single Build runner; public Shape remains at its integration stub.",
+    "Full custody, signal, and adversarial matrix is macOS-only; Linux host evidence is unavailable and Linux production confinement is not established.",
+    "V100–101 and V135 public witness behavior was not reached; P12–P13 have component coverage only.",
+    "All six selected ExUnit cases failed before passing real fixture behavior; no Rails acceptance case was selected or run.",
+    "REVIEW-MIDBUILD P2 #12 lock-wait barrier remains in internal/auth/refresh/refresh_test.go, outside this package's owned files.",
+    "The one full make check run failed at internal/queue/lock.TestConcurrentAcquireCreatesOneOwner with queue.pid is not a safe regular owner file; no retry was made.",
+    "Shared frozen v1.3 D-* fixtures and the coherent migrated Quint cohort for R(slice) are unavailable."
+  ],
+  "conflicts": [
+    "v1.2-68-build-44 expects a tool-using auditor and historical acceptance_upheld; CHANGES-v1.3 §1 makes the auditor tool-less and observational.",
+    "v1.2-73-ladder-05, v1.2-74-ladder-06, v1.2-75-ladder-07, v1.2-78-ladder-10, and v1.2-79-ladder-11 expect auditor-driven acceptance demotion, forbidden by CHANGES-v1.3 §1. Their assertions were unreachable in this run."
+  ]
+}
