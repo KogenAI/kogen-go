@@ -1,0 +1,19 @@
+{
+  "package": "61-staged-direct-variants",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/optional/staged",
+    "GOMAXPROCS=2 GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/61-staged-direct-variants\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'state-03,v1.2-118-provider-25,v1.2-126-state-15' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\""
+  ],
+  "gaps": [
+    "Frozen v1.2 command resolved 3 cases / 3 instances and failed all: state-03 has the exact schema conflict listed separately; v1.2-118-provider-25 and v1.2-126-state-15 stop before provider/build behavior because the public queue route reports controller/internal_error: queue execution is wired in the Build integration round. Preserve /Users/almirsarajcic/cx/kgo/evidence/61-staged-direct-variants/results.jsonl.",
+    "I6 must wire StageRunner and BuildController through the production Build/optional path and close V118/V126 and every-recipe provider-tool behavior on the integrated revision. No behavior gate is claimed.",
+    "R(slice) was not run because no coherent shared migrated v1.3 Quint cohort/private adapter was supplied; seeds 17, 23, and 41 were not launched.",
+    "Planned D-* fixtures need literal IDs from the shared frozen v1.3 suite. Linux, optional runtime, coherent v1.3 replay, and live-comparison evidence remain external gaps."
+  ],
+  "conflicts": [
+    "state-03 v1.2 fixture expects legacy roles fallback_shaper, rung2, rung3; the target schema reports build.roles has unknown role \"fallback_shaper\", build.roles has unknown role \"rung2\", build.roles has unknown role \"rung3\". v1.3-draft treats fallback_shaper as an internal alias and admits only builder, planner, shaper, auditor, reviewer, context; this historical conflict is not fixed by accepting obsolete role keys."
+  ]
+}
