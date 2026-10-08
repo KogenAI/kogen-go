@@ -1,0 +1,35 @@
+{
+  "package": "I8-release-comparison-admission",
+  "accepted_gate": "component",
+  "commands": [
+    "make build",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/I8-release-comparison-admission\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "GIT_CONFIG_GLOBAL=/dev/null make race",
+    "PYTHONDONTWRITEBYTECODE=1 python3 tools/compare-results.py historical --results \"$HOME/cx/kgo/evidence/I8-release-comparison-admission/results.jsonl\" --expected-cases 236 --expected-instances 570 --exclude-profile exunit --output \"$HOME/cx/kgo/evidence/I8-release-comparison-admission/historical-236.json\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3 tools/release-check.py audit --historical-results \"$HOME/cx/kgo/evidence/I8-release-comparison-admission/results.jsonl\" --output \"$HOME/cx/kgo/evidence/I8-release-comparison-admission/release-report.json\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3 tools/release-check.py audit --historical-results \"$HOME/cx/kgo/evidence/I8-release-comparison-admission/results.jsonl\" --output \"$HOME/cx/kgo/evidence/I8-release-comparison-admission/release-report-final.json\"",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -c 'import ast,pathlib; ast.parse(pathlib.Path(\"tools/release-check.py\").read_text(), filename=\"tools/release-check.py\")'",
+    "PYTHONDONTWRITEBYTECODE=1 python3 tools/release-check.py --help"
+  ],
+  "gaps": [
+    "Coordinator-frozen shared v1.3 manifest, suite, literal G/P/D IDs, and complete all-pass macOS and Linux results are unavailable; planned D-* fixtures are not counted.",
+    "No coherent frozen Quint cohort or same-revision production replay manifest; the eight G slices were not replayed for seeds 17, 23, and 41 at 500 traces by 25 steps with full observations.",
+    "I7, package 71, D1, D2, and D3 behavior closure receipts are not accepted; package 00 remains a foundation task.",
+    "Linux check/race receipts on the same source revision are unavailable; this worktree ran on macOS only.",
+    "No frozen comparison manifest exists, so effective arm role resolutions, measurement bindings, P1-P13/D-CACHE mappings, and comparison authority are not validated.",
+    "Package 71 has descriptive offline timing data, but no comparison-bound all-arm performance manifest or complete measured build-effort records for Go, Rust, and Bun.",
+    "No separate eligible live cache replay with complete telemetry and at least 95 percent observed reuse on every designated warm request was run; no provider calls or account access were used.",
+    "Historical v1.2 has 169 unresolved integration failures in addition to the six documented assertion conflicts; no coordinator gate-policy mapping exists, so no historical failure is waived.",
+    "REVIEW-MIDBUILD P1 findings assigned to integration remain release blockers: confinement and Build integrity, crash preservation, child environment, public Build/provider wiring, durable status/scheduling, and moved-base handling.",
+    "No scored cells were launched; this is a component receipt, not behavior acceptance or comparison admission."
+  ],
+  "conflicts": [
+    "v1.2-73-ladder-05",
+    "v1.2-74-ladder-06",
+    "v1.2-75-ladder-07",
+    "v1.2-76-ladder-08",
+    "v1.2-78-ladder-10",
+    "v1.2-79-ladder-11"
+  ]
+}
