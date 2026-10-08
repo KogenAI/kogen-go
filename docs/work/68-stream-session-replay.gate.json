@@ -1,0 +1,33 @@
+{
+  "package": "68-stream-session-replay",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -p=2 -parallel=2 ./internal/xspec/streamsession",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'provider-10,provider-22,v1.2-03-consecutive-request-byte-prefix,v1.2-04-cache-key-session-headers,v1.2-05-missing-usage,v1.2-28-provider-13-planner-no-fallback' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" stream",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" stream",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/stream python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" stream",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py spec",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py gen --traces 500 --steps 25 --seed 17",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" session",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py gen --traces 500 --steps 25 --seed 23",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" session",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py gen --traces 500 --steps 25 --seed 41",
+    "XSPEC_SLICE=../slices/session python3 harness/xspec.py conform -- \"$KGO_BIN/kogen-xspec\" session"
+  ],
+  "gaps": [
+    "I2/I3 provider and Build CLI routes are not wired; the assigned frozen v1.2 command resolved to 6 IDs / 7 instances and 0/7 passed before the stream/session assertions.",
+    "I7 must register these factories in cmd/kogen-xspec and rerun full-observation R(stream) and R(session) against a same-revision binary.",
+    "The migrated stream/session Quint snapshot is not a frozen coherent shared v1.3 cohort; scratch conform runs stopped at reset and compared 0 steps.",
+    "Draft stream scenario 11 expects stop for a non-refreshable Build login, while production retry.Run waits 300000 ms; retry owner/model reconciliation remains open.",
+    "Planned D-* fixtures are unavailable v1.2 cases; wait for shared frozen v1.3 IDs.",
+    "Linux, optional runtime, custody race/stress, and live feasible cache comparison evidence remain external closure gates."
+  ],
+  "conflicts": []
+}
