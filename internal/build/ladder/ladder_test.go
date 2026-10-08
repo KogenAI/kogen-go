@@ -56,7 +56,7 @@ func TestRunEscalatesWithFreshWorkspacesPlanAndDiffFreeFailureSummaries(t *testi
 				Status: RungFailed, Reason: repair.ReasonRepairCap,
 				FailureLines: []string{
 					"first failure", "diff --git a/lib/file.go b/lib/file.go", "@@ -1 +1 @@",
-					"-old", "+new", "acceptance A2: failed", "gate: 1 errors",
+					"-old", "+new", "acceptance A2: failed", "gate: 1 errors", "detail: " + strings.Repeat("x", 220),
 				},
 				Candidate: selection.Candidate{Diff: diff},
 			}, nil
@@ -106,6 +106,9 @@ func TestRunEscalatesWithFreshWorkspacesPlanAndDiffFreeFailureSummaries(t *testi
 		t.Fatalf("second attempt prior summaries = %+v", rungRequests[1].PriorFailures)
 	}
 	for _, summary := range rungRequests[1].PriorFailures {
+		if summary.RungLabel != "R1" || summary.Attempt != "builder" || summary.Model != "gpt-6-luna/max" || summary.EndReason != string(repair.ReasonRepairCap) {
+			t.Fatalf("prior summary identity/reason = %+v", summary)
+		}
 		if strings.Contains(strings.Join(summary.Lines, "\n"), "diff --git") || strings.Contains(strings.Join(summary.Lines, "\n"), "old") || strings.Contains(strings.Join(summary.Lines, "\n"), "new") {
 			t.Fatalf("prior summary exposed a diff: %+v", summary)
 		}
@@ -116,6 +119,9 @@ func TestRunEscalatesWithFreshWorkspacesPlanAndDiffFreeFailureSummaries(t *testi
 			if len([]rune(line)) > 180 {
 				t.Fatalf("prior summary line exceeds 180 runes: %q", line)
 			}
+		}
+		if got := len([]rune(summary.Lines[len(summary.Lines)-1])); got != 180 {
+			t.Fatalf("long failure line has %d runes, want clipped 180", got)
 		}
 	}
 }
@@ -223,6 +229,37 @@ func TestRunStopsAtUnresolvedRawRungConfigAndKeepsEarlierSnapshots(t *testing.T)
 	}
 	if outcome.Status != StatusStopped || runs != 3 || snapshots != 3 || len(outcome.Candidates) != 3 {
 		t.Fatalf("unresolved R4 discarded earlier results: outcome=%+v runs=%d snapshots=%d", outcome, runs, snapshots)
+	}
+}
+
+func TestRunDoesNotSelectRawRequestWhenRawExperimentIsDisabled(t *testing.T) {
+	root := t.TempDir()
+	experimentalR4 := false
+	build := ladderBuild(t, 4, &experimentalR4)
+	var attempts []RungRequest
+	controller := mustController(t, Dependencies{
+		Workspaces: testWorkspaceFactory(),
+		Rungs: rungExecutorFunc(func(_ context.Context, request RungRequest) (RungResult, error) {
+			attempts = append(attempts, cloneAttemptRequest(request))
+			if len(attempts) == 4 {
+				return RungResult{Status: RungStopped, StopReason: "test_stop"}, nil
+			}
+			return RungResult{Status: RungFailed, Reason: repair.ReasonNoProgress}, nil
+		}),
+		Snapshots: snapshotterFunc(func(context.Context, SnapshotRequest) error { return nil }),
+	})
+	outcome, err := controller.Run(context.Background(), validRequest(root, build, func() bool { return true }))
+	var stopped *StopError
+	if !errors.As(err, &stopped) || stopped.Reason != "test_stop" || outcome.Status != StatusStopped {
+		t.Fatalf("disabled raw rung outcome = %+v, err=%v", outcome, err)
+	}
+	if len(attempts) != 4 || attempts[3].Attempt.Name != "sol-high-2" {
+		t.Fatalf("attempts with R4 disabled = %+v", attempts)
+	}
+	for _, request := range attempts {
+		if request.Attempt.Name == "raw-request" || request.Attempt.Name == "raw-request-2" {
+			t.Fatalf("raw-request ran while experimental_r4=false: %+v", request.Attempt)
+		}
 	}
 }
 
