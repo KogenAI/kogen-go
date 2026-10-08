@@ -5,11 +5,13 @@
     "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/app",
     "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
     "make build",
-    "Initial frozen v1.2 selection run; results preserved at /Users/almirsarajcic/cx/kgo/evidence/I5-end-to-end-shape-cache-adapters/results-initial-miscopied.jsonl; omitted v1.2-11, v1.2-12, v1.2-13, v1.2-78 and v1.2-79"
+    "Case-list preflight: 240 literal IDs in docs/work/I5-end-to-end-shape-cache-adapters.cases matched in order",
+    "sh /Users/almirsarajcic/cx/kgo/evidence/I5-end-to-end-shape-cache-adapters/acceptance-command.sh; exact profiles and 240 case IDs from docs/work/I5-end-to-end-shape-cache-adapters.md; --jobs 2 --time-scale 0.02; exit 1; results /Users/almirsarajcic/cx/kgo/evidence/I5-end-to-end-shape-cache-adapters/results.jsonl",
+    "Initial mistyped selection run preserved separately at /Users/almirsarajcic/cx/kgo/evidence/I5-end-to-end-shape-cache-adapters/results-initial-miscopied.jsonl; omitted v1.2-11, v1.2-12, v1.2-13, v1.2-78 and v1.2-79"
   ],
   "gaps": [
     "Public RouteIntentShape remains the foundation.go bootstrap stub; shared entrypoint wiring and the Shape-to-approve-to-Build pipeline need the package-00/coordinator handoff.",
-    "Frozen exact v1.2 command is rerun after the worker revision is committed; initial selection was mistyped and is not behavior acceptance.",
+    "Exact frozen v1.2 command resolved 240 cases/574 instances: 61 pass and 179 fail. All 20 Shape CLI cases fail through the dispatcher stub, so integration behavior is not accepted.",
     "D-SHAPE-01–06, D-BASE-01–05 and D-CACHE have no frozen v1.2 IDs; wait for shared v1.3 IDs.",
     "Grok Shape HTTP attempts are accounted after Respond returns and Shape callable-tool restrictions are not applied by the current Grok adapter API.",
     "Rails has no ledger producer wired; public Rails and ExUnit fixture execution needs the dispatcher.",
