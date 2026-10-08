@@ -1,0 +1,28 @@
+{
+  "package": "71-offline-performance-collector",
+  "accepted_gate": "component",
+  "commands": [
+    "make build",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "SUITE=\"$HOME/cx/kgo/inputs/conformance-v1.2\"; EVIDENCE=\"$HOME/cx/kgo/evidence/71-offline-performance-collector\"; mkdir -p \"$EVIDENCE\"; PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$SUITE/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'cli-20,state-30,v1.2-01-fixed-cli-help-and-grok' --jobs 2 --time-scale 0.02 --workdir \"$EVIDENCE/work\" --out \"$EVIDENCE/results.jsonl\"",
+    "python3 tools/perf-offline.py snapshot --go-root \"$PWD\" --rust-root \"$HOME/Areas/Kogen/kogen-rs\" --bun-root \"$HOME/Areas/Kogen/kogen-ts\" --suite \"$HOME/cx/kgo/inputs/conformance-v1.2\" --spec \"$HOME/Areas/Kogen/kogen-spec\" --output \"$HOME/cx/kgo/evidence/71-offline-performance-collector/manifest-03-final.json\"",
+    "python3 tools/perf-offline.py collect --manifest \"$HOME/cx/kgo/evidence/71-offline-performance-collector/manifest-03-final.json\" --output \"$HOME/cx/kgo/evidence/71-offline-performance-collector/measurements-03-final.jsonl\" --work-root \"$HOME/cx/kgo/evidence/71-offline-performance-collector/work-03-final\" --pipeline-case v1.2-37-build-02 --repetitions 3 --jobs 2 --command-timeout 900",
+    "git diff --check"
+  ],
+  "gaps": [
+    "The required worktree make check failed: TestConcurrentAcquireCreatesOneOwner reported queue.pid is not a safe regular owner file; TempDir cleanup reported directory not empty.",
+    "The frozen acceptance command passed cli-20 and state-30, but v1.2-01-fixed-cli-help-and-grok failed instances 19–21 because provider list/logout/use are not wired; do not count those instances as passes.",
+    "Go state-30 runner passes do not prove its public status route processed the 200 run records; exclude Go from a 50/200 status comparison until status/run integration is complete.",
+    "Rust compile/check and dependent measurements are unavailable offline because the Cargo cache lacks jsonwebtoken.",
+    "Go and Bun v1.2-37-build-02 fake-pipeline cases failed before any fake-provider request; Rust had no binary. No pipeline/provider pass is claimed.",
+    "The host was shared with another repository check/conformance job; wall-time values are not suitable for precise cross-language ranking.",
+    "I8 requires shared_v13_manifest and production_replay_manifest; neither was available. Package 00 remains a real foundation task.",
+    "R(slice) remains open: no frozen coherent shared Quint cohort or same-revision private binary evidence was available; do not claim the 500×25 traces for seeds 17, 23 and 41.",
+    "Planned D-* fixtures are not frozen v1.2 cases; wait for shared frozen v1.3 IDs before claiming those gates.",
+    "Linux, optional-runtime and live-comparison gates require their stated external evidence. Worker commit is component evidence only and does not confer behavior acceptance."
+  ],
+  "conflicts": [
+    "Historical v1.2 case v1.2-01-fixed-cli-help-and-grok failed instances 19–21: provider list, provider logout grok, and provider use grok --as default returned controller/internal_error: provider commands are wired in the provider integration round instead of the expected v1.2 outputs. This is an integration wiring gap, not a claimed v1.3-draft conflict.",
+    "Diagnostic historical case v1.2-37-build-02 failed Go queue start with no run found for greet and Bun queue start with environment/command_unavailable: queue start; neither reached the fake provider. This is not counted as pipeline behavior acceptance."
+  ]
+}
