@@ -1,0 +1,21 @@
+{
+  "package": "58-witness-path",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -count=1 -p=2 -parallel=2 ./internal/shape/witness",
+    "GIT_CONFIG_GLOBAL=/dev/null make check",
+    "make build",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-100-ladder-32,v1.2-101-ladder-33,v1.2-135-shape-26' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/58-witness-path/work\" --out \"$HOME/cx/kgo/evidence/58-witness-path/results.jsonl\""
+  ],
+  "gaps": [
+    "Public Shape, approval, and Build integration has not wired Run, ValidateApproval, or Reverify; the frozen run stopped at Shape step 2 before witness assertions. Behavior acceptance and I6 remain open.",
+    "The production effects for throwaway workspaces, sandbox, real gate, provider sessions, supervised Git proof binding, and B3-before-ladder ordering remain to be supplied by integration.",
+    "No coherent shared migrated v1.3 Quint cohort was available; no scratch-copy spec replay or 500 traces x 25 steps for seeds 17, 23, and 41 was run.",
+    "Planned D-* fixtures are not frozen v1.2 cases; wait for shared frozen v1.3 IDs.",
+    "Linux, optional-runtime, and live comparison gates need their stated external evidence."
+  ],
+  "conflicts": [
+    "Draft mismatch: spec/03-build.md §3.2.7 names shaping.witness_rounds (default 2), while spec/02-formats.md §2.3 and the current Go project validator accept only shaping.proof. The component uses the default of two red rounds; a public override needs a shared schema/spec decision.",
+    "No historical v1.2 semantic conflict was observed: v1.2-100-ladder-32, v1.2-101-ladder-33, and v1.2-135-shape-26 all stopped before their witness assertions because the public Shape integration route is unwired."
+  ]
+}
