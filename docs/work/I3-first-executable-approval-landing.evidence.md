@@ -4,6 +4,7 @@
 
 - Branch: `kgo/I3-first-executable-approval-landing`.
 - Base revision before this change: `092945ee57eb452214146d28cf54be5f3938eeef`.
+- Worker/CLI revision: `c27bd062dab0b9f7207b4913939d464e5f7fb351`. The built CLI used for the partial run came from this code tree. No production planner/builder adapter revision exists in this package; the test-only fake seam is in this revision.
 - Target spec checkout: `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`; its shared Quint tree is dirty, so no replay was run or counted.
 - Frozen oracle: `$HOME/cx/kgo/inputs/conformance-v1.2`, `VERSION` 1.2. The assigned literal effective IDs are in [I3 cases](I3-first-executable-approval-landing.cases).
 - Files changed: `internal/app/build_routes.go`, `internal/app/build_routes_test.go`, `internal/app/foundation.go` for the required public queue dispatch, `internal/process/entry.go`, and the guardian init move in `internal/process/guardian.go`, plus this evidence and [I3 implementation note](I3.md).
