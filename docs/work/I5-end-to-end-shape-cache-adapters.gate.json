@@ -1,0 +1,28 @@
+{
+  "package": "I5-end-to-end-shape-cache-adapters",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/app",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "Initial frozen v1.2 selection run; results preserved at /Users/almirsarajcic/cx/kgo/evidence/I5-end-to-end-shape-cache-adapters/results-initial-miscopied.jsonl; omitted v1.2-11, v1.2-12, v1.2-13, v1.2-78 and v1.2-79"
+  ],
+  "gaps": [
+    "Public RouteIntentShape remains the foundation.go bootstrap stub; shared entrypoint wiring and the Shape-to-approve-to-Build pipeline need the package-00/coordinator handoff.",
+    "Frozen exact v1.2 command is rerun after the worker revision is committed; initial selection was mistyped and is not behavior acceptance.",
+    "D-SHAPE-01–06, D-BASE-01–05 and D-CACHE have no frozen v1.2 IDs; wait for shared v1.3 IDs.",
+    "Grok Shape HTTP attempts are accounted after Respond returns and Shape callable-tool restrictions are not applied by the current Grok adapter API.",
+    "Rails has no ledger producer wired; public Rails and ExUnit fixture execution needs the dispatcher.",
+    "REVIEW-MIDBUILD P1 #3 Build check/fixer child environment and public fake-wire Build assertion remain open outside owned files.",
+    "REVIEW-MIDBUILD P2 #10 public approval setup/baseline cache reuse and trustworthy toolchain identity remain open outside owned files.",
+    "R(slice) 500 traces × 25 steps for seeds 17, 23 and 41 and full-observation conform against a same-revision private binary remain unrun; cmd/kogen-xspec is still bootstrap.",
+    "Linux, optional runtimes and live cache comparison require external evidence."
+  ],
+  "conflicts": [
+    "v1.2-73-ladder-05 expects over_strict demotion and advisory landing; v1.3 draft requires observational audit.",
+    "v1.2-74-ladder-06 expects green-or-advisory landing of a demoted candidate without repair; v1.3 draft requires verification after repair.",
+    "v1.2-75-ladder-07 expects over_strict demotion without citation; v1.3 draft forbids audit-driven acceptance demotion.",
+    "v1.2-78-ladder-10 expects change-item demotion; migrate under observational auditing.",
+    "v1.2-79-ladder-11 expects demotion then advisory landing; migrate under observational auditing."
+  ]
+}
