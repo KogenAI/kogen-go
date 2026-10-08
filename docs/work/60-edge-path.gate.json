@@ -1,0 +1,21 @@
+{
+  "package": "60-edge-path",
+  "accepted_gate": "component",
+  "commands": [
+    "GOMAXPROCS=2 go test -p=2 -parallel=2 ./internal/optional/edge",
+    "GIT_CONFIG_GLOBAL=/dev/null GOMAXPROCS=2 make check",
+    "make build",
+    "mkdir -p \"$HOME/cx/kgo/evidence/60-edge-path\"",
+    "PYTHONDONTWRITEBYTECODE=1 PATH=\"$HOME/.local/share/mise/installs/python/3.14.7/bin:$PATH\" \"$HOME/cx/kgo/inputs/conformance-v1.2/bin/kogen-conformance\" run --kogen \"$PWD/bin/kogen\" --profile cli,state,approval,shape,build,ladder,provider,custody,format,v1.2 --case 'v1.2-102-ladder-34,v1.2-71-ladder-03' --jobs 2 --time-scale 0.02 --workdir \"$HOME/cx/kgo/evidence/60-edge-path/work\" --out \"$HOME/cx/kgo/evidence/60-edge-path/results.jsonl\""
+  ],
+  "gaps": [
+    "Edge generator and runner ports are not wired to the public Build path; production edge behavior and I6 closure remain open.",
+    "The selected v1.2 behavior run failed before provider or ladder execution because queue start reports that Build integration is unwired. Preserve results at /Users/almirsarajcic/cx/kgo/evidence/60-edge-path/results.jsonl; rerun only after queue wiring lands on a changed revision.",
+    "No shared coherent migrated Quint cohort or production replay manifest was available; the required 500-trace ×25-step runs for seeds 17, 23, and 41 were not performed.",
+    "Planned D-* fixtures need shared frozen v1.3 IDs. Linux, optional runtime, and live comparison gates need their external evidence."
+  ],
+  "conflicts": [
+    "v1.2-102-ladder-34 (1 instance): step 3 kogen queue start exited 70, expected 1; stdout was controller/internal_error: queue execution is wired in the Build integration round.",
+    "v1.2-71-ladder-03 (1 instance): step 3 kogen queue start exited 70, expected 0; stdout had one line instead of three and was controller/internal_error: queue execution is wired in the Build integration round."
+  ]
+}
