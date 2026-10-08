@@ -2,7 +2,7 @@
 
 ## Revisions and scope
 
-- Worker branch: `kgo/71-offline-performance-collector`; source base before this package: `117a61dd986346da76f4cc09e65de76684dac01e`. `tools/perf-offline.py` SHA-256 at the final run: `c386e5f1aa5593471bee72185dbc266acc5e528b6e58d819dad773291c077479`.
+- Worker branch: `kgo/71-offline-performance-collector`; source base before this package: `117a61dd986346da76f4cc09e65de76684dac01e`; implementation commit: `7ac4cd7fdeef46a1ee3958040408f8867185ba1e`. `tools/perf-offline.py` SHA-256 at the final run: `c386e5f1aa5593471bee72185dbc266acc5e528b6e58d819dad773291c077479`.
 - Target: `kogen-spec` v1.3-draft `e19dd1c21c19c5be1201c3b6a42c59c28b5c2887`, including `CHANGES-v1.3.md`; reviewed status/report clauses §1.7.5 and §§2.10–2.11. The spec worktree was dirty; the final manifest records its paths and content digest. This is not a frozen shared Quint cohort.
 - Read `WORKER-RULES.md`, `PLAN.md`, `QUEUE-source.md`, `docs/work/REVIEW-MIDBUILD.md`, the package brief/cases, and the relevant Rust status model/handler/render/detail and xspec status modules. No review finding was assigned directly to package 71. The public pipeline/status wiring findings assigned to integration packages remain blocking there.
 - The final pinned manifest identifies the Go, Rust and Bun source revisions as `117a61dd986346da76f4cc09e65de76684dac01e`, `a402540b39cedc7f788472297add7ae2f8a6631a` and `3145004a305d0db3c71ce326ab1071f4b526ae88`. Host/tool identities and full source, spec and suite digests are in `/Users/almirsarajcic/cx/kgo/evidence/71-offline-performance-collector/manifest-03-final.json` (SHA-256 `471ac755bbae45acd137fa7c139c4a02e6f8557f0af2ff36851cbec2e844e0a1`).
